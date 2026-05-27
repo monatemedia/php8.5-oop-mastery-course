@@ -1,5 +1,5 @@
 # Lesson 1.3 — Traits
-> **Module 1: OOP Building Blocks** · PHP 8.4 OOP Mastery Course
+> **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
 ---
 
@@ -7,14 +7,15 @@
 
 ```
 lesson-1.3-traits/
-├── README.md                              ← Theory (you are here)
+├── README.md                                ← Theory (you are here)
 │
 ├── examples/
-│   ├── 01-defining-and-using.php          ← Basic trait usage
+│   ├── 01-defining-and-using.php            ← Basic trait usage
 │   ├── 02-multiple-traits-and-conflicts.php ← insteadof and as
 │   ├── 03-trait-properties-and-abstract.php ← State and enforcement
-│   ├── 04-traits-with-interfaces.php      ← The most common real-world pattern
-│   └── 05-choosing-the-right-tool.php     ← Trait vs interface vs abstract class
+│   ├── 04-traits-with-interfaces.php        ← The most common real-world pattern
+│   ├── 05-choosing-the-right-tool.php       ← Trait vs interface vs abstract class
+│   └── 06-deprecated-trait-and-constant.php ← PHP 8.5
 │
 ├── challenge/
 │   ├── CHALLENGE.md
@@ -357,10 +358,83 @@ Do you have SHARED IMPLEMENTATION for classes in MULTIPLE, UNRELATED hierarchies
 | Trait properties conflicting with class properties | PHP throws a fatal error if type or default value differs | Name trait properties carefully, or make them private |
 | Forgetting that trait methods can conflict | `use A, B` where both define `foo()` is a fatal error | Use `insteadof` and `as` to resolve |
 | Trait with a constructor | You cannot define `__construct` in a trait reliably — conflict risk is high | Use an `initX()` method that the class constructor calls manually |
+| Using doc-comment @deprecated on traits | Not enforced by PHP | Use #[Deprecated] attribute (PHP 8.5) |
 
 ---
 
-## 9 — Quick Reference
+## 9 — PHP 8.5 — `#[Deprecated]` on Traits and Constants
+
+PHP 8.0 introduced `#[Deprecated]` for functions and methods.
+PHP 8.5 extends it to **traits** and **class constants** — making deprecation machine-enforceable rather than relying on `@deprecated` doc comments that PHP never checked.
+
+### Deprecated trait
+
+When a class `use`s a deprecated trait, PHP 8.5 emits a deprecation notice:
+
+```php
+#[\Deprecated(
+    message: 'Use LoggableTrait instead. Will be removed in v3.0.',
+    since: '2.5.0'
+)]
+trait LegacyLogTrait {
+    public function writeLog(string $msg): void { /* old impl */ }
+}
+
+class SomeService {
+    use LegacyLogTrait; // ← PHP 8.5: Deprecated notice emitted here
+}
+```
+
+### Deprecated constant
+
+When a deprecated constant is read, PHP 8.5 emits a deprecation notice:
+
+```php
+class PaymentStatus {
+    #[\Deprecated('Use the PaymentStatus enum instead', since: '2.0.0')]
+    const STATUS_PENDING = 'pending';   // ← deprecated
+
+    // Replacement:
+}
+
+enum PaymentStatus: string {
+    case Pending = 'pending'; // ← current
+}
+
+// Old code:
+$s = PaymentStatus::STATUS_PENDING;  // PHP 8.5: Deprecated notice
+
+// New code:
+$s = PaymentStatus::Pending->value;  // No notice
+```
+
+### Attribute anatomy
+
+Both named arguments are optional:
+```php
+#[\Deprecated]                                  // Minimal
+#[\Deprecated('Use X instead')]                 // With message
+#[\Deprecated(since: '2.0.0')]                  // With version only
+#[\Deprecated('Use X instead', since: '2.0.0')] // Full form
+```
+
+### When to use it
+
+Use `#[Deprecated]` on a **trait** when:
+- Replacing one trait with a better-designed one
+- Replacing a trait-based approach with constructor injection
+- The trait is in a library consumed by other teams
+
+Use `#[Deprecated]` on a **constant** when:
+- Replacing string/int constants with a backed enum
+- A constant was renamed (keep old name deprecated, alias to new)
+- Providing a clear migration path for library consumers
+
+> **Full runnable example:** `examples/06-deprecated-trait-and-constant.php`
+
+---
+
+## 10 — Quick Reference
 
 ```php
 // Define a trait
@@ -408,6 +482,7 @@ class ConcreteClass implements Contractable { use ContractableTrait; }
 - [ ] Run and study `examples/03-trait-properties-and-abstract.php`
 - [ ] Run and study `examples/04-traits-with-interfaces.php`
 - [ ] Run and study `examples/05-choosing-the-right-tool.php`
+- [ ] Run and study `examples/06-deprecated-trait-and-constant.php` *(PHP 8.5)*
 - [ ] Read `challenge/CHALLENGE.md` and complete `challenge/starter.php`
 - [ ] Check your work against `challenge/solution.php`
 - [ ] Complete `quiz/QUIZ.md` without looking at any files

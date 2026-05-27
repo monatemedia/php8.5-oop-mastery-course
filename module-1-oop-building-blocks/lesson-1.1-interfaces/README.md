@@ -1,5 +1,5 @@
 # Lesson 1.1 — Interfaces
-> **Module 1: OOP Building Blocks** · PHP 8.4 OOP Mastery Course
+> **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
 ---
 
@@ -14,7 +14,8 @@ lesson-1.1-interfaces/
 │   ├── 02-multiple-interfaces.php
 │   ├── 03-type-hints-and-polymorphism.php
 │   ├── 04-interface-constants.php
-│   └── 05-interface-inheritance.php
+│   ├── 05-interface-inheritance.php
+│   └── 06-static-asymmetric-visibility.php  ← PHP 8.5
 │
 ├── challenge/
 │   ├── CHALLENGE.md                   ← Instructions
@@ -216,7 +217,66 @@ class FileStream implements ReadWritable {
 
 ---
 
-## 7 — Common Mistakes to Avoid
+## 7 — PHP 8.5 — Asymmetric Visibility for Static Properties
+
+PHP 8.4 introduced asymmetric visibility for **instance** properties:
+```php
+public private(set) string $name = '';   // instance — PHP 8.4
+```
+
+PHP 8.5 extends this to **static** properties:
+```php
+public static private(set) string $environment = 'production';
+```
+
+This allows a static property to be readable from anywhere but writable only from inside the class — eliminating the need for static getter methods on guarded class state.
+
+### Before PHP 8.5 (boilerplate required)
+```php
+class AppConfig {
+    private static string $environment = 'production';
+
+    // Getter required just to expose the read
+    public static function getEnvironment(): string {
+        return self::$environment;
+    }
+
+    public static function setEnvironment(string $env): void {
+        self::$environment = $env;
+    }
+}
+
+echo AppConfig::getEnvironment(); // must use getter
+```
+
+### PHP 8.5 (no getter needed)
+```php
+class AppConfig {
+    // Readable from anywhere, writable only inside the class
+    public static private(set) string $environment = 'production';
+
+    public static function setEnvironment(string $env): void {
+        self::$environment = $env; // ✅ write from inside — allowed
+    }
+}
+
+echo AppConfig::$environment;              // ✅ direct read — no getter
+AppConfig::$environment = 'staging';       // ❌ Fatal error — write from outside
+AppConfig::setEnvironment('staging');      // ✅ controlled write via method
+```
+
+### All static asymmetric visibility combinations
+```php
+public static private(set)   string $a;  // readable anywhere, writable inside only
+public static protected(set) string $b;  // readable anywhere, writable inside + subclasses
+protected static private(set) string $c; // readable inside + subclasses, writable inside only
+```
+
+> **Full runnable example:** `examples/06-static-asymmetric-visibility.php`
+
+---
+
+## 8 — Common Mistakes to Avoid
 
 | Mistake | Why it's wrong | Fix |
 |---|---|---|
@@ -228,7 +288,7 @@ class FileStream implements ReadWritable {
 
 ---
 
-## 8 — Quick Reference
+## 9 — Quick Reference
 
 ```php
 // Define
@@ -271,6 +331,7 @@ Work through these in order:
 - [ ] Run and study `examples/03-type-hints-and-polymorphism.php`
 - [ ] Run and study `examples/04-interface-constants.php`
 - [ ] Run and study `examples/05-interface-inheritance.php`
+- [ ] Run and study `examples/06-static-asymmetric-visibility.php` *(PHP 8.5)*
 - [ ] Read `challenge/CHALLENGE.md` and complete `challenge/starter.php`
 - [ ] Check your work against `challenge/solution.php`
 - [ ] Complete `quiz/QUIZ.md` without looking at any files
