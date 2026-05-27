@@ -1,19 +1,41 @@
-# PHP 8.4 OOP Mastery Course
-### Learn · Code · Quiz — Interactive with XAMPP
+# PHP 8.5 OOP Mastery Course
+### Learn · Code · Quiz — Interactive, fully local, version-locked
 
 > **How to use this README:** Work through each module in order. Tick off `[ ]` checkboxes as you complete each topic. Do **not** move to the next module until all items in the current one are checked.
+
+---
+
+## 🛠️ Local Environment
+
+| Operating System | Recommended Tool | Command to activate PHP 8.5 |
+|-----------------|-----------------|------------------------------|
+| **Windows / macOS** | [Laravel Herd](https://herd.laravel.com) | `herd use 8.5` |
+| **Linux** | [Lerd](https://github.com/geodro/lerd) | `lerd init` → select PHP 8.5 |
+
+**Why not XAMPP?** XAMPP bundles PHP as a monolithic install and lags behind new releases. Laravel Herd and Lerd give you one-click PHP version switching — `herd use 8.5` and you are done. No DLL hunting, no `httpd.conf` editing, no environment pollution.
+
+> ⚠️  Every example in this course requires **PHP 8.5**. Some features (property hooks, `clone with`, `#[NoDiscard]`, static asymmetric visibility) do not exist in earlier versions and will throw a parse error if you run them on PHP 8.5 or below.
 
 ---
 
 ## 📁 Folder Structure
 
 ```
-htdocs/
-├── README.md                  ← You are here
+php8.5-oop-mastery-course/
+├── README.md                      ← You are here
+├── COURSE_PHILOSOPHY.md           ← Six golden rules — read before starting
 ├── module-1-oop-building-blocks/
+│   └── README.md
 ├── module-2-advanced-types/
+│   └── README.md
 ├── module-3-dependency-injection/
-└── module-4-container-automation/
+│   └── README.md
+├── module-4-container-automation/
+│   └── README.md
+├── module-5-testing-and-tdd/
+│   └── README.md
+└── module-6-object-lifecycle-and-state/
+    └── README.md
 ```
 
 ---
@@ -22,242 +44,187 @@ htdocs/
 
 ```
 [Module 1: OOP Building Blocks]
-        ↓
+         ↓
 [Module 2: Advanced Types & Enums]
-        ↓
+         ↓
 [Module 3: Dependency Injection & IoC]
-        ↓
+         ↓
 [Module 4: Container Automation with PHP-DI]
+         ↓
+[Module 5: Automated Testing & TDD]
+         ↓
+[Module 6: Object Lifecycle & State Management]
 ```
-
-> **Rule:** You must complete each module before starting the next. Module 1 lays the foundation that every later module depends on.
 
 ---
 
-## 🧱 SOLID Principles — Where They Appear in This Course
+## 🆕 PHP 8.5 Features in This Course
 
-Every module in this course teaches one or more SOLID principles. This table is your map — you will recognise these when they appear in examples and challenges.
+PHP 8.5 introduces several OOP-relevant features that are woven into the appropriate lessons. Here is where each appears:
+
+| Feature | PHP version | Where it appears |
+|---------|-------------|------------------|
+| Property hooks (`get` / `set`) | 8.4 | Lesson 2.2 |
+| Asymmetric visibility for instance properties (`public private(set)`) | 8.4 | Lesson 1.1 |
+| **Asymmetric visibility for static properties** | **8.5** | **Lesson 1.1** |
+| **`clone with` syntax** | **8.5** | **Lesson 1.2 + Lesson 2.2** |
+| **`#[NoDiscard]` attribute** | **8.5** | **Lesson 2.1 + Module 3** |
+| **`#[Override]` on properties** | **8.5** | **Lesson 2.0** |
+| **`#[Deprecated]` on constants and traits** | **8.5** | **Lesson 1.3** |
+| Backed enums | 8.1 | Lesson 2.3 |
+| Intersection types | 8.1 | Lesson 2.1 |
+| `readonly` properties | 8.1 | Lesson 1.2 |
+| Fibers / async (not covered — out of scope) | 8.1 | — |
+
+---
+
+## 🧱 SOLID Principles — Where They Appear
 
 | Principle | Full name | Primary location |
 |-----------|-----------|-----------------|
-| **S** | Single Responsibility | Lesson 1.0 (overview) · implicit throughout all modules |
-| **O** | Open/Closed | Lesson 1.0 (overview) · Lesson 1.1 Example 03 & Challenge (explicit callouts) |
-| **L** | Liskov Substitution | **Lesson 2.0** (full lesson) · Lesson 1.0 (overview) |
-| **I** | Interface Segregation | Lesson 1.0 (overview) · Lesson 1.1 Examples 02 & 05 (explicit callouts) |
-| **D** | Dependency Inversion | Lesson 1.0 (overview) · Lesson 1.1 Example 03 (preview callout) · **Modules 3 & 4** (full treatment) |
+| **S** | Single Responsibility | Lesson 1.0 (overview) · implicit throughout |
+| **O** | Open/Closed | Lesson 1.0 · Lesson 1.1 Examples 03 & Challenge |
+| **L** | Liskov Substitution | **Lesson 2.0** (full lesson) |
+| **I** | Interface Segregation | Lesson 1.0 · Lesson 1.1 Examples 02 & 05 |
+| **D** | Dependency Inversion | Lesson 1.0 · **Modules 3 & 4** (full treatment) |
 
-Start with Lesson 1.0 to get the full picture before diving into Lesson 1.1.
+---
+
+## 🏗️ Composition vs Inheritance — A Course-Wide Thread
+
+**Composition over Inheritance** is introduced formally in **Lesson 1.4** and reinforced in every subsequent module:
+
+- **Module 1** → Traits and interfaces as composition tools (Lessons 1.1, 1.3)
+- **Module 2** → LSP shows why deep inheritance breaks (Lesson 2.0)
+- **Module 3** → DI *is* composition applied to the service graph
+- **Module 4** → Containers wire composed graphs automatically
+- **Module 5** → Tests prove composed systems are more testable than inherited ones
+- **Module 6** → Stateless composed services survive long-running runtimes
 
 ---
 
 ## Module 1 — OOP Building Blocks
 > **Folder:** `module-1-oop-building-blocks/`
-> **Goal:** Master the core OOP constructs that enforce clean architecture and enable polymorphism. Understand where each SOLID principle lives before applying them in code.
+> See `module-1-oop-building-blocks/README.md` for full lesson breakdown.
 
-### Lesson 1.0 — SOLID Principles Overview ⭐ Start here
-- [ ] Read the full README — understand what each letter stands for and where it is taught
-- [ ] Run `examples/srp.php` — Single Responsibility (UserService split into three focused classes)
-- [ ] Run `examples/ocp.php` — Open/Closed (discount strategies without editing existing code)
-- [ ] Run `examples/lsp.php` — Liskov Substitution (Bird/Penguin hierarchy preview)
-- [ ] Run `examples/isp.php` — Interface Segregation (split storage contracts)
-- [ ] Run `examples/dip.php` — Dependency Inversion (ReportService with swappable backends)
-- [ ] Without looking at the README, write a one-sentence definition of each principle from memory
-
-### Lesson 1.1 — Interfaces
-- [ ] What an interface is and why it exists (contracts, not implementation)
-- [ ] Defining and implementing a single interface
-- [ ] Implementing multiple interfaces on one class *(ISP callout in Example 02)*
-- [ ] Using interfaces as type hints for polymorphism *(OCP + DIP preview callout in Example 03)*
-- [ ] Interface constants
-- [ ] Interface inheritance (`extends` between interfaces) *(ISP callout in Example 05)*
-- [ ] **Code Challenge:** Refactor a tightly coupled class to depend on an interface
-- [ ] **Quiz:** Interface design & polymorphism
-
-### Lesson 1.2 — Abstract Classes
-- [ ] Abstract classes vs interfaces — when to use which
-- [ ] Defining abstract methods (enforcement) and concrete methods (reuse)
-- [ ] Constructor logic in abstract classes
-- [ ] Extending an abstract class and fulfilling its contract
-- [ ] Combining abstract classes with interfaces
-- [ ] **Code Challenge:** Extract shared logic from two similar classes into an abstract base
-- [ ] **Quiz:** Abstract class rules and trade-offs
-
-### Lesson 1.3 — Traits
-- [ ] What traits are and why PHP needs them (horizontal reuse)
-- [ ] Defining and using a trait in a class (`use`)
-- [ ] Using multiple traits and handling method name conflicts (`insteadof`, `as`)
-- [ ] Trait properties and abstract trait methods
-- [ ] Traits vs interfaces vs abstract classes — choosing the right tool
-- [ ] **Code Challenge:** Extract a cross-cutting concern (e.g. logging, timestamps) into a trait
-- [ ] **Quiz:** Trait resolution order and conflict rules
+### High-level checklist
+- [ ] Lesson 1.0 — SOLID Principles Overview ⭐ Start here
+- [ ] Lesson 1.1 — Interfaces *(+ PHP 8.4/8.5: asymmetric visibility)*
+- [ ] Lesson 1.2 — Abstract Classes & Value Objects *(+ PHP 8.5: `clone with`)*
+- [ ] Lesson 1.3 — Traits *(+ PHP 8.5: `#[Deprecated]` on traits)*
+- [ ] Lesson 1.4 — Composition over Inheritance ⭐ New
 
 ---
 
 ## Module 2 — Advanced Types & Enums
 > **Folder:** `module-2-advanced-types/`
-> **Goal:** Strengthen your type system knowledge and learn the PHP 8.x features that make interfaces far more powerful. Understand LSP deeply before writing covariant return types.
+> See `module-2-advanced-types/README.md` for full lesson breakdown.
 
-### Lesson 2.0 — Liskov Substitution Principle (LSP) ⭐ Do before Lesson 2.1
-- [ ] Read the full README — preconditions, postconditions, invariants
-- [ ] Run `examples/01-the-violation.php` — four real violations (throwing override, no-op, instanceof guard, strengthened precondition)
-- [ ] Run `examples/02-fix-the-hierarchy.php` — each violation restructured correctly
-- [ ] Run `examples/03-covariance.php` — return types: narrowing is safe, widening is a PHP fatal error
-- [ ] Run `examples/04-contravariance.php` — parameter types: widening is safe, narrowing is a PHP fatal error
-- [ ] **Code Challenge:** Identify and fix three LSP violations in a CMS codebase
-- [ ] **Quiz:** LSP rules, covariance, contravariance
-
-### Lesson 2.1 — Type Hinting & Return Types
-- [ ] Scalar types (`int`, `string`, `float`, `bool`) and `strict_types=1`
-- [ ] Nullable types (`?string`) and union types (`int|string`)
-- [ ] The `void`, `never`, and `mixed` return types
-- [ ] `self`, `static`, and `parent` return types
-- [ ] Intersection types (PHP 8.1+): `Countable&Traversable`
-- [ ] Enforcing strict typing across your module
-- [ ] **Code Challenge:** Add strict type declarations to a loosely typed class hierarchy
-- [ ] **Quiz:** Type compatibility and strict mode
-
-### Lesson 2.2 — PHP 8.4 Property Hooks
-- [ ] What property hooks replace (boilerplate getters/setters)
-- [ ] The `get` hook — computed and validated reads
-- [ ] The `set` hook — validation and transformation on write
-- [ ] Backed vs virtual properties
-- [ ] Hooks in interfaces (interface property declarations)
-- [ ] Hooks in abstract classes
-- [ ] **Code Challenge:** Rewrite a class with six getter/setter pairs using property hooks
-- [ ] **Quiz:** Hook behaviour, inheritance, and interface contracts
-
-### Lesson 2.3 — Enums (PHP 8.1+)
-- [ ] Pure (unit) enums — named cases with no value
-- [ ] Backed enums — string and integer backing
-- [ ] Enum methods and constants
-- [ ] Implementing interfaces on enums
-- [ ] Using enums as type hints and in match expressions
-- [ ] `from()` vs `tryFrom()` — safe parsing of external data
-- [ ] Enums in switch/match — exhaustiveness checking
-- [ ] **Code Challenge:** Replace magic string constants across a module with a backed enum
-- [ ] **Quiz:** Enum rules, interface implementation, and safe value parsing
-
-### Lesson 2.4 — Anonymous Classes
-- [ ] Syntax and instantiation of anonymous classes
-- [ ] Implementing interfaces inline (ideal for tests and stubs)
-- [ ] Extending concrete and abstract classes anonymously
-- [ ] When to use anonymous classes vs named classes vs closures
-- [ ] **Code Challenge:** Replace a test double class file with an anonymous class stub
-- [ ] **Quiz:** Anonymous class scoping and use cases
+### High-level checklist
+- [ ] Lesson 2.0 — LSP *(+ PHP 8.5: `#[Override]` on properties)*
+- [ ] Lesson 2.1 — Type Hinting & Return Types *(+ PHP 8.5: `#[NoDiscard]`)*
+- [ ] Lesson 2.2 — PHP 8.4/8.5 Property Hooks *(+ PHP 8.5: `clone with` for readonly)*
+- [ ] Lesson 2.3 — Enums (PHP 8.1+)
+- [ ] Lesson 2.4 — Anonymous Classes
 
 ---
 
 ## Module 3 — Dependency Injection & IoC
 > **Folder:** `module-3-dependency-injection/`
-> **Goal:** Understand why coupling is the enemy of testable code and how to invert control using the patterns DI containers are built on.
+> See `module-3-dependency-injection/README.md` for full lesson breakdown.
 
-### Lesson 3.1 — Tight vs Loose Coupling
-- [ ] What coupling means and how to measure it
-- [ ] Why `new ClassName()` inside a constructor is a design smell
-- [ ] The cost of tight coupling: untestable, inflexible, hard to swap
-- [ ] Identifying coupling in real code examples
-- [ ] **Code Challenge:** Identify and list every coupling violation in a given class
-- [ ] **Quiz:** Coupling recognition and consequences
-
-### Lesson 3.2 — Constructor Injection
-- [ ] The Dependency Injection principle (passing, not creating)
-- [ ] Constructor injection — the preferred pattern
-- [ ] Type-hinting injected dependencies against interfaces
-- [ ] Injecting multiple dependencies cleanly
-- [ ] **Code Challenge:** Refactor a class that calls `new` internally to use constructor injection
-- [ ] **Quiz:** DI rules and constructor design
-
-### Lesson 3.3 — Setter & Interface Injection
-- [ ] Setter injection — optional dependencies
-- [ ] Interface injection — the dependency provides the setter contract
-- [ ] When setter injection is appropriate vs constructor injection
-- [ ] **Code Challenge:** Add an optional logger dependency via setter injection
-- [ ] **Quiz:** Choosing between injection patterns
-
-### Lesson 3.4 — Inversion of Control (IoC)
-- [ ] The Hollywood Principle: "Don't call us, we'll call you"
-- [ ] High-level modules depending on abstractions, not details
-- [ ] The Dependency Inversion Principle (DIP — the D in SOLID)
-- [ ] Building a manual IoC example from scratch (no library)
-- [ ] How IoC leads naturally to service containers
-- [ ] **Code Challenge:** Refactor a multi-class application to fully invert its dependencies
-- [ ] **Quiz:** IoC vs DI — conceptual differences and real-world application
+### High-level checklist
+- [ ] Lesson 3.1 — Tight vs Loose Coupling
+- [ ] Lesson 3.2 — Constructor Injection
+- [ ] Lesson 3.3 — Setter & Interface Injection
+- [ ] Lesson 3.4 — Inversion of Control (IoC)
 
 ---
 
 ## Module 4 — Container Automation with PHP-DI
 > **Folder:** `module-4-container-automation/`
-> **Goal:** Automate the wiring of your dependency graph using a real DI container and PHP's Reflection API.
+> See `module-4-container-automation/README.md` for full lesson breakdown.
 
-### Lesson 4.1 — Service Containers
-- [ ] What a service container is (the central object registry)
-- [ ] Manual container implementation: binding and resolving
-- [ ] Container as a registry vs container as a factory
-- [ ] Service identifiers: class names vs interface names
-- [ ] **Code Challenge:** Build a minimal service container from scratch using an associative array
-- [ ] **Quiz:** Container responsibilities and resolution flow
-
-### Lesson 4.2 — PHP Reflection API
-- [ ] `ReflectionClass` — inspecting class metadata at runtime
-- [ ] `ReflectionMethod` and `ReflectionParameter` — reading constructor signatures
-- [ ] Reading type hints from parameters programmatically
-- [ ] How containers use Reflection to auto-wire dependencies
-- [ ] Performance implications and when to cache reflection data
-- [ ] **Code Challenge:** Write a function that reads a class constructor and lists its type-hinted parameters
-- [ ] **Quiz:** Reflection API concepts and auto-wiring mechanics
-
-### Lesson 4.3 — Auto-wiring
-- [ ] What auto-wiring is and how it works end-to-end
-- [ ] Resolving deep dependency graphs automatically
-- [ ] Circular dependency detection
-- [ ] Limitations of auto-wiring (primitives, ambiguous bindings)
-- [ ] **Code Challenge:** Extend your manual container to support auto-wiring via Reflection
-- [ ] **Quiz:** Auto-wiring rules and failure scenarios
-
-### Lesson 4.4 — PHP-DI Library
-- [ ] Installing PHP-DI via Composer inside XAMPP
-- [ ] `ContainerBuilder` — building the container
-- [ ] Auto-wiring with PHP-DI (zero-config mode)
-- [ ] Explicit bindings: binding an interface to a concrete class
-- [ ] Factory definitions — when you need control over instantiation
-- [ ] Environment-based configuration (dev vs prod)
-- [ ] Scopes and shared instances (singletons vs new instances)
-- [ ] **Code Challenge:** Wire the full Module 3 application using PHP-DI with no `new` calls in business logic
-- [ ] **Quiz:** PHP-DI configuration, bindings, and container lifecycle
+### High-level checklist
+- [ ] Lesson 4.1 — Service Containers (build from scratch)
+- [ ] Lesson 4.2 — PHP Reflection API
+- [ ] Lesson 4.3 — Auto-wiring
+- [ ] Lesson 4.4 — PHP-DI Library
+- [ ] Lesson 4.5 — Capstone: Slim PHP + PHP-DI ⭐
 
 ---
 
-## ✅ Completion Checklist
+## Module 5 — Automated Testing & TDD
+> **Folder:** `module-5-testing-and-tdd/`
+> See `module-5-testing-and-tdd/README.md` for full lesson breakdown.
+
+### High-level checklist
+- [ ] Lesson 5.0 — Why Testing Requires DI
+- [ ] Lesson 5.1 — PHPUnit Fundamentals
+- [ ] Lesson 5.2 — Unit Testing with Fakes and Stubs
+- [ ] Lesson 5.3 — TDD: Red, Green, Refactor
+- [ ] Lesson 5.4 — Integration Testing with a Real Container
+- [ ] Lesson 5.5 — Testing Behaviours, Not Layouts
+
+---
+
+## Module 6 — Object Lifecycle & State Management
+> **Folder:** `module-6-object-lifecycle-and-state/`
+> See `module-6-object-lifecycle-and-state/README.md` for full lesson breakdown.
+
+### High-level checklist
+- [ ] Lesson 6.1 — PHP's Share-Nothing Architecture
+- [ ] Lesson 6.2 — Transient vs Singleton Scopes in PHP-DI
+- [ ] Lesson 6.3 — The Danger of Stateful Services
+- [ ] Lesson 6.4 — Designing Stateless Services
+- [ ] Lesson 6.5 — Factory Definitions for Complex Lifecycles
+
+---
+
+## ✅ Completion Table
 
 | Module | Lessons | Code Challenges | Quizzes | Status |
 |--------|---------|-----------------|---------|--------|
-| 1 — OOP Building Blocks | 4 (incl. Lesson 1.0) | 3 | 3 | `[ ] Not started` |
-| 2 — Advanced Types & Enums | 5 (incl. Lesson 2.0) | 5 | 5 | `[ ] Not started` |
-| 3 — Dependency Injection & IoC | 4 | 4 | 4 | `[ ] Not started` |
-| 4 — Container Automation | 4 | 4 | 4 | `[ ] Not started` |
+| 1 — OOP Building Blocks | 5 (1.0–1.4) | 4 | 4 | `[ ] Not started` |
+| 2 — Advanced Types & Enums | 5 (2.0–2.4) | 5 | 5 | `[ ] Not started` |
+| 3 — DI & IoC | 4 (3.1–3.4) | 4 | 4 | `[ ] Not started` |
+| 4 — Container Automation | 5 (4.1–4.5) | 5 | 5 | `[ ] Not started` |
+| 5 — Testing & TDD | 6 (5.0–5.5) | 5 | 5 | `[ ] Not started` |
+| 6 — Object Lifecycle | 5 (6.1–6.5) | 4 | 4 | `[ ] Not started` |
 
 ---
 
-## 🛠️ Environment
+## 🔧 Project Setup (one-time)
 
-| Tool | Version |
-|------|---------|
-| PHP | 8.4 |
-| Runtime | XAMPP (local) |
-| Package manager | Composer (for Module 4) |
-| Editor | Your choice |
+```bash
+# 1. Activate PHP 8.5
+herd use 8.5          # Windows/macOS
+# or
+lerd init             # Linux — select PHP 8.5
 
-**Enabling strict types** — add this to the top of every PHP file you write:
-```php
-<?php
-declare(strict_types=1);
+# 2. Verify
+php -v
+# PHP 8.5.x ...
+
+# 3. Clone or create the project folder
+mkdir php8.5-oop-mastery-course
+cd php8.5-oop-mastery-course
+
+# 4. Install Composer dependencies (from Module 4 onwards)
+composer install
 ```
 
 ---
 
 ## 📖 Reference
 
-- [PHP 8.4 Manual](https://www.php.net/manual/en/)
+- [PHP 8.5 Migration Guide](https://www.php.net/manual/en/migration85.php)
+- [PHP 8.4 Migration Guide](https://www.php.net/manual/en/migration84.php)
+- [PHP Manual](https://www.php.net/manual/en/)
 - [PHP-DI Documentation](https://php-di.org/)
-- [PHP Reflection API](https://www.php.net/manual/en/book.reflection.php)
-- [SOLID Principles (Wikipedia)](https://en.wikipedia.org/wiki/SOLID)
+- [PHPUnit Documentation](https://phpunit.de/documentation.html)
+- [Slim PHP Documentation](https://www.slimframework.com/docs/v4/)
+- [Laravel Herd](https://herd.laravel.com)
+- [Lerd (Linux)](https://github.com/geodro/lerd)
+- [PSR-3 Logger Interface](https://www.php-fig.org/psr/psr-3/)
+- [PSR-11 Container Interface](https://www.php-fig.org/psr/psr-11/)

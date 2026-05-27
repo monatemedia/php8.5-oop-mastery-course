@@ -8,7 +8,7 @@
 
 Gemini AI responds
 
-Here is a complete, production-ready blueprint for the root **`README.md`** for your next-tier course. It is structured identically to your current interactive, XAMPP-friendly, lesson-by-lesson layout, complete with checklists and explicit tracking blocks.
+Here is a complete, production-ready blueprint for the root **`README.md`** for your next-tier course. It is structured identically to your current interactive, Herd-friendly, lesson-by-lesson layout, complete with checklists and explicit tracking blocks.
 
 You can copy and save this file directly to your PC as a foundation for when you are ready to expand into Domain Architecture.
 
@@ -18,7 +18,7 @@ You can copy and save this file directly to your PC as a foundation for when you
 # Advanced Domain Architecture & Tactical DDD
 ### Master Complex Business Logic · Domain Modeling · Resilient Exception Trees
 
-> **How to use this README:** This is the master blueprint for your journey into Domain-Driven Design (DDD) and advanced structural patterns in PHP 8.4. Work through each module in order. Tick off `[ ]` checkboxes as you complete each architectural milestone.
+> **How to use this README:** This is the master blueprint for your journey into Domain-Driven Design (DDD) and advanced structural patterns in PHP 8.5. Work through each module in order. Tick off `[ ]` checkboxes as you complete each architectural milestone.
 
 ---
 
@@ -66,14 +66,14 @@ htdocs/php8.4-domain-architecture/
 ## 🏗️ Course Modules Blueprint
 
 ### Module 1 — Advanced Domain Modeling
-This module shifts your focus from technical classes (Loggers, Mailers) to business domain expressions. You will learn to lock down business invariants using PHP 8.4's type system.
+This module shifts your focus from technical classes (Loggers, Mailers) to business domain expressions. You will learn to lock down business invariants using PHP 8.5's type system.
 
 - [ ] **Lesson 1.1: Rich vs. Anemic Domain Models**
   - *Concept:* The trap of data-holding classes with public getters/setters. Moving logic *into* the objects that own the data.
-  - *PHP 8.4 Tools:* Readonly properties, asymmetric visibility (`public private(set)`), and private modifiers.
+  - *PHP 8.5 Tools:* Readonly properties, asymmetric visibility (`public private(set)`), and private modifiers.
 - [ ] **Lesson 1.2: Value Objects (The Building Blocks)**
   - *Concept:* Immutability, structural equality, and self-validation. Eliminating primitive obsession (e.g., instead of `string $email`, using an immutable `Email` object).
-  - *PHP 8.4 Tools:* Asymmetric visibility for state protection, constructor promotion, and memory-safe validation.
+  - *PHP 8.5 Tools:* Asymmetric visibility for state protection, constructor promotion, and memory-safe validation.
 - [ ] **Lesson 1.3: Entities & Domain Identity**
   - *Concept:* Objects defined by a continuous thread of identity, not their attributes. Distinguishing an Entity from a Value Object.
   - *Code Challenge:* Build a self-validating, immutable `Price` and `Currency` Value Object set that enforces strict calculation invariants.
@@ -124,7 +124,7 @@ Stop treating exceptions as plain error messages. Learn how to structure custom,
 | Tool | Version |
 |------|---------|
 | PHP | 8.4+ |
-| Code Execution | CLI / Local XAMPP |
+| Code Execution | CLI / Local Herd |
 | Core Philosophy | Zero Framework Bloat inside Core Domain Layers |
 
 ---
@@ -158,11 +158,11 @@ Here is the strategic breakdown of the distinct transformation a student undergo
 
 ---
 
-### 1. The PHP 8.4 OOP Mastery Course
+### 1. The PHP 8.5 OOP Mastery Course
 
 This course transforms a student from an **intermediate developer who writes scripts** into a **software engineer who designs predictable, automated runtime object graphs.**
 
-* **The Core Value:** The student stops guessing how to structure code and masters the strict mechanics of the PHP 8.4 type system. They learn how to eliminate rigid class structures in favor of fluid object composition, automated dependency injection, and clean, isolated unit testing.
+* **The Core Value:** The student stops guessing how to structure code and masters the strict mechanics of the PHP 8.5 type system. They learn how to eliminate rigid class structures in favor of fluid object composition, automated dependency injection, and clean, isolated unit testing.
 * **What This Skillset Allows Them to Do:**
 * Build software where changing a core infrastructure detail (e.g., swapping from MySQL to PostgreSQL, or replacing an SMTP mailer with a third-party API) takes minutes instead of a full application rewrite.
 * Write bulletproof, automated test suites using fast, lightweight fakes and mocks, ensuring they can deploy code confidently with zero manual testing.
