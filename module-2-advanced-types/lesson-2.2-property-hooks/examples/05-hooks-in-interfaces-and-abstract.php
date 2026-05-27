@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Example 05 — Hooks in Interfaces and Abstract Classes
  * -------------------------------------------------------
- * PHP 8.4 only.
+ * PHP 8.5.
  *
  * Interfaces can declare PROPERTY REQUIREMENTS using hook syntax.
  * Abstract classes can declare ABSTRACT HOOK properties that subclasses must implement.

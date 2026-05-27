@@ -1,5 +1,5 @@
 # Lesson 2.4 — Anonymous Classes
-> **Module 2: Advanced Types & Enums** · PHP 8.4 OOP Mastery Course
+> **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
 > ✅ Available from PHP 7.0 — works in all modern PHP versions.
 
 ---

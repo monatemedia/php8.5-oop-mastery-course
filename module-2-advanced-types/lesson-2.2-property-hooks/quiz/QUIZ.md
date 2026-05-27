@@ -1,5 +1,5 @@
 # Quiz — Lesson 2.2: PHP 8.4 Property Hooks
-> PHP 8.4 only. Complete this quiz **without** looking at any example or solution files.
+> PHP 8.5. Complete this quiz **without** looking at any example or solution files.
 > Write your answers before checking the answer key at the bottom.
 
 ---

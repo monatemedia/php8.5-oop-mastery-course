@@ -1,5 +1,5 @@
 # Lesson 3.1 — Tight vs Loose Coupling
-> **Module 3: Dependency Injection & IoC** · PHP 8.4 OOP Mastery Course
+> **Module 3: Dependency Injection & IoC** · PHP 8.5 OOP Mastery Course
 
 ---
 

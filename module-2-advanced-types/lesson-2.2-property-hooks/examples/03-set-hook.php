@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Example 03 — The set Hook
  * --------------------------
- * PHP 8.4 only.
+ * PHP 8.5.
  *
  * The set hook runs every time the property is WRITTEN.
  * It intercepts the incoming value before it is stored,

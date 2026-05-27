@@ -4,7 +4,7 @@ declare(strict_types=1); // Task 1
 /**
  * CHALLENGE SOLUTION — Lesson 2.2: PHP 8.4 Property Hooks
  * ─────────────────────────────────────────────────────────
- * PHP 8.4 only.
+ * PHP 8.5.
  * ⚠️  Only open this file after completing starter.php yourself.
  *
  * Key things to compare in your solution:

@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Example 04 — Backed vs Virtual Properties
  * -------------------------------------------
- * PHP 8.4 only.
+ * PHP 8.5.
  *
  * BACKED property:  has actual storage in memory. May have hooks that
  *                   intercept reads/writes, but the value is stored.

@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Example 01 — The Problem Property Hooks Solve
  * ------------------------------------------------
- * PHP 8.4 only. Run: php examples/01-the-problem-they-solve.php
+ * PHP 8.5. Run: php examples/01-the-problem-they-solve.php
  *
  * This example shows the SAME class written twice:
  *   BEFORE — traditional getters/setters (verbose, repetitive)

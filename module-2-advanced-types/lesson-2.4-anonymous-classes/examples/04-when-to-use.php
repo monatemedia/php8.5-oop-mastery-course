@@ -60,7 +60,7 @@ class TrimTransformer implements Transformer {
 $slug = new SlugTransformer();
 $trim = new TrimTransformer();
 
-echo "SlugTransformer: " . $slug->transform('Hello World! PHP 8.4') . "\n";
+echo "SlugTransformer: " . $slug->transform('Hello World! PHP 8.5') . "\n";
 echo "TrimTransformer: '" . $trim->transform('  hello  ') . "'\n\n";
 
 echo "Use named classes when:\n";

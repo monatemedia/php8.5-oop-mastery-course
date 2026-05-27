@@ -1,6 +1,6 @@
-# Lesson 2.2 — PHP 8.4 Property Hooks
-> **Module 2: Advanced Types & Enums** · PHP 8.4 OOP Mastery Course
-> ⚠️  **PHP 8.4 only.** Property hooks do not exist in earlier versions.
+# Lesson 2.2 — PHP 8.5 Property Hooks
+> **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
+> ⚠️  **PHP 8.5.** Property hooks do not exist in earlier versions.
 
 ---
 

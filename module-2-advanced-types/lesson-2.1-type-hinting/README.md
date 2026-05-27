@@ -1,5 +1,5 @@
 # Lesson 2.1 — Type Hinting & Return Types
-> **Module 2: Advanced Types & Enums** · PHP 8.4 OOP Mastery Course
+> **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
 
 ---
 
@@ -367,4 +367,4 @@ declare(strict_types=1);   // Must be first statement
 
 ---
 
-*Next lesson: **2.2 — PHP 8.4 Property Hooks** — replacing boilerplate getters and setters.*
+*Next lesson: **2.2 — PHP 8.5 Property Hooks** — replacing boilerplate getters and setters.*

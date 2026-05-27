@@ -1,5 +1,5 @@
 # Lesson 2.0 — Liskov Substitution Principle (LSP)
-> **Module 2: Advanced Types & Enums** · PHP 8.4 OOP Mastery Course
+> **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
 
 ---
 

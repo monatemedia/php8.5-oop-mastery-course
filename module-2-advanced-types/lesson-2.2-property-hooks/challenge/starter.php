@@ -4,7 +4,7 @@
 /**
  * CHALLENGE STARTER — Lesson 2.2: PHP 8.4 Property Hooks
  * ─────────────────────────────────────────────────────────
- * PHP 8.4 only. Read CHALLENGE.md before touching this file.
+ * PHP 8.5. Read CHALLENGE.md before touching this file.
  *
  * This file uses the traditional getter/setter pattern.
  * Your job is to replace ALL getters and setters with PHP 8.4

@@ -1,5 +1,5 @@
 # Lesson 1.0 — SOLID Principles Overview
-> **Module 1: OOP Building Blocks** · PHP 8.4 OOP Mastery Course
+> **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
 ---
 

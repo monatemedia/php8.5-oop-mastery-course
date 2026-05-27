@@ -62,7 +62,7 @@ echo "── Step 2: Concrete implementations ───────────�
 
 class InMemoryDatabase implements DatabaseInterface {
     private array $posts = [
-        1 => ['id' => 1, 'title' => 'Hello PHP 8.4', 'status' => 'published', 'author_id' => 1],
+        1 => ['id' => 1, 'title' => 'Hello PHP 8.5', 'status' => 'published', 'author_id' => 1],
         2 => ['id' => 2, 'title' => 'DI in Practice', 'status' => 'draft',     'author_id' => 2],
     ];
     private array $users = [

@@ -1,5 +1,5 @@
 # Lesson 1.2 — Abstract Classes
-> **Module 1: OOP Building Blocks** · PHP 8.4 OOP Mastery Course
+> **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
 ---
 
@@ -14,7 +14,8 @@ lesson-1.2-abstract-classes/
 │   ├── 02-abstract-methods-and-concrete.php
 │   ├── 03-constructor-in-abstract.php
 │   ├── 04-combining-with-interfaces.php
-│   └── 05-template-method-pattern.php
+│   ├── 05-template-method-pattern.php
+│   └── 06-clone-with.php                  ← PHP 8.5
 │
 ├── challenge/
 │   ├── CHALLENGE.md
@@ -333,7 +334,95 @@ This is called the **Template Method Pattern** — the abstract class defines th
 
 ---
 
-## 8 — Common Mistakes to Avoid
+## 8 — PHP 8.5 — `clone with` for Immutable Copies
+
+PHP 8.5 introduces the `clone with` syntax for producing immutable copies of objects with targeted property changes.
+
+### The problem it solves
+
+Immutable value objects need "wither" methods that return a modified copy. Before PHP 8.5, these methods had to manually list every property in `new static(...)` — verbose and fragile when properties are added or renamed.
+
+```php
+// PHP 8.4 — verbose wither method: must list ALL properties
+readonly class Money {
+    public function __construct(
+        public int    $amountCents,
+        public string $currency,
+        public string $locale = 'en-ZA'
+    ) {}
+
+    public function withAmount(int $newAmount): static {
+        return new static($newAmount, $this->currency, $this->locale);
+        // Add a 4th property → must update every withX() method
+    }
+}
+```
+
+### PHP 8.5: `clone with`
+
+```php
+// PHP 8.5 — only the CHANGED property appears in the with array
+readonly class Money {
+    public function __construct(
+        public int    $amountCents,
+        public string $currency,
+        public string $locale     = 'en-ZA',
+        public string $precision  = 'standard' // New property — withers unaffected
+    ) {}
+
+    #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
+    public function withAmount(int $newAmount): static {
+        return clone $this with ['amountCents' => $newAmount];
+        // currency, locale, precision all carried over automatically
+    }
+
+    #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
+    public function withAmountAndCurrency(int $cents, string $currency): static {
+        return clone $this with ['amountCents' => $cents, 'currency' => $currency];
+    }
+}
+
+$price    = new Money(29999, 'ZAR');
+$adjusted = $price->withAmount(24999);           // ZAR 249.99
+$both     = $price->withAmountAndCurrency(19999, 'EUR'); // EUR 199.99
+// $price is unchanged in both cases
+```
+
+### `clone with` + PHP 8.4 property hooks
+
+When a property has a `set` hook, the hook runs on the new value during cloning:
+
+```php
+class BlogPost {
+    public string $title = '' {
+        set(string $value) => $this->title = trim($value);
+    }
+    public string $slug {
+        get => strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', trim($this->title)));
+    }
+}
+
+$post    = new BlogPost();
+$post->title = '  Hello PHP World  ';
+
+$updated = clone $post with ['title' => '  PHP 8.5 Is Here  '];
+// set hook normalised the new title automatically
+// virtual $slug is re-computed from the new title
+```
+
+### Rules
+- `clone with ['prop' => $value]` — only changed properties need to appear
+- All other properties are carried over from the original
+- `set` hooks run on cloned values (the new value is validated/transformed)
+- Virtual properties (get-only) are **not** in the `with` array — they re-compute on every read
+- Works on any class, not just `readonly`
+- Pair with `#[\NoDiscard]` to catch silent discard bugs
+
+> **Full runnable example:** `examples/06-clone-with.php`
+
+---
+
+## 9 — Common Mistakes to Avoid
 
 | Mistake | Why it is wrong | Fix |
 |---------|----------------|-----|
@@ -346,7 +435,7 @@ This is called the **Template Method Pattern** — the abstract class defines th
 
 ---
 
-## 9 — Quick Reference
+## 10 — Quick Reference
 
 ```php
 // Define
@@ -400,6 +489,7 @@ if ($obj instanceof MyBase) { /* ... */ }
 - [ ] Run and study `examples/03-constructor-in-abstract.php`
 - [ ] Run and study `examples/04-combining-with-interfaces.php`
 - [ ] Run and study `examples/05-template-method-pattern.php`
+- [ ] Run and study `examples/06-clone-with.php` *(PHP 8.5)*
 - [ ] Read `challenge/CHALLENGE.md` and complete `challenge/starter.php`
 - [ ] Check your work against `challenge/solution.php`
 - [ ] Complete `quiz/QUIZ.md` without looking at any files

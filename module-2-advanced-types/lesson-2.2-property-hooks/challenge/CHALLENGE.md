@@ -1,7 +1,7 @@
-# Code Challenge — Lesson 2.2: PHP 8.4 Property Hooks
+# Code Challenge — Lesson 2.2: PHP 8.5 Property Hooks
 
 > **Rewrite a class with six getter/setter pairs using property hooks**
-> ⚠️  PHP 8.4 only.
+> ⚠️  PHP 8.5.
 
 ---
 

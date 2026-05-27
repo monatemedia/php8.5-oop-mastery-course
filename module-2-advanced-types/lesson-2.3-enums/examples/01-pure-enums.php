@@ -1,5 +1,5 @@
 # Lesson 2.3 — Enums (PHP 8.1+)
-> **Module 2: Advanced Types & Enums** · PHP 8.4 OOP Mastery Course
+> **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
 > ✅ Available from PHP 8.1 — works in 8.1, 8.2, 8.3, and 8.4.
 
 ---

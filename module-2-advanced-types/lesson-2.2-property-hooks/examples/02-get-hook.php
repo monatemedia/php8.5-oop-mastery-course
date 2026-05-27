@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Example 02 — The get Hook
  * --------------------------
- * PHP 8.4 only.
+ * PHP 8.5.
  *
  * The get hook runs every time the property is READ.
  * It can: compute a value, transform the stored value, lazy-load data,
