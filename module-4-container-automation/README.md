@@ -93,7 +93,7 @@ examples/
   01-manual-container.php          ← bind(), get() from scratch — 50 lines
   02-singleton-registry.php        ← Store and return the same instance
   03-factory-vs-registry.php       ← Same binding, different resolution behaviour
-  04-interface-as-key.php          ← Container::get(DatabaseInterface::class)
+  04-container-vs-locator.php   ← Container vs Service Locator — calling context matters
 ```
 
 ### Challenge
