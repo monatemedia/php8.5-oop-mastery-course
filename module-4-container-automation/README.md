@@ -277,12 +277,23 @@ $app->run();
 ### Application structure
 ```
 src/
+├── Contracts/
+│   ├── LoggerInterface.php
+│   └── MailerInterface.php
+├── Domain/
+│   ├── Product/
+│   │   ├── ProductRepositoryInterface.php
+│   │   └── InMemoryProductRepository.php
+│   └── Order/
+│       ├── OrderRepositoryInterface.php
+│       ├── OrderService.php
+│       └── InMemoryOrderRepository.php
 ├── Http/
 │   ├── ProductController.php    ← auto-wired: __construct(ProductRepositoryInterface $repo)
 │   └── OrderController.php      ← auto-wired: __construct(OrderService $service)
-├── Domain/
-│   ├── Product/
-│   └── Order/
+└── Infrastructure/
+    ├── ConsoleLogger.php
+    └── NullMailer.php
 config/
 ├── services.php                 ← ALL bindings and env-dependent config lives here
 └── routes.php                   ← Route definitions only
