@@ -57,3 +57,5 @@ yarn-error.log
 # ── Course-specific: never commit generated test artefacts ─
 **/tests/coverage/
 **/tests/.phpunit.result.cache
+
+prompt.md
