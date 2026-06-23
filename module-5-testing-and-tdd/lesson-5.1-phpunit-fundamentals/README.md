@@ -17,6 +17,7 @@ lesson-5.1-phpunit-fundamentals/
 │
 ├── challenge/
 │   ├── CHALLENGE.md
+│   ├── Money.php
 │   ├── starter/
 │   │   └── MoneyTest.php
 │   └── solution/
