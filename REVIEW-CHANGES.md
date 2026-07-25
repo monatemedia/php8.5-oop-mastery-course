@@ -140,6 +140,18 @@ Added `lesson-2.0-lsp/examples/05-override-on-properties.php` plus a README sect
 | `run-tests.php` | Runs every Module 5/6 test file in its own process. `php run-tests.php`, or `php run-tests.php 5.2`. |
 | `PROGRESS.md` | Single tracker — read / ran / challenge / quiz / score per lesson, plus per-module gates. |
 | `REVIEW-CHANGES.md` | This file. |
+| `index.php` | Course cover page. Herd serves this folder at a `.test` domain; without an index the site preview looks broken. Shows live PHP version, dependency status and your real progress parsed from `PROGRESS.md`. Self-contained — no autoload, no CDN — so it renders correctly *before* `composer install` has ever run. |
+| `check.php` | **The one command to run.** Environment → integrity → progress. Walks the 28 challenges in course order and stops at the first unsolved one. |
+
+### How `check.php` judges a challenge
+
+Modules 1–4 are scripts: your `starter.php` is run and its output compared to the **Expected Output** block in `CHALLENGE.md`. The comparison is an *ordered subsequence*, not an exact string — every expected line must appear in order, but extra output around them is fine, so a debug `echo` will not fail you.
+
+Modules 5–6 are PHPUnit files: `run-tests.php --only-starter` executes your test file. It passes when your tests pass.
+
+The capstone runs its own request-simulation script.
+
+**The part worth knowing:** those 24 expected-output blocks were hand-written and never validated against the solutions — and at least one was demonstrably wrong (Lesson 1.1 documented `R1500.00` where PHP prints `R1500`). Gating progress on unverified documentation would block students for the course's mistakes. So when your output does not match, `check.php` runs the *reference solution* against the same block first. If the solution fails too, you are told it is a course bug and it is not counted against you.
 
 ### Why `run-tests.php` exists
 

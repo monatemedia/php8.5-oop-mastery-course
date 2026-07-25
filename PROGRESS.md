@@ -9,8 +9,10 @@ Do not start a module until the one before it is fully ticked.
 
 - [ ] `php -v` reports 8.5 or newer
 - [ ] `composer install` completed at the course root
-- [ ] `php verify.php` reports all green
+- [ ] `php check.php` reports a green environment and intact course
 - [ ] Read `COURSE_PHILOSOPHY.md` — the six golden rules
+
+> **Tip:** `php check.php` works out where you are automatically — it walks the challenges in order and stops at the first unsolved one. Use it to confirm what you tick off below.
 
 ---
 

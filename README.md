@@ -31,9 +31,12 @@ php8.5-oop-mastery-course/
 ├── README.md                      ← You are here
 ├── COURSE_PHILOSOPHY.md           ← Six golden rules — read before starting
 ├── PROGRESS.md                    ← Your single progress tracker
+├── index.php                      ← Course cover page (Herd site preview)
+├── check.php                      ← ⭐ The one command to run: where am I?
+├── verify.php                     ← Deep integrity check (called by check.php)
+├── run-tests.php                  ← Module 5–6 test runner
 ├── composer.json                  ← Dependencies for Modules 4–6
 ├── phpunit.xml                    ← PHPUnit config for Module 5–6 tests
-├── verify.php                     ← Pre-flight check — run this first
 └── module-N-.../
     ├── README.md                  ← Module overview + checklist
     └── lesson-N.M-.../
@@ -218,20 +221,40 @@ php -v
 # 3. Install dependencies (PHP-DI, Slim, PHPUnit — needed from Module 4 on)
 composer install
 
-# 4. Pre-flight check — lints every example and reports anything broken
-php verify.php
+# 4. Check everything — and find out where you are
+php check.php
 ```
 
-`verify.php` syntax-checks all 190+ example files against your local PHP and tells you if your version is too old. If it reports all green, the whole course will run on your machine.
+### `php check.php` — the only command you need to remember
 
-**Running things:**
+Run it now, and any time you are unsure what to do next. It works through three phases and stops at the first real problem:
+
+1. **Environment** — confirms PHP 8.5 is active and installs missing Composer dependencies for you.
+2. **Integrity** — confirms all 197 course files are intact (this is what `verify.php` does; `check.php` calls it).
+3. **Progress** — walks the 28 challenges *in course order* and stops at the first one you have not solved, telling you exactly where you are and what is failing.
+
+Everything before your current lesson is marked done. Everything after is left alone. Solve the one it stops on, run it again, and it moves you forward.
 
 ```bash
-php module-1-oop-building-blocks/lesson-1.1-interfaces/examples/01-defining-and-implementing.php   # any example
-vendor/bin/phpunit --testsuite module-5                                                            # Module 5 tests
+php check.php                # normal use
+php check.php --all          # judge every challenge, do not stop at the first
+php check.php --skip-verify  # faster: skip the 197-file syntax sweep
+php check.php --no-install   # never run composer install automatically
+```
+
+**The other scripts**, if you want them directly:
+
+```bash
+php verify.php     # is the COURSE intact? (syntax + PHP 8.4/8.5 feature probes)
+php run-tests.php  # run the Module 5 and 6 test suites
+php module-1-oop-building-blocks/lesson-1.1-interfaces/examples/01-defining-and-implementing.php
 ```
 
 > Modules 1–3 need nothing but PHP itself. Composer only matters from Module 4 onwards, but installing up front means you never have to stop mid-lesson.
+
+### The cover page
+
+If you use Herd, this folder is served at a `.test` domain and `index.php` renders a summary of the course, your live environment status and your progress from `PROGRESS.md`. Nothing else in the course is served over HTTP — every lesson is a CLI script.
 
 ---
 

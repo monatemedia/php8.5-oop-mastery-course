@@ -22,11 +22,13 @@
         "optimize-autoloader": true
     },
     "scripts": {
+        "check": "php check.php",
         "verify": "php verify.php",
-        "test": "phpunit"
+        "test": "php run-tests.php"
     },
     "scripts-descriptions": {
-        "verify": "Syntax-check every example in the course against your local PHP",
-        "test": "Run the Module 5 and 6 PHPUnit suites"
+        "check": "Environment + integrity + how far through the challenges you are",
+        "verify": "Syntax-check every course file and probe each PHP 8.4/8.5 feature",
+        "test": "Run the Module 5 and 6 test suites, one process per file"
     }
 }

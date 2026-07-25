@@ -35,7 +35,7 @@ declare(strict_types=1);
 
 class StripeGateway {    // TODO: add  implements PaymentGateway
     public function charge(float $amount, string $currency, string $token): bool {
-        echo "[STRIPE] Charging R" . number_format($amount, 2) . " {$currency} on token {$token}... OK\n";
+        echo "[STRIPE] Charging R" . number_format($amount, 2, '.', '') . " {$currency} on token {$token}... OK\n";
         return true;
     }
 }
@@ -45,7 +45,7 @@ class PdfReceiptPrinter {    // TODO: add  implements ReceiptPrinter
         $id    = $invoiceData['id'];
         $name  = $invoiceData['customer_name'];
         $total = $invoiceData['total'];
-        echo "[PDF RECEIPT] Printing invoice #{$id} for {$name} (R" . number_format($total, 2) . ")\n";
+        echo "[PDF RECEIPT] Printing invoice #{$id} for {$name} (R" . number_format($total, 2, '.', '') . ")\n";
     }
 }
 

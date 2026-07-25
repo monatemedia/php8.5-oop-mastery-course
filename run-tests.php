@@ -38,9 +38,15 @@ if (!is_file($phpunit)) {
     exit(1);
 }
 
-$argsIn        = array_slice($argv, 1);
+$argsIn         = array_slice($argv, 1);
 $includeStarter = in_array('--starter', $argsIn, true);
-$filters       = array_values(array_filter($argsIn, fn(string $a): bool => !str_starts_with($a, '--')));
+// --only-starter runs ONLY the challenge/starter/ files: that is the student's
+// own work, so it is what check.php uses to decide whether a lesson is done.
+$onlyStarter    = in_array('--only-starter', $argsIn, true);
+if ($onlyStarter) {
+    $includeStarter = true;
+}
+$filters        = array_values(array_filter($argsIn, fn(string $a): bool => !str_starts_with($a, '--')));
 
 // ── Collect candidate test files ────────────────────────────────────────────
 $testFiles = [];
@@ -60,6 +66,9 @@ foreach (['module-5-testing-and-tdd', 'module-6-object-lifecycle-and-state'] as 
             continue;
         }
         if (!$includeStarter && str_contains($path, '/challenge/starter/')) {
+            continue;
+        }
+        if ($onlyStarter && !str_contains($path, '/challenge/starter/')) {
             continue;
         }
 
