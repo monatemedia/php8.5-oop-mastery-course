@@ -373,9 +373,17 @@ class PricingEngineTest extends TestCase
         // Engine now has 6 items (3 leaked + 3 new) — triggers 5% discount
         $order2Total = $engine->calculateDiscountedTotal();
 
-        // BUG: $28.50 instead of $30.00 — wrong discount tier due to accumulation
-        $this->assertSame(28.50, $order2Total,
-            'BUG: Order 2 gets a 5% discount it should not have earned — '
+        // BUG: $57.00 instead of $30.00. TWO faults compound here:
+        //   1. the 3 leaked items are still in $items, so the subtotal is $60
+        //      rather than the $30 this order is actually worth; and
+        //   2. 6 items crosses the 5-item threshold, so a 5% discount is
+        //      applied that this order never earned.
+        //   $60 - 5% = $57.00.
+        // This test asserts the ACTUAL broken output so the bug is documented
+        // by a passing test. Lesson 6.4 fixes the design; the assertion there
+        // is the $30.00 you would expect.
+        $this->assertSame(57.00, $order2Total,
+            'BUG: Order 2 is billed for leaked items AND given an unearned 5% discount — '
             . '6 accumulated items crossed the 5-item threshold'
         );
         // Correct total for order 2 should be $30.00

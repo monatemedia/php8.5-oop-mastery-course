@@ -1,697 +1,162 @@
 Running 43 test file(s), one process each.
 ----------------------------------------------------------------------
-...dd/lesson-5.1-phpunit-fundamentals/challenge/solution/MoneyTest.php FAIL
-...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/01-first-test.php FAIL
-...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/02-assertions.php FAIL
-...d/lesson-5.1-phpunit-fundamentals/examples/03-exception-testing.php FAIL
-.../lesson-5.1-phpunit-fundamentals/examples/04-setup-and-teardown.php FAIL
-...esting-with-fakes-and-stubs/challenge/solution/OrderServiceTest.php FAIL
-...-5.2-unit-testing-with-fakes-and-stubs/examples/01-stub-pattern.php FAIL
-...n-5.2-unit-testing-with-fakes-and-stubs/examples/02-spy-pattern.php FAIL
-...-testing-with-fakes-and-stubs/examples/03-testing-failure-paths.php FAIL
-...t-testing-with-fakes-and-stubs/examples/04-null-object-in-tests.php FAIL
-...-tdd/lesson-5.3-tdd/challenge/solution/PasswordResetServiceTest.php FAIL
-...5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green-refactor.php FAIL
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in-tdd.php FAIL
-...e-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-doubles.php FAIL
-...n-5.4-integration-testing/challenge/solution/ApiIntegrationTest.php FAIL
-...d/lesson-5.4-integration-testing/examples/01-container-in-tests.php FAIL
-...son-5.4-integration-testing/examples/02-sqlite-integration-test.php FAIL
-...-tdd/lesson-5.4-integration-testing/examples/03-slim-route-test.php FAIL
-...ng-behaviours-not-layouts/challenge/solution/ResilientTestSuite.php FAIL
+...dd/lesson-5.1-phpunit-fundamentals/challenge/solution/MoneyTest.php PASS
+...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/01-first-test.php PASS
+...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/02-assertions.php PASS
+...d/lesson-5.1-phpunit-fundamentals/examples/03-exception-testing.php PASS
+.../lesson-5.1-phpunit-fundamentals/examples/04-setup-and-teardown.php PASS
+...esting-with-fakes-and-stubs/challenge/solution/OrderServiceTest.php PASS
+...-5.2-unit-testing-with-fakes-and-stubs/examples/01-stub-pattern.php PASS
+...n-5.2-unit-testing-with-fakes-and-stubs/examples/02-spy-pattern.php PASS
+...-testing-with-fakes-and-stubs/examples/03-testing-failure-paths.php PASS
+...t-testing-with-fakes-and-stubs/examples/04-null-object-in-tests.php PASS
+...-tdd/lesson-5.3-tdd/challenge/solution/PasswordResetServiceTest.php PASS
+...5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green-refactor.php PASS
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in-tdd.php PASS
+...e-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-doubles.php PASS
+...n-5.4-integration-testing/challenge/solution/ApiIntegrationTest.php PASS
+...d/lesson-5.4-integration-testing/examples/01-container-in-tests.php PASS
+...son-5.4-integration-testing/examples/02-sqlite-integration-test.php PASS
+...-tdd/lesson-5.4-integration-testing/examples/03-slim-route-test.php PASS
+...ng-behaviours-not-layouts/challenge/solution/ResilientTestSuite.php PASS
 ...g-behaviours-not-layouts/examples/01-brittle-vs-resilient-tests.php FAIL
-...ng-behaviours-not-layouts/examples/02-refactor-without-breaking.php FAIL
-...ting-behaviours-not-layouts/examples/03-when-to-assert-on-calls.php FAIL
-...e-nothing-architecture/challenge/solution/ShareNothingAuditTest.php FAIL
+...ng-behaviours-not-layouts/examples/02-refactor-without-breaking.php PASS
+...ting-behaviours-not-layouts/examples/03-when-to-assert-on-calls.php PASS
+...e-nothing-architecture/challenge/solution/ShareNothingAuditTest.php PASS
 ...n-6.1-share-nothing-architecture/examples/01-share-nothing-demo.php FAIL
-...-6.1-share-nothing-architecture/examples/02-long-running-worker.php FAIL
-....1-share-nothing-architecture/examples/03-spotting-your-runtime.php FAIL
-...ient-vs-singleton-scopes/challenge/solution/ScopeAssignmentTest.php FAIL
-...ransient-vs-singleton-scopes/examples/01-singleton-vs-transient.php FAIL
-...n-6.2-transient-vs-singleton-scopes/examples/02-safe-singletons.php FAIL
-...-transient-vs-singleton-scopes/examples/03-dangerous-singletons.php FAIL
-...f-stateful-services/challenge/solution/StatefulServiceAuditTest.php FAIL
+...-6.1-share-nothing-architecture/examples/02-long-running-worker.php PASS
+....1-share-nothing-architecture/examples/03-spotting-your-runtime.php PASS
+...ient-vs-singleton-scopes/challenge/solution/ScopeAssignmentTest.php PASS
+...ransient-vs-singleton-scopes/examples/01-singleton-vs-transient.php PASS
+...n-6.2-transient-vs-singleton-scopes/examples/02-safe-singletons.php PASS
+...-transient-vs-singleton-scopes/examples/03-dangerous-singletons.php PASS
+...f-stateful-services/challenge/solution/StatefulServiceAuditTest.php PASS
 ....3-danger-of-stateful-services/examples/01-accumulating-service.php FAIL
-...son-6.3-danger-of-stateful-services/examples/02-auth-state-leak.php FAIL
-...3-danger-of-stateful-services/examples/03-all-five-antipatterns.php FAIL
-...ing-stateless-services/challenge/solution/StatelessRefactorTest.php FAIL
-...igning-stateless-services/examples/01-making-services-stateless.php FAIL
-...igning-stateless-services/examples/02-request-context-injection.php FAIL
-...esigning-stateless-services/examples/03-immutable-value-objects.php FAIL
-...5-factory-definitions/challenge/solution/FactoryDefinitionsTest.php FAIL
-...state/lesson-6.5-factory-definitions/examples/01-factory-basics.php FAIL
-.../lesson-6.5-factory-definitions/examples/02-transient-factories.php FAIL
-...sson-6.5-factory-definitions/examples/03-decorator-in-container.php FAIL
-...lesson-6.5-factory-definitions/examples/04-environment-bindings.php FAIL
+...son-6.3-danger-of-stateful-services/examples/02-auth-state-leak.php PASS
+...3-danger-of-stateful-services/examples/03-all-five-antipatterns.php PASS
+...ing-stateless-services/challenge/solution/StatelessRefactorTest.php PASS
+...igning-stateless-services/examples/01-making-services-stateless.php PASS
+...igning-stateless-services/examples/02-request-context-injection.php PASS
+...esigning-stateless-services/examples/03-immutable-value-objects.php PASS
+...5-factory-definitions/challenge/solution/FactoryDefinitionsTest.php PASS
+...state/lesson-6.5-factory-definitions/examples/01-factory-basics.php PASS
+.../lesson-6.5-factory-definitions/examples/02-transient-factories.php PASS
+...sson-6.5-factory-definitions/examples/03-decorator-in-container.php PASS
+...lesson-6.5-factory-definitions/examples/04-environment-bindings.php PASS
 ----------------------------------------------------------------------
-0 passed, 43 failed, 0 skipped, 43 total.
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/challenge/solution/MoneyTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_092b960ca8aa17c6a5beef519f3aa4d1.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class MoneyTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\092b960ca8aa17c6a5beef519f3aa4d1\MoneyTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/01-first-test.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_618e3823df20bc3d1be4d13bd47dc0f7.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class CalculatorTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\618e3823df20bc3d1be4d13bd47dc0f7\CalculatorTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/02-assertions.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_21c82a57b80eaf020f566b7d26f587e5.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class AssertionsExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\21c82a57b80eaf020f566b7d26f587e5\AssertionsExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/03-exception-testing.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_884e48a925160d6b37fc041d923b412b.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ExceptionTestingExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\884e48a925160d6b37fc041d923b412b\ExceptionTestingExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/04-setup-and-teardown.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_48a290e96b489de8ea559af81e3f2bab.xml
-
-There were 5 PHPUnit test runner warnings:
-
-1) Class ShoppingCartTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\48a290e96b489de8ea559af81e3f2bab\ShoppingCartTest.php does not extend PHPUnit\Framework\TestCase
-
-2) Class DirtyStateAntiPatternTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\48a290e96b489de8ea559af81e3f2bab\DirtyStateAntiPatternTest.php
-
-3) Class TearDownExampleTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\48a290e96b489de8ea559af81e3f2bab\TearDownExampleTest.php
-
-4) Class ClassLevelSetupTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\48a290e96b489de8ea559af81e3f2bab\ClassLevelSetupTest.php does not extend PHPUnit\Framework\TestCase
-
-5) Class SetupChoiceExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\48a290e96b489de8ea559af81e3f2bab\SetupChoiceExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/challenge/solution/OrderServiceTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_e249a5cc9ed3f345fd41a3786cee5663.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class OrderServiceTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\e249a5cc9ed3f345fd41a3786cee5663\OrderServiceTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/01-stub-pattern.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_4fa86738b459cb898062fd5833613ed2.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class StubPatternExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\4fa86738b459cb898062fd5833613ed2\StubPatternExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/02-spy-pattern.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_9e5a0db13799d5fdfaa715504ef9f151.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class SpyPatternExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\9e5a0db13799d5fdfaa715504ef9f151\SpyPatternExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/03-testing-failure-paths.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_b024b3b7804389fa5f71b8d255719110.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class TestingFailurePathsExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\b024b3b7804389fa5f71b8d255719110\TestingFailurePathsExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/04-null-object-in-tests.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_589d8ecd766c4025d91d1dfc9a395bcf.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class NullObjectInTestsExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\589d8ecd766c4025d91d1dfc9a395bcf\NullObjectInTestsExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.3-tdd/challenge/solution/PasswordResetServiceTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_c4aba9ad21c5bb36a2881f88646923c3.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class PasswordResetServiceTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\c4aba9ad21c5bb36a2881f88646923c3\PasswordResetServiceTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green-refactor.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_aea38e844df10b54c417f3887a72dfac.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class RateLimiterTDDCycleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\aea38e844df10b54c417f3887a72dfac\RateLimiterTDDCycleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in-tdd.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_390336a927d25e7a292e83bbbe42ea16.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class OutsideInTDDExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\390336a927d25e7a292e83bbbe42ea16\OutsideInTDDExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-doubles.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_3a75a7e466e184f6ad237e226fa8ef6e.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class TDDWithDoublesExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\3a75a7e466e184f6ad237e226fa8ef6e\TDDWithDoublesExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.4-integration-testing/challenge/solution/ApiIntegrationTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_2697a0b1f6f91186d008742d0bd14602.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ApiIntegrationTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\2697a0b1f6f91186d008742d0bd14602\ApiIntegrationTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/01-container-in-tests.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_76c082ff0f36ad653aa0462c0960770d.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ContainerInTestsExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\76c082ff0f36ad653aa0462c0960770d\ContainerInTestsExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/02-sqlite-integration-test.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_a1b980fd0fe469190e0e565fa169c086.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class SqliteIntegrationTestExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\a1b980fd0fe469190e0e565fa169c086\SqliteIntegrationTestExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/03-slim-route-test.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_cfb76299b0a437e39992af6e078e1d4f.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class SlimRouteTestExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\cfb76299b0a437e39992af6e078e1d4f\SlimRouteTestExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/challenge/solution/ResilientTestSuite.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_a24b4b0c891d86d2eb5c0b7aca0764fa.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ResilientSubscriptionTests declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\a24b4b0c891d86d2eb5c0b7aca0764fa\ResilientSubscriptionTests.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
+40 passed, 3 failed, 0 skipped, 43 total.
 
 ======================================================================
 module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/01-brittle-vs-resilient-tests.php
 ======================================================================
+--- BrittlePaymentServiceTest ---
 PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_3b8b2482b25eae7af3a92fd76c365a79.xml
+Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_e112846cebe2423361ea28355d711348.xml
 
-There were 2 PHPUnit test runner warnings:
+..E..                                                               5 / 5 (100%)
 
-1) Class BrittlePaymentServiceTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\3b8b2482b25eae7af3a92fd76c365a79\BrittlePaymentServiceTest.php does not extend PHPUnit\Framework\TestCase
+Time: 00:00.118, Memory: 8.00 MB
 
-2) Class ResilientPaymentServiceTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\3b8b2482b25eae7af3a92fd76c365a79\ResilientPaymentServiceTest.php
+There was 1 error:
 
-No tests executed!
+1) BrittlePaymentServiceTest::testExactLogMessageSequence
+Error: Call to undefined method PHPUnit\Framework\MockObject\Builder\InvocationMocker::withConsecutive()
 
-======================================================================
-module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/02-refactor-without-breaking.php
-======================================================================
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\examples\BrittlePaymentServiceTest.php:194
+
+ERRORS!
+Tests: 5, Assertions: 4, Errors: 1.
+--- ResilientPaymentServiceTest ---
 PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_f194c4dfbd1f9742053d7f1931bb4e20.xml
+Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_a222b6b373b63e771229202a759936f4.xml
 
-There was 1 PHPUnit test runner warning:
+.......                                                             7 / 7 (100%)
 
-1) Class RefactorWithoutBreakingExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\f194c4dfbd1f9742053d7f1931bb4e20\RefactorWithoutBreakingExampleTest.php does not extend PHPUnit\Framework\TestCase
+Time: 00:00.026, Memory: 8.00 MB
 
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/03-when-to-assert-on-calls.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_6e68d2e20db7c33412ff15c2f503a136.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class WhenToAssertOnCallsExampleTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\6e68d2e20db7c33412ff15c2f503a136\WhenToAssertOnCallsExampleTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/challenge/solution/ShareNothingAuditTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_194989099478baa28e8b6223dacd8e48.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ShareNothingAuditTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\194989099478baa28e8b6223dacd8e48\ShareNothingAuditTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
+OK (7 tests, 15 assertions)
 
 ======================================================================
 module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/01-share-nothing-demo.php
 ======================================================================
+--- ShareNothingDemoTest ---
 PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_e40703d5e1e9ff8a39ce1ff8fe019d7c.xml
+Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_f67ef3e15328a54ef32ba05c44bf0920.xml
 
-There was 1 PHPUnit test runner warning:
+....F..                                                             7 / 7 (100%)
 
-1) Class ShareNothingDemoTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\e40703d5e1e9ff8a39ce1ff8fe019d7c\ShareNothingDemoTest.php does not extend PHPUnit\Framework\TestCase
+Time: 00:00.041, Memory: 8.00 MB
 
-No tests executed!
+There was 1 failure:
 
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/02-long-running-worker.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+1) ShareNothingDemoTest::testPersistentWorkerIsFirstVisitOnlyTrueOnceEver
+Request 1: correctly identified as first visit
+Failed asserting that false is true.
 
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_bdf48b27a0c7d0527131faf89198fb59.xml
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.1-share-nothing-architecture\examples\ShareNothingDemoTest.php:250
 
-There were 4 PHPUnit test runner warnings:
-
-1) Class ErrorAccumulationTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\bdf48b27a0c7d0527131faf89198fb59\ErrorAccumulationTest.php does not extend PHPUnit\Framework\TestCase
-
-2) Class ContextLeakageTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\bdf48b27a0c7d0527131faf89198fb59\ContextLeakageTest.php
-
-3) Class CachePoisoningTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\bdf48b27a0c7d0527131faf89198fb59\CachePoisoningTest.php
-
-4) Class ShareNothingComparisonTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\bdf48b27a0c7d0527131faf89198fb59\ShareNothingComparisonTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/03-spotting-your-runtime.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_56a1448f60e1c45ae4f3195bb659bc54.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class RuntimeDetectorTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\56a1448f60e1c45ae4f3195bb659bc54\RuntimeDetectorTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/challenge/solution/ScopeAssignmentTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_5d729de0b0f87b021aacd516be7f09b9.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ScopeAssignmentTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\5d729de0b0f87b021aacd516be7f09b9\ScopeAssignmentTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/01-singleton-vs-transient.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_f6b81b472d657480b85b7ec68a2c5efa.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class SingletonVsTransientTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\f6b81b472d657480b85b7ec68a2c5efa\SingletonVsTransientTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/02-safe-singletons.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_6ab00257416a6cd5b008edcaecbca929.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class SafeSingletonsTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\6ab00257416a6cd5b008edcaecbca929\SafeSingletonsTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/03-dangerous-singletons.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_e86ae9f60523c125d1b25483390c0f0c.xml
-
-There were 3 PHPUnit test runner warnings:
-
-1) Class ShoppingCartScopeTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\e86ae9f60523c125d1b25483390c0f0c\ShoppingCartScopeTest.php does not extend PHPUnit\Framework\TestCase
-
-2) Class AuthContextScopeTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\e86ae9f60523c125d1b25483390c0f0c\AuthContextScopeTest.php
-
-3) Class ContainerAuditPatternTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\e86ae9f60523c125d1b25483390c0f0c\ContainerAuditPatternTest.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/challenge/solution/StatefulServiceAuditTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_bdd75aa3e3fbb32747944d65d215d9b2.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class StatefulServiceAuditTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\bdd75aa3e3fbb32747944d65d215d9b2\StatefulServiceAuditTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
+FAILURES!
+Tests: 7, Assertions: 13, Failures: 1.
 
 ======================================================================
 module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/01-accumulating-service.php
 ======================================================================
+--- AccumulatingServiceVersionATest ---
 PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_c4ef9628c5be33c6d2096d9710600740.xml
+Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_22fa7fc433ddbc35f356b2548aad22ab.xml
 
-There were 4 PHPUnit test runner warnings:
+...                                                                 3 / 3 (100%)
 
-1) Class AccumulatingServiceVersionATest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\c4ef9628c5be33c6d2096d9710600740\AccumulatingServiceVersionATest.php does not extend PHPUnit\Framework\TestCase
+Time: 00:00.016, Memory: 8.00 MB
 
-2) Class InvoiceBuilderTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\c4ef9628c5be33c6d2096d9710600740\InvoiceBuilderTest.php
-
-3) Class PricingEngineTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\c4ef9628c5be33c6d2096d9710600740\PricingEngineTest.php
-
-4) Class ResetTrapTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\c4ef9628c5be33c6d2096d9710600740\ResetTrapTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/02-auth-state-leak.php
-======================================================================
+OK (3 tests, 6 assertions)
+--- InvoiceBuilderTest ---
 PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_fcf5adcf6f64299cd82fc8b236495a57.xml
+Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_bb8d6c3bca89f5455ebec28ee9360b1d.xml
 
-There were 4 PHPUnit test runner warnings:
+...                                                                 3 / 3 (100%)
 
-1) Class IdentityLeakTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\fcf5adcf6f64299cd82fc8b236495a57\IdentityLeakTest.php does not extend PHPUnit\Framework\TestCase
+Time: 00:00.016, Memory: 8.00 MB
 
-2) Class PermissionLeakTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\fcf5adcf6f64299cd82fc8b236495a57\PermissionLeakTest.php
-
-3) Class MultiTenantLeakTest cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\fcf5adcf6f64299cd82fc8b236495a57\MultiTenantLeakTest.php
-
-4) Class AuthOrderingTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\fcf5adcf6f64299cd82fc8b236495a57\AuthOrderingTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/03-all-five-antipatterns.php
-======================================================================
+OK (3 tests, 13 assertions)
+--- PricingEngineTest ---
 PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_efd58809d5dffca61c30eaa3ac07a989.xml
+Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_1152b03116c3f1c970a91b288485c0d9.xml
 
-There were 5 PHPUnit test runner warnings:
+.F.                                                                 3 / 3 (100%)
 
-1) Class AntiPattern1Test declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\efd58809d5dffca61c30eaa3ac07a989\AntiPattern1Test.php does not extend PHPUnit\Framework\TestCase
+Time: 00:00.034, Memory: 8.00 MB
 
-2) Class AntiPattern2Test cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\efd58809d5dffca61c30eaa3ac07a989\AntiPattern2Test.php
+There was 1 failure:
 
-3) Class AntiPattern3Test cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\efd58809d5dffca61c30eaa3ac07a989\AntiPattern3Test.php
+1) PricingEngineTest::testAccumulationCorruptsDiscountCalculation
+BUG: Order 2 gets a 5% discount it should not have earned — 6 accumulated items crossed the 5-item threshold
+Failed asserting that 57.0 is identical to 28.5.
 
-4) Class AntiPattern4Test declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\efd58809d5dffca61c30eaa3ac07a989\AntiPattern4Test.php does not extend PHPUnit\Framework\TestCase
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.3-danger-of-stateful-services\examples\PricingEngineTest.php:377
 
-5) Class AntiPattern5Test declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\efd58809d5dffca61c30eaa3ac07a989\AntiPattern5Test.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/challenge/solution/StatelessRefactorTest.php
-======================================================================
+FAILURES!
+Tests: 3, Assertions: 5, Failures: 1.
+--- ResetTrapTest ---
 PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
 
 Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_b8569cc24eac6e180708891ff6256661.xml
+Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_878c3576f397a580431508f02594b8cb.xml
 
-There was 1 PHPUnit test runner warning:
+..                                                                  2 / 2 (100%)
 
-1) Class StatelessRefactorTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\b8569cc24eac6e180708891ff6256661\StatelessRefactorTest.php does not extend PHPUnit\Framework\TestCase
+Time: 00:00.014, Memory: 8.00 MB
 
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/01-making-services-stateless.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_924184be63cc677402ef7f78a22a5c08.xml
-
-There were 5 PHPUnit test runner warnings:
-
-1) Class Refactor1Test declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\924184be63cc677402ef7f78a22a5c08\Refactor1Test.php does not extend PHPUnit\Framework\TestCase
-
-2) Class Refactor2Test cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\924184be63cc677402ef7f78a22a5c08\Refactor2Test.php
-
-3) Class Refactor3Test cannot be found in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\924184be63cc677402ef7f78a22a5c08\Refactor3Test.php
-
-4) Class Refactor4Test declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\924184be63cc677402ef7f78a22a5c08\Refactor4Test.php does not extend PHPUnit\Framework\TestCase
-
-5) Class Refactor5Test declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\924184be63cc677402ef7f78a22a5c08\Refactor5Test.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/02-request-context-injection.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_caecfb0c34c1f6eecf663fdb4b52e57e.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class RequestContextTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\caecfb0c34c1f6eecf663fdb4b52e57e\RequestContextTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/03-immutable-value-objects.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_6c76bacdfa2dc8a5d2e32bc9c5219b19.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ImmutableValueObjectsTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\6c76bacdfa2dc8a5d2e32bc9c5219b19\ImmutableValueObjectsTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/challenge/solution/FactoryDefinitionsTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_72b2b16aca6bce8bc9356ee6d121bc72.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class FactoryDefinitionsTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\72b2b16aca6bce8bc9356ee6d121bc72\FactoryDefinitionsTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/01-factory-basics.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_f15397084b5c63da2f02d51f7ee9820e.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class FactoryBasicsTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\f15397084b5c63da2f02d51f7ee9820e\FactoryBasicsTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/02-transient-factories.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_691a572ea7ca02058fd7b807006c8093.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class TransientFactoriesTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\691a572ea7ca02058fd7b807006c8093\TransientFactoriesTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/03-decorator-in-container.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_5f4a319f79188ef056db8a2ca12c2a6a.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class DecoratorContainerTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\5f4a319f79188ef056db8a2ca12c2a6a\DecoratorContainerTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/04-environment-bindings.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_164745e313f13e0b256d2ea54037ae81.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class EnvironmentBindingsTest declared in C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\164745e313f13e0b256d2ea54037ae81\EnvironmentBindingsTest.php does not extend PHPUnit\Framework\TestCase
-
-No tests executed!
+OK (2 tests, 4 assertions)

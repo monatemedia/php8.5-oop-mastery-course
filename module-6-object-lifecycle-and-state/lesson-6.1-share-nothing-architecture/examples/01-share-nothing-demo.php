@@ -247,9 +247,26 @@ class ShareNothingDemoTest extends TestCase
         $req2 = $simulator->handleRequest(); // count → 2
         $req3 = $simulator->handleRequest(); // count → 3
 
-        $this->assertTrue($req1['counter']->isFirstVisit(),  'Request 1: correctly identified as first visit');
-        $this->assertFalse($req2['counter']->isFirstVisit(), 'Request 2: WRONG — told it is not a first visit due to leaked state');
-        $this->assertFalse($req3['counter']->isFirstVisit(), 'Request 3: WRONG — same bug');
+        // NOTE: you cannot ask $req1['counter'] about its state after the fact.
+        // All three requests hold a reference to the SAME VisitCounter, so by
+        // the time these assertions run the count is 3 and isFirstVisit() is
+        // false for every one of them — including $req1. That aliasing is
+        // precisely the bug this lesson is about, so we assert on the count
+        // CAPTURED DURING each request instead.
+        $this->assertSame(1, $req1['result'], 'Request 1: first visit, count 1');
+        $this->assertSame(2, $req2['result'], 'Request 2: WRONG — state leaked, count 2 instead of 1');
+        $this->assertSame(3, $req3['result'], 'Request 3: WRONG — same bug, count 3 instead of 1');
+
+        // And the shared object now reports "not a first visit" to everyone.
+        $this->assertFalse(
+            $req1['counter']->isFirstVisit(),
+            'The single shared counter is past its first visit — nobody can be told otherwise'
+        );
+        $this->assertSame(
+            $req1['counter'],
+            $req3['counter'],
+            'All three requests were handed the identical object'
+        );
     }
 
     /**

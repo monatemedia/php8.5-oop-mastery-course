@@ -187,18 +187,33 @@ class BrittlePaymentServiceTest extends TestCase
      */
     public function testExactLogMessageSequence(): void
     {
-        $mockLogger = $this->createMock(LoggerInterface::class);
+        // FOOTNOTE WORTH READING: this test used to be written with
+        // ->withConsecutive([...], [...], [...]). PHPUnit REMOVED that method in
+        // version 10, and the reason is exactly this lesson's thesis — it locked
+        // tests to an exact call sequence, so harmless reordering or an added
+        // log line broke suites everywhere. The tool was removed because it
+        // encouraged the anti-pattern.
+        //
+        // Below is the modern equivalent. Note that it is *still brittle* — the
+        // point of this class is to show what NOT to do. See
+        // ResilientPaymentServiceTest for how this should be written.
+        $calls = [];
 
+        $mockLogger = $this->createMock(LoggerInterface::class);
         $mockLogger->expects($this->exactly(3))
             ->method('info')
-            ->withConsecutive(
-                ['Processing payment'],
-                ['Payment successful'],
-                ['Confirmation email sent']
-            );
+            ->willReturnCallback(function (string $message) use (&$calls): void {
+                $calls[] = $message;
+            });
 
         $service = new PaymentService($this->nullGateway(), $this->nullMailer(), $mockLogger);
         $service->processPayment(1000, 'tok_4242', 'alice@example.com');
+
+        $this->assertSame(
+            ['Processing payment', 'Payment successful', 'Confirmation email sent'],
+            $calls,
+            'Brittle by design: any reordering or extra log line fails this test.'
+        );
     }
 
     // ─────────────────────────────────────────────────────────────────────────
