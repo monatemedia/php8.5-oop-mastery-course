@@ -149,15 +149,59 @@ Namespacing 200 files is the textbook fix, but it is a large refactor and I had 
 
 ---
 
-## One thing you should know
+## Verification on real PHP 8.5
 
-**I could not execute any of this.** The sandbox has no PHP, and installing one was blocked. Every syntax correction above is verified against the official PHP manual and the accepted RFCs rather than against a running interpreter, and I deliberately kept the changes surgical for that reason — no mass refactors I couldn't test.
+Everything above was found by reading against the spec. Everything below was found by **running the course on PHP 8.5.7**, which caught a second class of bug entirely — code that reads correctly and parses fine, but does the wrong thing.
 
-`verify.php` closes that gap on your machine. Run it before Lesson 1.0:
+Final state: **197/197 files parse · all 8.4/8.5 feature probes pass live · every Module 1–4 example runs clean · capstone 36/36 · test suite 43/43.**
+
+### Bugs only execution could find
+
+| Where | Problem |
+|---|---|
+| 10 Module 4 files | `__DIR__ . '/../../../../vendor/autoload.php'` — four levels up from `examples/` overshoots the course root by one. Needs three. **I reviewed this, judged it correct, then edited the Lesson 4.4 README to assert "four levels up" — making the docs agree with the broken code.** |
+| `4.2/02-reading-constructor-params.php` | `LoggerInterface $logger = null` — implicit nullable is fatal on 8.5 |
+| `4.2/02` + `03-handling-edge-cases.php` | `ReflectionParameter::hasDefaultValue()` does not exist (4 calls) → `isDefaultValueAvailable()` |
+| `4.2/04-caching-reflection.php` | `autoResolve()` never recursed, so an unbound concrete dependency aborted the demo — in the auto-wiring lesson |
+| `4.2/01`, `4.2/04` | `end(explode(...))` passes a temporary to a by-reference parameter |
+| `3.4/04`, 2× Module 5 | `setAccessible()` — no-op since 8.1, deprecated in 8.5 |
+| `3.2/04-multiple-dependencies.php` | Array interpolated into a string |
+| `2.2/01-the-problem-they-solve.php` | `setEmail()` validated *before* trimming, in both the before- and after-hooks classes — uncaught exception killed the file |
+| `2.2/03-set-hook.php` | Read `$order->id` from outside a `private` promoted property |
+| Capstone Rule 1 audit | `str_contains($src, 'getenv(')` matched the controllers' own docblock saying *"Rule 1: No getenv()"* — the audit flagged its own comment |
+| `5.1` Money | `format()` used `number_format($x, 2)`, emitting `'EUR 1,000.00'` where CHALLENGE.md Task 7 specifies `'EUR 1000.00'`. Its data provider also contradicted itself — no separator on one row, a separator five rows later |
+| `5.4` solution | Referenced 12 classes it never declared, with a comment admitting they were *"omitted here for brevity"*. All 25 tests errored. Extracted the shared code to `challenge/app.php`, which both starter and solution now require — restoring the pattern Lessons 5.1 and 5.2 already use |
+| `5.5/01-brittle-vs-resilient-tests.php` | `withConsecutive()` was **removed in PHPUnit 10**. Fittingly, it was removed because it locked tests to an exact call sequence — the exact anti-pattern this lesson teaches |
+| `6.1/01-share-nothing-demo.php` | Asked `$req1['counter']->isFirstVisit()` after three requests — but all three share one object, so it was false for every reference. The test was defeated by the aliasing it exists to demonstrate |
+| `6.3/01-accumulating-service.php` | Expected `$28.50`, assuming leaked state only crossed the discount threshold. It also inflates the subtotal: 6 items → `$60` → 5% off → **`$57.00`**. Two compounding faults, not one |
+
+### Bugs in my own tooling
+
+Worth recording, because the tooling was supposed to be the safety net:
+
+- **`verify.php` clone-with probe** — modified a `readonly` property from *outside* the declaring class, which throws. It reported `clone with — failed to run` and I nearly read that as PHP's fault rather than mine. `-d error_reporting=0` had swallowed the message that would have said so.
+- **`verify.php` probes** — a top-level `return` halts a PHP script, so the `PROBE_OK` sentinel appended after each probe never executed. 7 of 8 features reported failure while working perfectly.
+- **`run-tests.php`, three attempts** — PHPUnit 11 resolves the test class from the *filename*, so `01-first-test.php` (holding `CalculatorTest`) was unrunnable. A `<file>` element did not help; a shim that `require`d the real file made PHPUnit claim the class "does not extend TestCase" and broke files that had been passing. What works: run the file as-is when the name already matches, otherwise drop a temporary copy named after the class *beside* the original — a sibling, not a temp dir, so `__DIR__` stays valid for Lesson 5.4's `../app.php`.
+- **`run-tests.php` reported "All green" having executed zero tests.** A mangled regex matched nothing, every file was skipped before any counter moved, and an empty failure list read as success. It now prints skipped counts, names skipped files, and exits non-zero with *"NO TESTS EXECUTED — that is a runner failure, not a pass"*.
+
+That last one is the one to remember. A harness that fails loudly gets investigated; a harness that reports green having done nothing gets trusted.
+
+---
+
+## Running it
 
 ```bash
 composer install
-php verify.php
+php verify.php        # PHP version, live feature probes, syntax-check all 197 files
+php run-tests.php     # Modules 5 and 6, one process per file
 ```
 
-It runs a live probe for each 8.4/8.5 feature and syntax-checks every file, so anything I got wrong surfaces in one command rather than three lessons in.
+Track your way through in [`PROGRESS.md`](PROGRESS.md). Start at Module 1, Lesson 1.0.
+
+Both scripts are safe to re-run at any time. `verify.php` changes nothing. `run-tests.php` creates a temporary copy of a lesson file only while that file's tests are executing and deletes it immediately, with a shutdown handler as a backstop if the run is interrupted — a clean `git status` after a run is the check that it behaved.
+
+## Known cosmetic leftovers
+
+- `module-5-testing-and-tdd/lesson-5.3-tdd/example/` (singular) holds three redirect stubs. The content moved to `examples/` to match every other lesson. **The `example/` folder is safe to delete** — nothing references it and `verify.php` skips it.
+- The Module 4 capstone's `challenge/` is the finished reference implementation, not a starter. `CHALLENGE.md` opens with a warning to build it in your own folder first.
+

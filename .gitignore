@@ -2,7 +2,10 @@
 
 # ── Composer ──────────────────────────────────────────────
 /vendor/
-composer.lock
+# composer.lock is deliberately NOT ignored. The README bills this course as
+# "version-locked", and the lock file is what actually delivers that — it pins
+# PHPUnit 11.5.x, PHP-DI 7.1.x and Slim 4.15.x, so the verified-green state is
+# reproducible instead of drifting with whatever Composer resolves next month.
 
 # ── PHP-DI compiled container cache ───────────────────────
 /var/
@@ -66,4 +69,3 @@ yarn-error.log
 **/tests/.phpunit.result.cache
 
 prompt.md
-# stray test-runner copies (run-tests.php cleans these up itself)
