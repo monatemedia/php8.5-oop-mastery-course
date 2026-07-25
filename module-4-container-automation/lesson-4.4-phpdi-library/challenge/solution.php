@@ -16,7 +16,7 @@ declare(strict_types=1);
  *   7. getenv() calls live ONLY inside definitions — never in service classes
  */
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use function DI\autowire;

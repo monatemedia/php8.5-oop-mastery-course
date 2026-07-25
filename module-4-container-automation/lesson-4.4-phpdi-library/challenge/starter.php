@@ -11,7 +11,7 @@ declare(strict_types=1);
  * Do NOT look at solution.php until you have made a genuine attempt.
  */
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use function DI\autowire;

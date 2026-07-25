@@ -337,7 +337,7 @@ echo "\n" . $result2 . "\n\n";
 echo "What the container resolved (singletons):\n";
 $ref = new ReflectionClass(ManualContainer::class);
 $prop = $ref->getProperty('instances');
-$prop->setAccessible(true);
+// setAccessible() removed: a no-op since PHP 8.1, deprecated in 8.5.
 $instances = $prop->getValue($container);
 foreach ($instances as $key => $value) {
     // Only show the interface keys (skip duplicate concrete entries)

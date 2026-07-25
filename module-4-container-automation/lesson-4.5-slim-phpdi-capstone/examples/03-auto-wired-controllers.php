@@ -19,7 +19,7 @@ declare(strict_types=1);
  * Requires: composer require slim/slim slim/psr7 php-di/php-di
  */
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;

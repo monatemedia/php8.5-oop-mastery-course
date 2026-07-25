@@ -52,7 +52,12 @@ if (PHP_VERSION_ID >= 80500) {
 // ─────────────────────────────────────────────────────────────────────────────
 heading('2. Language features used by the course');
 
-/** Each probe is a snippet that must parse AND run on a correct install. */
+/**
+ * Each probe is a snippet that must parse AND run on a correct install.
+ * Every probe must echo PROBE_OK as its last act — checking for that sentinel
+ * is far more reliable than trusting an exit code, and it means a probe that
+ * throws reports its actual error instead of a useless "failed to run".
+ */
 $probes = [
     'Property hooks (8.4)' =>
         'class P84 { public string $v = "" { set(string $x) => trim($x); } } $o = new P84(); $o->v = "  a  "; return $o->v === "a";',
@@ -64,7 +69,14 @@ $probes = [
         'class A85 { public static private(set) string $s = "x"; } return A85::$s === "x";',
 
     'clone with — clone($obj, [...]) (8.5)' =>
-        'final class C85 { public function __construct(public readonly int $n) {} } $a = new C85(1); $b = clone($a, ["n" => 2]); return $a->n === 1 && $b->n === 2;',
+        // NOTE: a readonly property may only be replaced by clone-with from
+        // INSIDE the declaring class. Doing it from the outside throws
+        // "Cannot modify readonly property" — which is exactly why the wither
+        // lives on the class here, mirroring how Lesson 1.2 uses it.
+        'final class C85 { public function __construct(public readonly int $n) {}
+             public function withN(int $n): static { return clone($this, ["n" => $n]); } }
+         $a = new C85(1); $b = $a->withN(2);
+         if ($a->n !== 1 || $b->n !== 2) { throw new RuntimeException("clone-with returned wrong values"); }',
 
     '#[\\NoDiscard] attribute (8.5)' =>
         '#[\\NoDiscard("use it")] function nd85(): int { return 1; } return nd85() === 1;',
@@ -84,16 +96,29 @@ $probeDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php85course_probe';
 
 foreach ($probes as $label => $code) {
     $file = $probeDir . DIRECTORY_SEPARATOR . 'probe_' . md5($label) . '.php';
-    file_put_contents($file, "<?php\ndeclare(strict_types=1);\n" . $code . "\n");
+    file_put_contents(
+        $file,
+        "<?php\ndeclare(strict_types=1);\n" . $code . "\necho 'PROBE_OK';\n"
+    );
 
     $out = [];
     $status = 0;
-    exec(escapeshellarg(PHP_BINARY) . ' -d error_reporting=0 ' . escapeshellarg($file) . ' 2>&1', $out, $status);
+    exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($file) . ' 2>&1', $out, $status);
+    $text = trim(implode("\n", $out));
 
-    if ($status === 0) {
+    if ($status === 0 && str_contains($text, 'PROBE_OK')) {
         pass($label);
     } else {
-        fail($label . ' — ' . (trim(implode(' ', $out)) ?: 'failed to run'));
+        // Show the real reason, first meaningful line only.
+        $reason = 'no output and exit code ' . $status;
+        foreach (explode("\n", $text) as $line) {
+            $line = trim($line);
+            if ($line !== '' && $line !== 'PROBE_OK') {
+                $reason = $line;
+                break;
+            }
+        }
+        fail($label . "\n           " . $reason);
     }
     @unlink($file);
 }

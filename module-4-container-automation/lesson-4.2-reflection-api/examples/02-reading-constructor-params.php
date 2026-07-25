@@ -49,7 +49,7 @@ class MySQLDatabase {
         private string $dsn,              // ← built-in — cannot auto-wire
         private string $username,         // ← built-in — cannot auto-wire
         private int    $port = 3306,      // ← built-in with default
-        private LoggerInterface $logger = null // ← interface with null default
+        private ?LoggerInterface $logger = null // ← nullable interface with null default
     ) {}
     public function query(string $sql): array { return []; }
 }
@@ -100,7 +100,7 @@ foreach ($ctor->getParameters() as $param) {
         echo "    allowsNull(): " . ($type->allowsNull() ? 'true' : 'false') . "\n";
     }
     echo "    isOptional(): " . ($param->isOptional() ? 'true' : 'false') . "\n";
-    echo "    hasDefaultValue(): " . ($param->hasDefaultValue() ? 'true' : 'false') . "\n\n";
+    echo "    isDefaultValueAvailable(): " . ($param->isDefaultValueAvailable() ? 'true' : 'false') . "\n\n";
 }
 
 
@@ -187,7 +187,7 @@ function getConstructorDeps(string $className): array {
                 'optional' => $param->isOptional(),
                 'builtin'  => $type->isBuiltin(),
                 'auto'     => !$type->isBuiltin(),  // can auto-wire if not scalar
-                'default'  => $param->isOptional() && $param->hasDefaultValue()
+                'default'  => $param->isOptional() && $param->isDefaultValueAvailable()
                                 ? $param->getDefaultValue()
                                 : null,
             ];

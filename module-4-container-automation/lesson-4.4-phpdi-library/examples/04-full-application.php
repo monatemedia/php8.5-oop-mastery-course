@@ -21,7 +21,7 @@ declare(strict_types=1);
  * Requires: composer require php-di/php-di
  */
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use function DI\autowire;

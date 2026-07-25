@@ -38,7 +38,7 @@ php -r "require 'vendor/autoload.php'; echo \DI\ContainerBuilder::class . PHP_EO
 # DI\ContainerBuilder
 ```
 
-Every example in this lesson starts with `require __DIR__ . '/../../../../vendor/autoload.php';` — four levels up, resolving to the course-root `vendor/` created by `composer install`.
+Every example in this lesson starts with `require __DIR__ . '/../../../vendor/autoload.php';` — three levels up (`examples/` → lesson → module → course root), resolving to the `vendor/` that `composer install` creates at the course root.
 (adjust the path to match where your `vendor/` folder lives relative to the example file).
 
 ---

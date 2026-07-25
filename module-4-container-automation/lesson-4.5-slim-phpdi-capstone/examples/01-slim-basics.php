@@ -20,7 +20,7 @@ declare(strict_types=1);
  *   php module-4-container-automation/lesson-4.5-slim-phpdi-capstone/examples/01-slim-basics.php
  */
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;

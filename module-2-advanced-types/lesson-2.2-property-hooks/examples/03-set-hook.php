@@ -150,7 +150,9 @@ class ObservableOrder {
     private array $changeLog   = [];
     private \DateTimeImmutable $lastModified;
 
-    public function __construct(private int $id) {
+    // public read, private write (asymmetric visibility, PHP 8.4 — Lesson 1.1).
+    // Was `private int $id`, which made the `{$order->id}` read below a fatal error.
+    public function __construct(public private(set) int $id) {
         $this->lastModified = new \DateTimeImmutable();
     }
 

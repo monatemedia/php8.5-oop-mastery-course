@@ -37,10 +37,13 @@ class UserProfileBefore {
     public function getEmail(): string { return $this->email; }
     // Setter 1 — validation + normalisation
     public function setEmail(string $email): void {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // Normalise FIRST, then validate. Validating the raw input rejects
+        // "  Alice@Example.COM  " — whitespace is not valid in an email address.
+        $normalised = strtolower(trim($email));
+        if (!filter_var($normalised, FILTER_VALIDATE_EMAIL)) {
             throw new \InvalidArgumentException("Invalid email: {$email}");
         }
-        $this->email = strtolower(trim($email));
+        $this->email = $normalised;
     }
 
     // Getter 2

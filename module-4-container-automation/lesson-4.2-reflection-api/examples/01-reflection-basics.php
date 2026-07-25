@@ -212,5 +212,8 @@ echo "No side effects:    Reflection never calls the constructor — pure metada
 echo "Rule 3 connection:  well-typed code produces rich metadata that containers can read.\n";
 
 function class_basename(string $class): string {
-    return end(explode('\\', $class));
+    // end() takes its argument BY REFERENCE, so it needs a real variable.
+    // `end(explode(...))` passes a temporary and raises a notice.
+    $parts = explode('\\', $class);
+    return end($parts);
 }

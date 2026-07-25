@@ -73,8 +73,16 @@ class InMemoryDb implements DatabaseInterface {
 class ArrayCache implements CacheInterface {
     private array $store = [];
     public function get(string $key): mixed {
-        echo "  [CACHE] GET {$key} → " . ($this->store[$key] ?? 'null') . "\n";
-        return $this->store[$key] ?? null;
+        // Cached values may be arrays — never interpolate one straight into a
+        // string, that is an "Array to string conversion" warning.
+        $hit = $this->store[$key] ?? null;
+        $shown = match (true) {
+            $hit === null  => 'null',
+            is_scalar($hit) => (string) $hit,
+            default        => json_encode($hit),
+        };
+        echo "  [CACHE] GET {$key} → {$shown}\n";
+        return $hit;
     }
     public function set(string $key, mixed $value, int $ttl = 300): void {
         $this->store[$key] = $value;

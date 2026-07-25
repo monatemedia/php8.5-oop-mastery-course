@@ -226,8 +226,28 @@ $violations = [];
 
 foreach ($iterator as $file) {
     if ($file->getExtension() !== 'php') continue;
-    $contents = file_get_contents($file->getPathname());
-    $relPath  = str_replace($srcDir . '/', '', $file->getPathname());
+
+    // Strip comments and strings before auditing. Scanning raw source made this
+    // audit flag every file whose docblock merely MENTIONS getenv() — including
+    // the controllers' own "Rule 1: No getenv(), no $container->get()" header.
+    $code = '';
+    foreach (token_get_all((string) file_get_contents($file->getPathname())) as $tok) {
+        if (is_array($tok)) {
+            if (in_array($tok[0], [T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING], true)) {
+                continue;
+            }
+            $code .= $tok[1];
+        } else {
+            $code .= $tok;
+        }
+    }
+    $contents = $code;
+
+    // Normalise separators so this reads the same on Windows and POSIX.
+    $relPath = ltrim(
+        str_replace(str_replace('\\', '/', $srcDir), '', str_replace('\\', '/', $file->getPathname())),
+        '/'
+    );
 
     if (str_contains($contents, 'getenv(')) {
         $violations[] = "  ✗ getenv() found in src/{$relPath}";

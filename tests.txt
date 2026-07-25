@@ -1,0 +1,435 @@
+Running 43 test file(s), one process each.
+----------------------------------------------------------------------
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/chall FAIL
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examp FAIL
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examp FAIL
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examp FAIL
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examp FAIL
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-an PASS
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-an FAIL
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-an FAIL
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-an FAIL
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-an FAIL
+module-5-testing-and-tdd/lesson-5.3-tdd/challenge/solution/Pas PASS
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green- FAIL
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in FAIL
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-d FAIL
+module-5-testing-and-tdd/lesson-5.4-integration-testing/challe FAIL
+module-5-testing-and-tdd/lesson-5.4-integration-testing/exampl FAIL
+module-5-testing-and-tdd/lesson-5.4-integration-testing/exampl FAIL
+module-5-testing-and-tdd/lesson-5.4-integration-testing/exampl FAIL
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-lay FAIL
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-lay FAIL
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-lay FAIL
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-lay FAIL
+module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-a PASS
+module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-a FAIL
+module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-a FAIL
+module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-a FAIL
+module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-si PASS
+module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-si FAIL
+module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-si FAIL
+module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-si FAIL
+module-6-object-lifecycle-and-state/lesson-6.3-danger-of-state PASS
+module-6-object-lifecycle-and-state/lesson-6.3-danger-of-state FAIL
+module-6-object-lifecycle-and-state/lesson-6.3-danger-of-state FAIL
+module-6-object-lifecycle-and-state/lesson-6.3-danger-of-state FAIL
+module-6-object-lifecycle-and-state/lesson-6.4-designing-state PASS
+module-6-object-lifecycle-and-state/lesson-6.4-designing-state FAIL
+module-6-object-lifecycle-and-state/lesson-6.4-designing-state FAIL
+module-6-object-lifecycle-and-state/lesson-6.4-designing-state FAIL
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definit PASS
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definit FAIL
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definit FAIL
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definit FAIL
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definit FAIL
+----------------------------------------------------------------------
+7 passed, 36 failed, 43 total.
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/challenge/solution/MoneyTest.php
+======================================================================
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.7
+
+..............................................F..F.......         57 / 57 (100%)
+
+Time: 00:00.051, Memory: 8.00 MB
+
+There were 2 failures:
+
+1) MoneyTest::testFormatIncludesTheCurrencyCode
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'EUR 1000.00'
++'EUR 1,000.00'
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\challenge\solution\MoneyTest.php:376
+
+2) MoneyTest::testFormatOutputMatchesExpected with data set "R1000.00" (100000, 'ZAR', 'ZAR 1000.00')
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'ZAR 1000.00'
++'ZAR 1,000.00'
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\challenge\solution\MoneyTest.php:384
+
+FAILURES!
+Tests: 57, Assertions: 70, Failures: 2.
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/01-first-test.php
+======================================================================
+Class 01-first-test cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\01-first-test.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/02-assertions.php
+======================================================================
+Class 02-assertions cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\02-assertions.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/03-exception-testing.php
+======================================================================
+Class 03-exception-testing cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\03-exception-testing.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/04-setup-and-teardown.php
+======================================================================
+Class 04-setup-and-teardown cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\04-setup-and-teardown.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/01-stub-pattern.php
+======================================================================
+Class 01-stub-pattern cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\01-stub-pattern.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/02-spy-pattern.php
+======================================================================
+Class 02-spy-pattern cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\02-spy-pattern.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/03-testing-failure-paths.php
+======================================================================
+Class 03-testing-failure-paths cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\03-testing-failure-paths.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/04-null-object-in-tests.php
+======================================================================
+Class 04-null-object-in-tests cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\04-null-object-in-tests.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green-refactor.php
+======================================================================
+Class 01-red-green-refactor cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.3-tdd\examples\01-red-green-refactor.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in-tdd.php
+======================================================================
+Class 02-outside-in-tdd cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.3-tdd\examples\02-outside-in-tdd.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-doubles.php
+======================================================================
+Class 03-tdd-with-doubles cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.3-tdd\examples\03-tdd-with-doubles.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.4-integration-testing/challenge/solution/ApiIntegrationTest.php
+======================================================================
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.7
+
+EEEEEFFFEFFFFFFFFFFFFFFFF                                         25 / 25 (100%)
+
+Time: 00:00.121, Memory: 10.00 MB
+
+There were 6 errors:
+
+1) ApiIntegrationTest::testContainerResolvesProductRepositoryToSqliteClass
+DI\Definition\Exception\InvalidDefinition: Entry "ProductRepositoryInterface" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# SqliteProductRepository
+    lazy = false
+)
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Exception\InvalidDefinition.php:19
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ObjectCreator.php:99
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ObjectCreator.php:55
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ResolverDispatcher.php:62
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:360
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:142
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:157
+
+2) ApiIntegrationTest::testContainerResolvesOrderRepositoryToSqliteClass
+DI\Definition\Exception\InvalidDefinition: Entry "OrderRepositoryInterface" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# SqliteOrderRepository
+    lazy = false
+)
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Exception\InvalidDefinition.php:19
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ObjectCreator.php:99
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ObjectCreator.php:55
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ResolverDispatcher.php:62
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:360
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:142
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:163
+
+3) ApiIntegrationTest::testContainerResolvesLoggerToNullLogger
+DI\Definition\Exception\InvalidDefinition: Entry "LoggerInterface" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# NullLogger
+    lazy = false
+)
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Exception\InvalidDefinition.php:19
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ObjectCreator.php:99
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ObjectCreator.php:55
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Definition\Resolver\ResolverDispatcher.php:62
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:360
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:142
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:169
+
+4) ApiIntegrationTest::testContainerResolvesProductControllerWithoutError
+DI\NotFoundException: No entry or class found for 'ProductController'
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:139
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:175
+
+5) ApiIntegrationTest::testContainerResolvesOrderControllerWithoutError
+DI\NotFoundException: No entry or class found for 'OrderController'
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\vendor\php-di\php-di\src\Container.php:139
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:181
+
+6) ApiIntegrationTest::testGetProductsBodyItemsHaveRequiredKeys
+TypeError: PHPUnit\Framework\Assert::assertArrayHasKey(): Argument #2 ($array) must be of type ArrayAccess|array, null given, called in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php on line 238
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:238
+
+--
+
+There were 19 failures:
+
+1) ApiIntegrationTest::testGetProductsReturns200WithEmptyArray
+Failed asserting that 500 is identical to 200.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:195
+
+2) ApiIntegrationTest::testGetProductsReturnsAllSeededProducts
+Failed asserting that 500 is identical to 200.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:210
+
+3) ApiIntegrationTest::testGetProductsHasJsonContentTypeHeader
+Failed asserting that 'text/html' [ASCII](length: 9) contains "application/json" [ASCII](length: 16).
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:222
+
+4) ApiIntegrationTest::testGetProductByIdReturns200WithProduct
+Failed asserting that 500 is identical to 200.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:258
+
+5) ApiIntegrationTest::testGetProductByIdReturns404ForUnknownId
+Failed asserting that 500 is identical to 404.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:271
+
+6) ApiIntegrationTest::testPostProductReturns201WithCreatedProduct
+Failed asserting that 500 is identical to 201.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:289
+
+7) ApiIntegrationTest::testPostProductReturns422WhenNameIsMissing
+Failed asserting that 500 is identical to 422.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:304
+
+8) ApiIntegrationTest::testPostProductReturns422WhenPriceIsZero
+Failed asserting that 500 is identical to 422.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:316
+
+9) ApiIntegrationTest::testPostProductReturns422WhenAllFieldsMissing
+Failed asserting that 500 is identical to 422.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:326
+
+10) ApiIntegrationTest::testPostProductPersistsToDatabase
+Failed asserting that false is not false.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:342
+
+11) ApiIntegrationTest::testCreatedProductIsRetrievableViaGetRoute
+Failed asserting that 404 is identical to 200.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:361
+
+12) ApiIntegrationTest::testGetOrdersReturns200WithEmptyArray
+Failed asserting that 500 is identical to 200.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:375
+
+13) ApiIntegrationTest::testGetOrdersReturnsAllSeededOrders
+Failed asserting that 500 is identical to 200.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:389
+
+14) ApiIntegrationTest::testPostOrderReturns201WithCorrectTotalCents
+Failed asserting that 500 is identical to 201.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:409
+
+15) ApiIntegrationTest::testPostOrderReturns404WhenProductNotFound
+Failed asserting that 500 is identical to 404.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:422
+
+16) ApiIntegrationTest::testPostOrderReturns422WhenCustomerEmailIsMissing
+Failed asserting that 500 is identical to 422.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:437
+
+17) ApiIntegrationTest::testPostOrderReturns422WhenQtyIsMissing
+Failed asserting that 500 is identical to 422.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:450
+
+18) ApiIntegrationTest::testPostProductPersistsCorrectValuesToDatabase
+Product row should exist in the database
+Failed asserting that false is not false.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:470
+
+19) ApiIntegrationTest::testPostOrderPersistsToDatabase
+Order row should exist in the database
+Failed asserting that false is not false.
+
+C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\challenge\solution\ApiIntegrationTest.php:492
+
+ERRORS!
+Tests: 25, Assertions: 19, Errors: 6, Failures: 19, Warnings: 3.
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/01-container-in-tests.php
+======================================================================
+Class 01-container-in-tests cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\examples\01-container-in-tests.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/02-sqlite-integration-test.php
+======================================================================
+Class 02-sqlite-integration-test cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\examples\02-sqlite-integration-test.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/03-slim-route-test.php
+======================================================================
+Class 03-slim-route-test cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\examples\03-slim-route-test.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/challenge/solution/ResilientTestSuite.php
+======================================================================
+Class ResilientTestSuite cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\challenge\solution\ResilientTestSuite.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/01-brittle-vs-resilient-tests.php
+======================================================================
+Class 01-brittle-vs-resilient-tests cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\examples\01-brittle-vs-resilient-tests.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/02-refactor-without-breaking.php
+======================================================================
+Class 02-refactor-without-breaking cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\examples\02-refactor-without-breaking.php
+
+======================================================================
+module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/03-when-to-assert-on-calls.php
+======================================================================
+Class 03-when-to-assert-on-calls cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\examples\03-when-to-assert-on-calls.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/01-share-nothing-demo.php
+======================================================================
+Class 01-share-nothing-demo cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.1-share-nothing-architecture\examples\01-share-nothing-demo.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/02-long-running-worker.php
+======================================================================
+Class 02-long-running-worker cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.1-share-nothing-architecture\examples\02-long-running-worker.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/03-spotting-your-runtime.php
+======================================================================
+Class 03-spotting-your-runtime cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.1-share-nothing-architecture\examples\03-spotting-your-runtime.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/01-singleton-vs-transient.php
+======================================================================
+Class 01-singleton-vs-transient cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.2-transient-vs-singleton-scopes\examples\01-singleton-vs-transient.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/02-safe-singletons.php
+======================================================================
+Class 02-safe-singletons cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.2-transient-vs-singleton-scopes\examples\02-safe-singletons.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/03-dangerous-singletons.php
+======================================================================
+Class 03-dangerous-singletons cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.2-transient-vs-singleton-scopes\examples\03-dangerous-singletons.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/01-accumulating-service.php
+======================================================================
+Class 01-accumulating-service cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.3-danger-of-stateful-services\examples\01-accumulating-service.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/02-auth-state-leak.php
+======================================================================
+Class 02-auth-state-leak cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.3-danger-of-stateful-services\examples\02-auth-state-leak.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/03-all-five-antipatterns.php
+======================================================================
+Class 03-all-five-antipatterns cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.3-danger-of-stateful-services\examples\03-all-five-antipatterns.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/01-making-services-stateless.php
+======================================================================
+Class 01-making-services-stateless cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.4-designing-stateless-services\examples\01-making-services-stateless.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/02-request-context-injection.php
+======================================================================
+Class 02-request-context-injection cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.4-designing-stateless-services\examples\02-request-context-injection.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/03-immutable-value-objects.php
+======================================================================
+Class 03-immutable-value-objects cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.4-designing-stateless-services\examples\03-immutable-value-objects.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/01-factory-basics.php
+======================================================================
+Class 01-factory-basics cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\01-factory-basics.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/02-transient-factories.php
+======================================================================
+Class 02-transient-factories cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\02-transient-factories.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/03-decorator-in-container.php
+======================================================================
+Class 03-decorator-in-container cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\03-decorator-in-container.php
+
+======================================================================
+module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/04-environment-bindings.php
+======================================================================
+Class 04-environment-bindings cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\04-environment-bindings.php

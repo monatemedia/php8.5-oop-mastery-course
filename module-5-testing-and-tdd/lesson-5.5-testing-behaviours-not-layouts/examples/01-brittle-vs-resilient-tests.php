@@ -165,7 +165,7 @@ class BrittlePaymentServiceTest extends TestCase
         );
 
         $prop = new \ReflectionProperty(PaymentService::class, 'gateway');
-        $prop->setAccessible(true);
+        // setAccessible() removed: a no-op since PHP 8.1, deprecated in 8.5.
 
         $this->assertSame($gateway, $prop->getValue($service));
     }

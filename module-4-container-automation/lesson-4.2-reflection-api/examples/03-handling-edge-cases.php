@@ -134,7 +134,7 @@ function analyseConstructor(string $className): void {
         if ($type === null) {
             echo "    Reflection type: NULL (no type hint)\n";
             if ($param->isOptional()) {
-                $default = $param->hasDefaultValue()
+                $default = $param->isDefaultValueAvailable()
                     ? json_encode($param->getDefaultValue())
                     : 'null';
                 echo "    Optional: YES (default = {$default})\n";
@@ -166,7 +166,7 @@ function analyseConstructor(string $className): void {
             } else {
                 // Scalar type
                 if ($param->isOptional()) {
-                    $default = $param->hasDefaultValue()
+                    $default = $param->isDefaultValueAvailable()
                         ? json_encode($param->getDefaultValue())
                         : 'null';
                     echo "    Container action: use default value ({$default}), skip resolution.\n";

@@ -206,7 +206,7 @@ echo "Cache stats: " . json_encode($cache->stats()) . "\n\n";
 // Demonstrate what was cached
 echo "Cached dependency maps:\n";
 foreach ($classes as $class) {
-    $short = (fn($c) => end(explode('\\', $c)))($class);
+    $short = substr((string) strrchr('\\' . $class, '\\'), 1); // end() needs a variable, not a temporary
     $deps  = $cache->getResolvableDeps($class);
     echo "  {$short}: " . implode(', ', array_column($deps, 'type')) . "\n";
 }

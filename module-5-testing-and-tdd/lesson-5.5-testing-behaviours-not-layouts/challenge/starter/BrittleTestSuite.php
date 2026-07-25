@@ -162,7 +162,7 @@ class BrittleSubscriptionTests extends TestCase
         $service->subscribe('alice@example.com', 'pro');
 
         $prop = new \ReflectionProperty(SubscriptionService::class, 'subscriptions');
-        $prop->setAccessible(true);
+        // setAccessible() removed: a no-op since PHP 8.1, deprecated in 8.5.
         $value = $prop->getValue($service);
 
         $this->assertArrayHasKey('alice@example.com', $value);

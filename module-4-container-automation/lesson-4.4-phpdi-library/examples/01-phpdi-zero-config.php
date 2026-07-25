@@ -20,7 +20,7 @@ declare(strict_types=1);
  *   php module-4-container-automation/lesson-4.4-phpdi-library/examples/01-phpdi-zero-config.php
  */
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 

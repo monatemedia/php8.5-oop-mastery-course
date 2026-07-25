@@ -1,0 +1,54 @@
+
+==================================================================
+  1. PHP version
+==================================================================
+
+  Detected: PHP 8.5.7  (C:\Users\Lenovo\.config\herd\bin\php85\php.exe)
+
+  [ OK ]   PHP 8.5+ — every lesson in this course will run.
+
+==================================================================
+  2. Language features used by the course
+==================================================================
+
+  [ OK ]   Property hooks (8.4)
+  [ OK ]   Asymmetric visibility, instance (8.4)
+  [ OK ]   Asymmetric visibility, static (8.5)
+  [ FAIL ] clone with — clone($obj, [...]) (8.5) — failed to run
+  [ OK ]   #[\NoDiscard] attribute (8.5)
+  [ OK ]   #[\Deprecated] on a trait (8.5)
+  [ OK ]   Enums (8.1)
+  [ OK ]   Readonly classes (8.2)
+
+==================================================================
+  3. Syntax check — every .php file in the course
+==================================================================
+
+  Checked 196 files.
+
+  [ FAIL ] module-4-container-automation\lesson-4.2-reflection-api\examples\02-reading-constructor-params.php
+           PHP Fatal error:  Cannot use null as default value for parameter $logger of type LoggerInterface in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.2-reflection-api\examples\02-reading-constructor-params.php on line 52
+           Stack trace:
+           #0 {main}
+           
+           Fatal error: Cannot use null as default value for parameter $logger of type LoggerInterface in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.2-reflection-api\examples\02-reading-constructor-params.php on line 52
+           Stack trace:
+           #0 {main}
+           Errors parsing C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.2-reflection-api\examples\02-reading-constructor-params.php
+
+  195/196 files parse. See the failures above.
+
+==================================================================
+  4. Composer dependencies (needed from Module 4 onwards)
+==================================================================
+
+  [ WARN ] vendor/ not found. Modules 1-3 will still work.
+           Run  composer install  before starting Module 4.
+
+==================================================================
+  Summary
+==================================================================
+
+  2 failure(s), 1 warning(s).
+  Fix the failures above before starting the course.
+
