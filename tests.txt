@@ -1,550 +1,178 @@
 Running 43 test file(s), one process each.
 ----------------------------------------------------------------------
-...dd/lesson-5.1-phpunit-fundamentals/challenge/solution/MoneyTest.php FAIL
-...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/01-first-test.php FAIL
-...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/02-assertions.php FAIL
-...d/lesson-5.1-phpunit-fundamentals/examples/03-exception-testing.php FAIL
-.../lesson-5.1-phpunit-fundamentals/examples/04-setup-and-teardown.php FAIL
-...esting-with-fakes-and-stubs/challenge/solution/OrderServiceTest.php PASS
-...-5.2-unit-testing-with-fakes-and-stubs/examples/01-stub-pattern.php FAIL
-...n-5.2-unit-testing-with-fakes-and-stubs/examples/02-spy-pattern.php FAIL
-...-testing-with-fakes-and-stubs/examples/03-testing-failure-paths.php FAIL
-...t-testing-with-fakes-and-stubs/examples/04-null-object-in-tests.php FAIL
-...-tdd/lesson-5.3-tdd/challenge/solution/PasswordResetServiceTest.php PASS
-...5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green-refactor.php FAIL
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in-tdd.php FAIL
-...e-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-doubles.php FAIL
-...n-5.4-integration-testing/challenge/solution/ApiIntegrationTest.php PASS
-...d/lesson-5.4-integration-testing/examples/01-container-in-tests.php FAIL
-...son-5.4-integration-testing/examples/02-sqlite-integration-test.php FAIL
-...-tdd/lesson-5.4-integration-testing/examples/03-slim-route-test.php FAIL
-...ng-behaviours-not-layouts/challenge/solution/ResilientTestSuite.php FAIL
-...g-behaviours-not-layouts/examples/01-brittle-vs-resilient-tests.php FAIL
-...ng-behaviours-not-layouts/examples/02-refactor-without-breaking.php FAIL
-...ting-behaviours-not-layouts/examples/03-when-to-assert-on-calls.php FAIL
-...e-nothing-architecture/challenge/solution/ShareNothingAuditTest.php PASS
-...n-6.1-share-nothing-architecture/examples/01-share-nothing-demo.php FAIL
-...-6.1-share-nothing-architecture/examples/02-long-running-worker.php FAIL
-....1-share-nothing-architecture/examples/03-spotting-your-runtime.php FAIL
-...ient-vs-singleton-scopes/challenge/solution/ScopeAssignmentTest.php PASS
-...ransient-vs-singleton-scopes/examples/01-singleton-vs-transient.php FAIL
-...n-6.2-transient-vs-singleton-scopes/examples/02-safe-singletons.php FAIL
-...-transient-vs-singleton-scopes/examples/03-dangerous-singletons.php FAIL
-...f-stateful-services/challenge/solution/StatefulServiceAuditTest.php PASS
-....3-danger-of-stateful-services/examples/01-accumulating-service.php FAIL
-...son-6.3-danger-of-stateful-services/examples/02-auth-state-leak.php FAIL
-...3-danger-of-stateful-services/examples/03-all-five-antipatterns.php FAIL
-...ing-stateless-services/challenge/solution/StatelessRefactorTest.php PASS
-...igning-stateless-services/examples/01-making-services-stateless.php FAIL
-...igning-stateless-services/examples/02-request-context-injection.php FAIL
-...esigning-stateless-services/examples/03-immutable-value-objects.php FAIL
-...5-factory-definitions/challenge/solution/FactoryDefinitionsTest.php PASS
-...state/lesson-6.5-factory-definitions/examples/01-factory-basics.php FAIL
-.../lesson-6.5-factory-definitions/examples/02-transient-factories.php FAIL
-...sson-6.5-factory-definitions/examples/03-decorator-in-container.php FAIL
-...lesson-6.5-factory-definitions/examples/04-environment-bindings.php FAIL
+...dd/lesson-5.1-phpunit-fundamentals/challenge/solution/MoneyTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/01-first-test.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-and-tdd/lesson-5.1-phpunit-fundamentals/examples/02-assertions.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...d/lesson-5.1-phpunit-fundamentals/examples/03-exception-testing.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+.../lesson-5.1-phpunit-fundamentals/examples/04-setup-and-teardown.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...esting-with-fakes-and-stubs/challenge/solution/OrderServiceTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-5.2-unit-testing-with-fakes-and-stubs/examples/01-stub-pattern.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...n-5.2-unit-testing-with-fakes-and-stubs/examples/02-spy-pattern.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-testing-with-fakes-and-stubs/examples/03-testing-failure-paths.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...t-testing-with-fakes-and-stubs/examples/04-null-object-in-tests.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-tdd/lesson-5.3-tdd/challenge/solution/PasswordResetServiceTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green-refactor.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in-tdd.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...e-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-doubles.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...n-5.4-integration-testing/challenge/solution/ApiIntegrationTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...d/lesson-5.4-integration-testing/examples/01-container-in-tests.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...son-5.4-integration-testing/examples/02-sqlite-integration-test.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-tdd/lesson-5.4-integration-testing/examples/03-slim-route-test.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...ng-behaviours-not-layouts/challenge/solution/ResilientTestSuite.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...g-behaviours-not-layouts/examples/01-brittle-vs-resilient-tests.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...ng-behaviours-not-layouts/examples/02-refactor-without-breaking.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...ting-behaviours-not-layouts/examples/03-when-to-assert-on-calls.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...e-nothing-architecture/challenge/solution/ShareNothingAuditTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...n-6.1-share-nothing-architecture/examples/01-share-nothing-demo.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-6.1-share-nothing-architecture/examples/02-long-running-worker.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+....1-share-nothing-architecture/examples/03-spotting-your-runtime.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...ient-vs-singleton-scopes/challenge/solution/ScopeAssignmentTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...ransient-vs-singleton-scopes/examples/01-singleton-vs-transient.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...n-6.2-transient-vs-singleton-scopes/examples/02-safe-singletons.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...-transient-vs-singleton-scopes/examples/03-dangerous-singletons.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...f-stateful-services/challenge/solution/StatefulServiceAuditTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+....3-danger-of-stateful-services/examples/01-accumulating-service.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...son-6.3-danger-of-stateful-services/examples/02-auth-state-leak.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...3-danger-of-stateful-services/examples/03-all-five-antipatterns.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...ing-stateless-services/challenge/solution/StatelessRefactorTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...igning-stateless-services/examples/01-making-services-stateless.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...igning-stateless-services/examples/02-request-context-injection.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...esigning-stateless-services/examples/03-immutable-value-objects.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...5-factory-definitions/challenge/solution/FactoryDefinitionsTest.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...state/lesson-6.5-factory-definitions/examples/01-factory-basics.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+.../lesson-6.5-factory-definitions/examples/02-transient-factories.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...sson-6.5-factory-definitions/examples/03-decorator-in-container.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
+...lesson-6.5-factory-definitions/examples/04-environment-bindings.php PHP Warning:  preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+
+Warning: preg_match_all(): Compilation failed: PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u at offset 69 in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\run-tests.php on line 120
+SKIP (no concrete TestCase class found)
 ----------------------------------------------------------------------
-8 passed, 35 failed, 43 total.
+0 passed, 0 failed, 43 total.
 
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/challenge/solution/MoneyTest.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_092b960ca8aa17c6a5beef519f3aa4d1.xml
-
-....................................................F....         57 / 57 (100%)
-
-Time: 00:00.092, Memory: 10.00 MB
-
-There was 1 failure:
-
-1) MoneyTest::testFormatOutputMatchesExpected with data set "large amount" (9999999, 'GBP', 'GBP 99,999.99')
-Failed asserting that two strings are identical.
---- Expected
-+++ Actual
-@@ @@
--'GBP 99,999.99'
-+'GBP 99999.99'
-
-C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\challenge\solution\MoneyTest.php:384
-
-FAILURES!
-Tests: 57, Assertions: 70, Failures: 1.
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/01-first-test.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_618e3823df20bc3d1be4d13bd47dc0f7.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-first-test cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\01-first-test.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/02-assertions.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_21c82a57b80eaf020f566b7d26f587e5.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-assertions cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\02-assertions.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/03-exception-testing.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_884e48a925160d6b37fc041d923b412b.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-exception-testing cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\03-exception-testing.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples/04-setup-and-teardown.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_48a290e96b489de8ea559af81e3f2bab.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 04-setup-and-teardown cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.1-phpunit-fundamentals\examples\04-setup-and-teardown.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/01-stub-pattern.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_4fa86738b459cb898062fd5833613ed2.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-stub-pattern cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\01-stub-pattern.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/02-spy-pattern.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_9e5a0db13799d5fdfaa715504ef9f151.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-spy-pattern cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\02-spy-pattern.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/03-testing-failure-paths.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_b024b3b7804389fa5f71b8d255719110.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-testing-failure-paths cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\03-testing-failure-paths.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples/04-null-object-in-tests.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_589d8ecd766c4025d91d1dfc9a395bcf.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 04-null-object-in-tests cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.2-unit-testing-with-fakes-and-stubs\examples\04-null-object-in-tests.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/01-red-green-refactor.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_aea38e844df10b54c417f3887a72dfac.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-red-green-refactor cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.3-tdd\examples\01-red-green-refactor.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/02-outside-in-tdd.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_390336a927d25e7a292e83bbbe42ea16.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-outside-in-tdd cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.3-tdd\examples\02-outside-in-tdd.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.3-tdd/examples/03-tdd-with-doubles.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_3a75a7e466e184f6ad237e226fa8ef6e.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-tdd-with-doubles cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.3-tdd\examples\03-tdd-with-doubles.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/01-container-in-tests.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_76c082ff0f36ad653aa0462c0960770d.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-container-in-tests cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\examples\01-container-in-tests.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/02-sqlite-integration-test.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_a1b980fd0fe469190e0e565fa169c086.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-sqlite-integration-test cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\examples\02-sqlite-integration-test.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.4-integration-testing/examples/03-slim-route-test.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_cfb76299b0a437e39992af6e078e1d4f.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-slim-route-test cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.4-integration-testing\examples\03-slim-route-test.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/challenge/solution/ResilientTestSuite.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_a24b4b0c891d86d2eb5c0b7aca0764fa.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class ResilientTestSuite cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\challenge\solution\ResilientTestSuite.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/01-brittle-vs-resilient-tests.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_3b8b2482b25eae7af3a92fd76c365a79.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-brittle-vs-resilient-tests cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\examples\01-brittle-vs-resilient-tests.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/02-refactor-without-breaking.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_f194c4dfbd1f9742053d7f1931bb4e20.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-refactor-without-breaking cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\examples\02-refactor-without-breaking.php
-
-No tests executed!
-
-======================================================================
-module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples/03-when-to-assert-on-calls.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_6e68d2e20db7c33412ff15c2f503a136.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-when-to-assert-on-calls cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-5-testing-and-tdd\lesson-5.5-testing-behaviours-not-layouts\examples\03-when-to-assert-on-calls.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/01-share-nothing-demo.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_e40703d5e1e9ff8a39ce1ff8fe019d7c.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-share-nothing-demo cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.1-share-nothing-architecture\examples\01-share-nothing-demo.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/02-long-running-worker.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_bdf48b27a0c7d0527131faf89198fb59.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-long-running-worker cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.1-share-nothing-architecture\examples\02-long-running-worker.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples/03-spotting-your-runtime.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_56a1448f60e1c45ae4f3195bb659bc54.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-spotting-your-runtime cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.1-share-nothing-architecture\examples\03-spotting-your-runtime.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/01-singleton-vs-transient.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_f6b81b472d657480b85b7ec68a2c5efa.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-singleton-vs-transient cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.2-transient-vs-singleton-scopes\examples\01-singleton-vs-transient.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/02-safe-singletons.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_6ab00257416a6cd5b008edcaecbca929.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-safe-singletons cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.2-transient-vs-singleton-scopes\examples\02-safe-singletons.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/examples/03-dangerous-singletons.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_e86ae9f60523c125d1b25483390c0f0c.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-dangerous-singletons cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.2-transient-vs-singleton-scopes\examples\03-dangerous-singletons.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/01-accumulating-service.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_c4ef9628c5be33c6d2096d9710600740.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-accumulating-service cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.3-danger-of-stateful-services\examples\01-accumulating-service.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/02-auth-state-leak.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_fcf5adcf6f64299cd82fc8b236495a57.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-auth-state-leak cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.3-danger-of-stateful-services\examples\02-auth-state-leak.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples/03-all-five-antipatterns.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_efd58809d5dffca61c30eaa3ac07a989.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-all-five-antipatterns cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.3-danger-of-stateful-services\examples\03-all-five-antipatterns.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/01-making-services-stateless.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_924184be63cc677402ef7f78a22a5c08.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-making-services-stateless cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.4-designing-stateless-services\examples\01-making-services-stateless.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/02-request-context-injection.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_caecfb0c34c1f6eecf663fdb4b52e57e.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-request-context-injection cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.4-designing-stateless-services\examples\02-request-context-injection.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples/03-immutable-value-objects.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_6c76bacdfa2dc8a5d2e32bc9c5219b19.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-immutable-value-objects cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.4-designing-stateless-services\examples\03-immutable-value-objects.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/01-factory-basics.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_f15397084b5c63da2f02d51f7ee9820e.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 01-factory-basics cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\01-factory-basics.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/02-transient-factories.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_691a572ea7ca02058fd7b807006c8093.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 02-transient-factories cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\02-transient-factories.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/03-decorator-in-container.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_5f4a319f79188ef056db8a2ca12c2a6a.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 03-decorator-in-container cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\03-decorator-in-container.php
-
-No tests executed!
-
-======================================================================
-module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/examples/04-environment-bindings.php
-======================================================================
-PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 8.5.7
-Configuration: C:\Users\Lenovo\AppData\Local\Temp\php85course_phpunit\phpunit_164745e313f13e0b256d2ea54037ae81.xml
-
-There was 1 PHPUnit test runner warning:
-
-1) Class 04-environment-bindings cannot be found in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-6-object-lifecycle-and-state\lesson-6.5-factory-definitions\examples\04-environment-bindings.php
-
-No tests executed!
+All green.

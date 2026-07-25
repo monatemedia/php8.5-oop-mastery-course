@@ -101,8 +101,9 @@ $tmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php85course_phpunit';
 echo "Running " . count($testFiles) . " test file(s), one process each.\n";
 echo str_repeat('-', 70) . "\n";
 
-$passedFiles = 0;
-$failedFiles = [];
+$passedFiles  = 0;
+$failedFiles  = [];
+$skippedFiles = [];
 
 foreach ($testFiles as $path) {
     $label = str_replace(str_replace('\\', '/', $root) . '/', '', $path);
@@ -110,22 +111,82 @@ foreach ($testFiles as $path) {
 
     // PHPUnit 11 resolves a test class from the FILE NAME — even through a
     // <file> element. That is fine for MoneyTest.php, but 01-first-test.php
-    // holds CalculatorTest, so PHPUnit looks for a class called
+    // holds CalculatorTest, so PHPUnit hunts for a class called
     // "01-first-test" and reports "No tests executed!".
     //
-    // Work around it without renaming any lesson file: for each TestCase class
-    // in the file, emit a shim NAMED AFTER THE CLASS that requires the real
-    // file, and point PHPUnit at the shims.
-    $src = (string) file_get_contents($path);
-    preg_match_all(
-        '/^\s*(?:final\s+|abstract\s+)*class\s+(\w+)\s+extends\s+\\?(?:PHPUnit\\Framework\\)?TestCase\b/mi',
-        $src,
-        $m
-    );
-    $classes = array_values(array_filter($m[1] ?? [], fn(string $c): bool => !str_contains(strtolower($c), 'abstract')));
+    // Work around it without renaming any lesson file: for every concrete
+    // TestCase subclass in the file, emit a shim NAMED AFTER THE CLASS that
+    // requires the real file, then point PHPUnit at the shims.
+    //
+    // Class detection uses the tokenizer rather than a regex — the escaping
+    // needed to match "\PHPUnit\Framework\TestCase" inside a PHP string
+    // literal is a reliable way to end up with a pattern that silently
+    // matches nothing.
+    $classes = [];
+    $tokens  = token_get_all((string) file_get_contents($path));
+    $count   = count($tokens);
+
+    for ($i = 0; $i < $count; $i++) {
+        if (!is_array($tokens[$i]) || $tokens[$i][0] !== T_CLASS) {
+            continue;
+        }
+
+        // Abstract base classes cannot be run on their own.
+        $isAbstract = false;
+        for ($b = $i - 1; $b >= 0; $b--) {
+            if (!is_array($tokens[$b])) {
+                break;
+            }
+            if ($tokens[$b][0] === T_ABSTRACT) {
+                $isAbstract = true;
+                break;
+            }
+            if (!in_array($tokens[$b][0], [T_WHITESPACE, T_FINAL, T_READONLY, T_COMMENT, T_DOC_COMMENT], true)) {
+                break;
+            }
+        }
+
+        // Class name.
+        $n = $i + 1;
+        while ($n < $count && is_array($tokens[$n]) && $tokens[$n][0] === T_WHITESPACE) {
+            $n++;
+        }
+        if ($n >= $count || !is_array($tokens[$n]) || $tokens[$n][0] !== T_STRING) {
+            continue; // anonymous class
+        }
+        $name = $tokens[$n][1];
+
+        // Parent, if any: everything between `extends` and `implements`/`{`.
+        $parent  = '';
+        $seenExt = false;
+        for ($k = $n + 1; $k < $count; $k++) {
+            $tok = $tokens[$k];
+            if (!is_array($tok)) {
+                if ($tok === '{') {
+                    break;
+                }
+                continue;
+            }
+            if ($tok[0] === T_EXTENDS) {
+                $seenExt = true;
+                continue;
+            }
+            if ($tok[0] === T_IMPLEMENTS) {
+                break;
+            }
+            if ($seenExt && in_array($tok[0], [T_STRING, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED, T_NS_SEPARATOR], true)) {
+                $parent .= $tok[1];
+            }
+        }
+
+        if (!$isAbstract && str_ends_with($parent, 'TestCase')) {
+            $classes[] = $name;
+        }
+    }
 
     if ($classes === []) {
-        echo "SKIP (no concrete TestCase class found)\n";
+        echo "SKIP (no concrete TestCase class)\n";
+        $skippedFiles[] = $label;
         continue;
     }
 
@@ -177,13 +238,32 @@ foreach ($testFiles as $path) {
 }
 
 echo str_repeat('-', 70) . "\n";
-printf("%d passed, %d failed, %d total.\n", $passedFiles, count($failedFiles), count($testFiles));
+printf(
+    "%d passed, %d failed, %d skipped, %d total.\n",
+    $passedFiles,
+    count($failedFiles),
+    count($skippedFiles),
+    count($testFiles)
+);
+
+if ($skippedFiles !== []) {
+    echo "\nSkipped (no concrete TestCase class found — check these are really not tests):\n";
+    foreach ($skippedFiles as $label) {
+        echo "  - {$label}\n";
+    }
+}
 
 if ($failedFiles !== []) {
     foreach ($failedFiles as $label => $output) {
         echo "\n" . str_repeat('=', 70) . "\n{$label}\n" . str_repeat('=', 70) . "\n";
         echo $output . "\n";
     }
+    exit(1);
+}
+
+// Nothing failing is only good news if something actually ran.
+if ($passedFiles === 0) {
+    echo "\nNO TESTS EXECUTED — that is a runner failure, not a pass.\n";
     exit(1);
 }
 
