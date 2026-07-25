@@ -22,7 +22,7 @@ declare(strict_types=1);
  *      the course and probes each PHP 8.4/8.5 feature the lessons rely on.
  *      This answers "is the COURSE intact", nothing about you.
  *
- *   3. PROGRESS — walks the 28 challenges in course order and works out how far
+ *   3. PROGRESS — walks all 30 lessons in course order and works out how far
  *      you have got. It stops at the first one that is not yet solved and tells
  *      you exactly where you are, rather than dumping 28 failures on you.
  *
@@ -36,6 +36,10 @@ declare(strict_types=1);
  *
  * Modules 5-6 are PHPUnit files: your challenge/starter/*Test.php is executed
  * by run-tests.php. It passes when your tests pass.
+ *
+ * Lessons 1.0 and 5.0 have no challenge at all. They carry a single attestation
+ * checkbox at the foot of their README, which you tick yourself. That is the
+ * only claim about them a script can check.
  *
  * If your output does not match, the checker runs the REFERENCE SOLUTION against
  * the same expected block before blaming you. If the solution fails too, that is
@@ -383,8 +387,32 @@ function lineMatches(string $want, string $actual): bool
 function judge(array $lesson, string $root, string $php): array
 {
     $dir = $lesson['challenge'];
+
+    // Lessons 1.0 and 5.0 are reading-only — there is no code to judge. They
+    // carry a single attestation checkbox at the bottom of their README, which
+    // is the one thing a script can check about them.
     if ($dir === null) {
-        return ['state' => 'none', 'detail' => '', 'hint' => ''];
+        $readme = $lesson['dir'] . '/README.md';
+        if (!is_file($readme)) {
+            return ['state' => 'none', 'detail' => '', 'hint' => ''];
+        }
+        $text = (string) file_get_contents($readme);
+        if (!preg_match(
+            '/^\s*-\s*\[([ xX])\]\s*\*\*Lesson\s+' . preg_quote($lesson['id'], '/') . '\s+complete\.\*\*/mi',
+            $text,
+            $box
+        )) {
+            return ['state' => 'none', 'detail' => '', 'hint' => ''];
+        }
+        if (strtolower(trim($box[1])) === 'x') {
+            return ['state' => 'done', 'detail' => 'Marked complete in the lesson README.', 'hint' => ''];
+        }
+        return [
+            'state'  => 'todo',
+            'detail' => 'Reading lesson — not yet marked complete.',
+            'hint'   => 'Read ' . relPath($readme, $root) . ', run its examples, then tick the '
+                      . '"Lesson ' . $lesson['id'] . ' complete." box at the bottom of that file.',
+        ];
     }
 
     // ── Capstone: it ships its own request-simulation test script ──────────
@@ -558,8 +586,9 @@ if ($dump) {
 }
 
 $lessons   = discoverLessons($root);
-$withWork  = array_values(array_filter($lessons, static fn(array $l): bool => $l['challenge'] !== null));
-$totalWork = count($withWork);
+// Every lesson is accountable: 28 through their challenge, 2 through the
+// attestation box in their README.
+$totalWork = count($lessons);
 
 $completed  = 0;
 /** @var array<string,string> lesson id => why it could not be judged */
@@ -570,17 +599,17 @@ $reached    = false;
 foreach ($lessons as $lesson) {
     $label = sprintf('Lesson %-4s %s', $lesson['id'], $lesson['title']);
 
-    if ($lesson['challenge'] === null) {
-        line('[ read ]', $label . '  (no challenge — reading and quiz only)');
-        continue;
-    }
-
     if ($reached && !$showAll) {
         line(MARK_LOCKED, $label);
         continue;
     }
 
     $result = judge($lesson, $root, $php);
+
+    if ($result['state'] === 'none') {
+        line('[ read ]', $label . '  (nothing to check)');
+        continue;
+    }
 
     if ($result['state'] === 'done') {
         $completed++;
@@ -613,7 +642,7 @@ $pct = $totalWork > 0 ? (int) round($completed / $totalWork * 100) : 0;
 $bar = str_repeat('#', (int) round($pct / 4)) . str_repeat('.', 25 - (int) round($pct / 4));
 
 echo "  [{$bar}] {$pct}%\n";
-echo "  {$completed} of {$totalWork} challenges complete.\n";
+echo "  {$completed} of {$totalWork} lessons complete.\n";
 
 if ($courseBugs !== []) {
     echo "\n";

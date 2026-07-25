@@ -164,4 +164,16 @@ Both are wiring the same `OrderService`. The difference is what gets wired in.
 
 ---
 
+## 🔒 Mark this lesson complete
+
+This lesson has no code challenge, so nothing in it can be checked automatically.
+The single box below is how you record it — `check.php` reads this exact line.
+
+Tick it only when the statement is genuinely true. It is a claim about what you
+can now do, not a promise that you scrolled to the bottom.
+
+- [ ] **Lesson 5.0 complete.** I have read this README in full and run all three examples. Without looking back at this page, I can explain why a class that calls `new` on its own collaborators cannot be unit tested, and I can name the four test-double types and what each one is for.
+
+---
+
 *Next lesson: **5.1 — PHPUnit Fundamentals** — install PHPUnit and learn the anatomy of a proper test class.*

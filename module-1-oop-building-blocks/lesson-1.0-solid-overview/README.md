@@ -323,4 +323,16 @@ Module 3 (Lessons 3.1–3.4) covers DIP end-to-end. Module 4 automates it with a
 
 ---
 
+## 🔒 Mark this lesson complete
+
+This lesson has no code challenge, so nothing in it can be checked automatically.
+The single box below is how you record it — `check.php` reads this exact line.
+
+Tick it only when the statement is genuinely true. It is a claim about what you
+can now do, not a promise that you scrolled to the bottom.
+
+- [ ] **Lesson 1.0 complete.** I have read this README in full and run all five examples. Without looking back at this page, I can state each of the five SOLID principles in one sentence and name the lesson that covers it in depth.
+
+---
+
 *Next lesson: **1.1 — Interfaces** — your first deep dive into the tool that makes O, L, I, and D possible.*
