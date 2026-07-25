@@ -55,7 +55,7 @@ Runtime:       PHP 8.5.7
 
 ..............................................F..F.......         57 / 57 (100%)
 
-Time: 00:00.051, Memory: 8.00 MB
+Time: 00:00.096, Memory: 8.00 MB
 
 There were 2 failures:
 
@@ -146,7 +146,7 @@ Runtime:       PHP 8.5.7
 
 EEEEEFFFEFFFFFFFFFFFFFFFF                                         25 / 25 (100%)
 
-Time: 00:00.121, Memory: 10.00 MB
+Time: 00:00.233, Memory: 10.00 MB
 
 There were 6 errors:
 

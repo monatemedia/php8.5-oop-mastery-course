@@ -293,6 +293,12 @@ class ContainerWithCache {
         foreach ($deps as $paramName => $info) {
             if ($this->has($info['type'])) {
                 $resolved[] = $this->get($info['type']);
+            } elseif ($this->refCache->isInstantiable($info['type'])) {
+                // Unbound but concrete — auto-resolve it too. Without this
+                // recursion the container can only wire dependencies that were
+                // registered by hand, which defeats the point of auto-wiring:
+                // ReportService needs ProductRepository, which nobody bound.
+                $resolved[] = $this->autoResolve($info['type']);
             } elseif ($info['optional']) {
                 $resolved[] = null;
             } else {

@@ -114,10 +114,14 @@ class UserProfileAfter {
     // Property with get + set hooks — validation and normalisation inline
     public string $email = '' {
         set(string $value) {
-            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            // Normalise first, then validate — validating the raw value rejects
+            // "  Alice@Example.COM  ", because whitespace is not valid in an
+            // email address. Same ordering as UserProfileBefore::setEmail().
+            $normalised = strtolower(trim($value));
+            if (!filter_var($normalised, FILTER_VALIDATE_EMAIL)) {
                 throw new \InvalidArgumentException("Invalid email: {$value}");
             }
-            $this->email = strtolower(trim($value));
+            $this->email = $normalised;
         }
     }
 

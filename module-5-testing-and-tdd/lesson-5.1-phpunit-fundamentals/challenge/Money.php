@@ -100,7 +100,10 @@ readonly class Money
 
     public function format(): string
     {
-        return $this->currency . ' ' . number_format($this->amountCents / 100, 2);
+        // No thousands separator: CHALLENGE.md Task 7 specifies 'EUR 1000.00'
+        // for new Money(100000, 'EUR'). Plain number_format($x, 2) defaults to
+        // a comma group separator and would return 'EUR 1,000.00'.
+        return $this->currency . ' ' . number_format($this->amountCents / 100, 2, '.', '');
     }
 
     // ─────────────────────────────────────────────────────────────────────────

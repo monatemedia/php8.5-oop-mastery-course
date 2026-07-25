@@ -95,6 +95,9 @@ if ($testFiles === []) {
 }
 
 // ── Run each file in its own PHPUnit process ────────────────────────────────
+$tmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php85course_phpunit';
+@mkdir($tmpDir, 0777, true);
+
 echo "Running " . count($testFiles) . " test file(s), one process each.\n";
 echo str_repeat('-', 70) . "\n";
 
@@ -103,15 +106,32 @@ $failedFiles = [];
 
 foreach ($testFiles as $path) {
     $label = str_replace(str_replace('\\', '/', $root) . '/', '', $path);
-    printf("%-62s ", substr($label, 0, 62));
+    printf("%-70s ", strlen($label) > 70 ? '...' . substr($label, -67) : $label);
+
+    // Passing a bare path to PHPUnit makes it derive the test class name from
+    // the FILE name — fine for MoneyTest.php, fatal for 01-first-test.php,
+    // which holds CalculatorTest. A generated config with a <file> element
+    // loads the file and discovers whatever TestCase classes are inside it.
+    $cfg = $tmpDir . DIRECTORY_SEPARATOR . 'phpunit_' . md5($path) . '.xml';
+    file_put_contents($cfg, sprintf(
+        '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+        . '<phpunit bootstrap="%s" colors="false" cacheResult="false"' . "\n"
+        . '         beStrictAboutOutputDuringTests="false"' . "\n"
+        . '         failOnWarning="false" failOnNotice="false" failOnDeprecation="false">' . "\n"
+        . '  <testsuites><testsuite name="single"><file>%s</file></testsuite></testsuites>' . "\n"
+        . '</phpunit>' . "\n",
+        htmlspecialchars($root . '/vendor/autoload.php', ENT_XML1),
+        htmlspecialchars($path, ENT_XML1)
+    ));
 
     $cmd = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($phpunit)
-         . ' --no-configuration --colors=never --do-not-cache-result '
-         . escapeshellarg($path) . ' 2>&1';
+         . ' --configuration ' . escapeshellarg($cfg)
+         . ' --colors=never --do-not-cache-result 2>&1';
 
     $out = [];
     $status = 0;
     exec($cmd, $out, $status);
+    @unlink($cfg);
 
     if ($status === 0) {
         echo "PASS\n";

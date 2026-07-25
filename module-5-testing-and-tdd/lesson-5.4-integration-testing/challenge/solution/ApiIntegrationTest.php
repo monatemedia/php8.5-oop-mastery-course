@@ -22,30 +22,8 @@ use Slim\Psr7\Factory\StreamFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// All contracts, repositories, services, and controllers are declared in the
-// starter file. In a real project these come from src/ via autoloader.
-// This solution re-declares the same set for self-contained execution.
-// ─────────────────────────────────────────────────────────────────────────────
-
-// (Same declarations as starter/ApiIntegrationTest.php — omitted here for
-//  brevity; the test class below assumes all classes are already defined above.)
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helper function
-// ─────────────────────────────────────────────────────────────────────────────
-
-if (!function_exists('makeJsonRequest')) {
-    function makeJsonRequest(string $method, string $uri, array $body = []): \Slim\Psr7\Request
-    {
-        $stream = (new StreamFactory())->createStream(json_encode($body));
-        return (new ServerRequestFactory())
-            ->createServerRequest($method, $uri)
-            ->withHeader('Content-Type', 'application/json')
-            ->withBody($stream)
-            ->withParsedBody($body);
-    }
-}
+require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../app.php';   // contracts, repositories, services, controllers
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Solution test class

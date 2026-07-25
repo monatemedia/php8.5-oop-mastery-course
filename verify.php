@@ -59,14 +59,20 @@ heading('2. Language features used by the course');
  * throws reports its actual error instead of a useless "failed to run".
  */
 $probes = [
+    // NOTE: never end a probe with a top-level `return` — that halts the script
+    // before the PROBE_OK sentinel is echoed. Assert by throwing instead.
     'Property hooks (8.4)' =>
-        'class P84 { public string $v = "" { set(string $x) => trim($x); } } $o = new P84(); $o->v = "  a  "; return $o->v === "a";',
+        'class P84 { public string $v = "" { set(string $x) => trim($x); } }
+         $o = new P84(); $o->v = "  a  ";
+         if ($o->v !== "a") { throw new RuntimeException("set hook did not trim"); }',
 
     'Asymmetric visibility, instance (8.4)' =>
-        'class A84 { public private(set) string $s = "x"; } return (new A84())->s === "x";',
+        'class A84 { public private(set) string $s = "x"; }
+         if ((new A84())->s !== "x") { throw new RuntimeException("aviz read failed"); }',
 
     'Asymmetric visibility, static (8.5)' =>
-        'class A85 { public static private(set) string $s = "x"; } return A85::$s === "x";',
+        'class A85 { public static private(set) string $s = "x"; }
+         if (A85::$s !== "x") { throw new RuntimeException("static aviz read failed"); }',
 
     'clone with — clone($obj, [...]) (8.5)' =>
         // NOTE: a readonly property may only be replaced by clone-with from
@@ -79,16 +85,20 @@ $probes = [
          if ($a->n !== 1 || $b->n !== 2) { throw new RuntimeException("clone-with returned wrong values"); }',
 
     '#[\\NoDiscard] attribute (8.5)' =>
-        '#[\\NoDiscard("use it")] function nd85(): int { return 1; } return nd85() === 1;',
+        '#[\\NoDiscard("use it")] function nd85(): int { return 1; }
+         if (nd85() !== 1) { throw new RuntimeException("NoDiscard function misbehaved"); }',
 
     '#[\\Deprecated] on a trait (8.5)' =>
-        '#[\\Deprecated("gone in v3")] trait T85 { public function t(): int { return 1; } } return true;',
+        '#[\\Deprecated("gone in v3")] trait T85 { public function t(): int { return 1; } }
+         if (!trait_exists("T85")) { throw new RuntimeException("deprecated trait not declared"); }',
 
     'Enums (8.1)' =>
-        'enum E81: string { case A = "a"; } return E81::from("a") === E81::A;',
+        'enum E81: string { case A = "a"; }
+         if (E81::from("a") !== E81::A) { throw new RuntimeException("enum from() failed"); }',
 
     'Readonly classes (8.2)' =>
-        'readonly class R82 { public function __construct(public int $n) {} } return (new R82(5))->n === 5;',
+        'readonly class R82 { public function __construct(public int $n) {} }
+         if ((new R82(5))->n !== 5) { throw new RuntimeException("readonly class failed"); }',
 ];
 
 $probeDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php85course_probe';

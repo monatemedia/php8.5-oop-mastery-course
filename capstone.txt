@@ -69,11 +69,8 @@ Test 10: GET /orders/99 (not found)
   ✓ error field set
 
 Rule 1 audit — no getenv() or container->get() in src/:
-  ✗ getenv() found in src/C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.5-slim-phpdi-capstone\challenge\tests/../src\Http\OrderController.php
-  ✗ ->get() found in src/C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.5-slim-phpdi-capstone\challenge\tests/../src\Http\OrderController.php
-  ✗ getenv() found in src/C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.5-slim-phpdi-capstone\challenge\tests/../src\Http\ProductController.php
-  ✗ ->get() found in src/C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.5-slim-phpdi-capstone\challenge\tests/../src\Http\ProductController.php
+  ✓ No getenv() or ->get() calls found in src/
 
 ══════════════════════════════════════════════════════
-Results: 35/39 passed — 4 test(s) FAILED ✗
+Results: 36/36 passed — All tests PASSED ✓
 ══════════════════════════════════════════════════════
