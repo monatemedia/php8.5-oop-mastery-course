@@ -151,7 +151,7 @@ At the bottom of the file, write a `BadCheckoutController` class that stores the
 
 Same controller instance? YES ✓
 Same DB in ProductCatalog and InventoryChecker? YES ✓
-DB instance ID: 4c675c
+DB instance ID: XXXXXX
 
 === Service Locator anti-pattern (BadCheckoutController) ===
 
