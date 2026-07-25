@@ -108,20 +108,52 @@ foreach ($testFiles as $path) {
     $label = str_replace(str_replace('\\', '/', $root) . '/', '', $path);
     printf("%-70s ", strlen($label) > 70 ? '...' . substr($label, -67) : $label);
 
-    // Passing a bare path to PHPUnit makes it derive the test class name from
-    // the FILE name — fine for MoneyTest.php, fatal for 01-first-test.php,
-    // which holds CalculatorTest. A generated config with a <file> element
-    // loads the file and discovers whatever TestCase classes are inside it.
+    // PHPUnit 11 resolves a test class from the FILE NAME — even through a
+    // <file> element. That is fine for MoneyTest.php, but 01-first-test.php
+    // holds CalculatorTest, so PHPUnit looks for a class called
+    // "01-first-test" and reports "No tests executed!".
+    //
+    // Work around it without renaming any lesson file: for each TestCase class
+    // in the file, emit a shim NAMED AFTER THE CLASS that requires the real
+    // file, and point PHPUnit at the shims.
+    $src = (string) file_get_contents($path);
+    preg_match_all(
+        '/^\s*(?:final\s+|abstract\s+)*class\s+(\w+)\s+extends\s+\\?(?:PHPUnit\\Framework\\)?TestCase\b/mi',
+        $src,
+        $m
+    );
+    $classes = array_values(array_filter($m[1] ?? [], fn(string $c): bool => !str_contains(strtolower($c), 'abstract')));
+
+    if ($classes === []) {
+        echo "SKIP (no concrete TestCase class found)\n";
+        continue;
+    }
+
+    $shimDir = $tmpDir . DIRECTORY_SEPARATOR . md5($path);
+    @mkdir($shimDir, 0777, true);
+    $shims = [];
+    foreach ($classes as $class) {
+        $shim = $shimDir . DIRECTORY_SEPARATOR . $class . '.php';
+        file_put_contents($shim, "<?php\nrequire_once " . var_export($path, true) . ";\n");
+        $shims[] = $shim;
+    }
+
+    $fileEls = '';
+    foreach ($shims as $shim) {
+        $fileEls .= '    <file>' . htmlspecialchars($shim, ENT_XML1) . '</file>' . "\n";
+    }
+
     $cfg = $tmpDir . DIRECTORY_SEPARATOR . 'phpunit_' . md5($path) . '.xml';
     file_put_contents($cfg, sprintf(
         '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
         . '<phpunit bootstrap="%s" colors="false" cacheResult="false"' . "\n"
         . '         beStrictAboutOutputDuringTests="false"' . "\n"
         . '         failOnWarning="false" failOnNotice="false" failOnDeprecation="false">' . "\n"
-        . '  <testsuites><testsuite name="single"><file>%s</file></testsuite></testsuites>' . "\n"
+        . '  <testsuites><testsuite name="single">' . "\n%s"
+        . '  </testsuite></testsuites>' . "\n"
         . '</phpunit>' . "\n",
         htmlspecialchars($root . '/vendor/autoload.php', ENT_XML1),
-        htmlspecialchars($path, ENT_XML1)
+        $fileEls
     ));
 
     $cmd = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($phpunit)
@@ -132,6 +164,8 @@ foreach ($testFiles as $path) {
     $status = 0;
     exec($cmd, $out, $status);
     @unlink($cfg);
+    foreach ($shims as $shim) { @unlink($shim); }
+    @rmdir($shimDir);
 
     if ($status === 0) {
         echo "PASS\n";

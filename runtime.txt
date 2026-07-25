@@ -1,9 +1,1 @@
-=== module-2-advanced-types/lesson-2.2-property-hooks/examples/01-the-problem-they-solve.php (exit 255)
-PHP Fatal error:  Uncaught InvalidArgumentException: Invalid email:   Alice@Example.COM   in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-2-advanced-types\lesson-2.2-property-hooks\examples\01-the-problem-they-solve.php:118
-Fatal error: Uncaught InvalidArgumentException: Invalid email:   Alice@Example.COM   in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-2-advanced-types\lesson-2.2-property-hooks\examples\01-the-problem-they-solve.php:118
-
 bash: warning: command substitution: ignored null byte in input
-=== module-4-container-automation/lesson-4.2-reflection-api/examples/04-caching-reflection.php (exit 255)
-PHP Fatal error:  Uncaught RuntimeException: Cannot resolve 'ProductRepository' for $products in ReportService. Register a binding with $container->singleton('ProductRepository', ...). in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.2-reflection-api\examples\04-caching-reflection.php:299
-Fatal error: Uncaught RuntimeException: Cannot resolve 'ProductRepository' for $products in ReportService. Register a binding with $container->singleton('ProductRepository', ...). in C:\Users\Lenovo\Herd\php8.5-oop-mastery-course\module-4-container-automation\lesson-4.2-reflection-api\examples\04-caching-reflection.php:299
-

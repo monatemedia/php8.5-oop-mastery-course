@@ -392,7 +392,9 @@ class MoneyTest extends TestCase
             'R1000.00'            => [100000, 'ZAR', 'ZAR 1000.00'],
             'USD $0.01'           => [1,      'USD', 'USD 0.01'],
             'EUR €10.50'          => [1050,   'EUR', 'EUR 10.50'],
-            'large amount'        => [9999999, 'GBP', 'GBP 99,999.99'],
+            // No group separator: consistent with 'ZAR 1000.00' two rows up
+            // and with CHALLENGE.md Task 7 ('EUR 1000.00' for 100000 cents).
+            'large amount'        => [9999999, 'GBP', 'GBP 99999.99'],
         ];
     }
 
