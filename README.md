@@ -230,7 +230,7 @@ php check.php
 Run it now, and any time you are unsure what to do next. It works through three phases and stops at the first real problem:
 
 1. **Environment** — confirms PHP 8.5 is active and installs missing Composer dependencies for you.
-2. **Integrity** — confirms all 197 course files are intact (this is what `verify.php` does; `check.php` calls it).
+2. **Integrity** — confirms every course file is intact (this is what `verify.php` does; `check.php` calls it).
 3. **Progress** — walks the 28 challenges *in course order* and stops at the first one you have not solved, telling you exactly where you are and what is failing.
 
 Everything before your current lesson is marked done. Everything after is left alone. Solve the one it stops on, run it again, and it moves you forward.
@@ -238,7 +238,7 @@ Everything before your current lesson is marked done. Everything after is left a
 ```bash
 php check.php                # normal use
 php check.php --all          # judge every challenge, do not stop at the first
-php check.php --skip-verify  # faster: skip the 197-file syntax sweep
+php check.php --skip-verify  # faster: skip the whole-course syntax sweep
 php check.php --no-install   # never run composer install automatically
 ```
 

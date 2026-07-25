@@ -362,7 +362,7 @@ $rules = [
     <p class="lede">
       Six modules that take you from “I know what an interface is” to designing service
       graphs a container can wire itself — with the tests to prove they behave. Thirty
-      lessons, 28 code challenges, 27 quizzes, and one capstone API you build from scratch.
+      lessons, 28 code challenges, 28 quizzes, and one capstone API you build from scratch.
     </p>
 
     <div class="status">
@@ -476,7 +476,7 @@ $rules = [
       <li>
         <h4>Check where you are</h4>
         <p>
-          Verifies your environment, confirms all <?= 197 ?> course files are intact, then walks
+          Verifies your environment, confirms every course file is intact, then walks
           the challenges in order and stops at the first one still unsolved — so you always
           know exactly what to work on next.
         </p>

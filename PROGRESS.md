@@ -32,7 +32,7 @@ Do not start a module until the one before it is fully ticked.
 
 | Lesson | Read | Ran | Challenge | Quiz | Score | Date |
 |--------|:----:|:---:|:---------:|:----:|:-----:|------|
-| 1.0 SOLID Overview ⭐ | [ ] | [ ] | — | — | — | |
+| 1.0 SOLID Overview ⭐ *(tick the box in its README — `check.php` reads that)* | [ ] | [ ] | — | — | — | |
 | 1.1 Interfaces | [ ] | [ ] | [ ] | [ ] | ` /18` | |
 | 1.2 Abstract Classes & Value Objects | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 1.3 Traits | [ ] | [ ] | [ ] | [ ] | ` /20` | |
@@ -108,7 +108,7 @@ Do not start a module until the one before it is fully ticked.
 
 | Lesson | Read | Ran | Challenge | Quiz | Score | Date |
 |--------|:----:|:---:|:---------:|:----:|:-----:|------|
-| 5.0 Why Testing Requires DI | [ ] | [ ] | — | — | — | |
+| 5.0 Why Testing Requires DI *(tick the box in its README — `check.php` reads that)* | [ ] | [ ] | — | — | — | |
 | 5.1 PHPUnit Fundamentals | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 5.2 Fakes and Stubs | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 5.3 TDD: Red, Green, Refactor | [ ] | [ ] | [ ] | [ ] | ` /20` | |

@@ -8,7 +8,7 @@ declare(strict_types=1);
  *     php check.php                 full run: environment, integrity, progress
  *     php check.php --no-install    never run composer install automatically
  *     php check.php --all           do not stop at the first unsolved challenge
- *     php check.php --skip-verify   skip the 197-file syntax sweep (faster)
+ *     php check.php --skip-verify   skip the whole-course syntax sweep (faster)
  *     php check.php --dump          write every reference solution's real output
  *                                   to solution-output/ for comparison
  *
@@ -24,7 +24,7 @@ declare(strict_types=1);
  *
  *   3. PROGRESS — walks all 30 lessons in course order and works out how far
  *      you have got. It stops at the first one that is not yet solved and tells
- *      you exactly where you are, rather than dumping 28 failures on you.
+ *      you exactly where you are, rather than dumping 30 failures on you.
  *
  * HOW A CHALLENGE IS JUDGED
  * --------------------------
