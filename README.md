@@ -31,6 +31,7 @@ php8.5-oop-mastery-course/
 ├── README.md                      ← You are here
 ├── COURSE_PHILOSOPHY.md           ← Six golden rules — read before starting
 ├── PROGRESS.md                    ← Your single progress tracker
+├── PHP_VERSION_REFERENCE.md       ← Which features need which PHP version
 ├── index.php                      ← Course cover page (Herd site preview)
 ├── check.php                      ← ⭐ The one command to run: where am I?
 ├── verify.php                     ← Deep integrity check (called by check.php)
@@ -260,6 +261,7 @@ If you use Herd, this folder is served at a `.test` domain and `index.php` rende
 
 ## 📖 Reference
 
+- [`PHP_VERSION_REFERENCE.md`](PHP_VERSION_REFERENCE.md) — every feature this course uses and when it arrived
 - [PHP 8.5 Migration Guide](https://www.php.net/manual/en/migration85.php)
 - [PHP 8.4 Migration Guide](https://www.php.net/manual/en/migration84.php)
 - [PHP Manual](https://www.php.net/manual/en/)

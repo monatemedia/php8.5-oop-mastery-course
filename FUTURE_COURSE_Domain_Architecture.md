@@ -67,13 +67,14 @@ that teaches only the patterns produces developers who apply them everywhere. Th
 ├── composer.json / composer.lock
 ├── phpunit.xml
 ├── domain/                          ← the running example, built up module by module
-│   └── workshop/                    ← one domain, carried through the whole course
+│   └── workshop/                    ← a teaching domain, chosen for its rules
 ├── module-0-when-and-when-not/
 ├── module-1-domain-modelling/
 ├── module-2-aggregates-and-consistency/
 ├── module-3-persistence-without-leakage/
 ├── module-4-domain-exception-trees/
-└── module-5-capstone/
+├── module-5-living-with-a-framework/
+└── module-6-capstone/
 ```
 
 Each lesson keeps the shape that worked: **README** to read, **examples/** to run,
@@ -94,7 +95,9 @@ Each lesson keeps the shape that worked: **README** to read, **examples/** to ru
          ↓
 [Module 4: Domain Exception Trees]    typed failures, API boundary mapping
          ↓
-[Module 5: Capstone]                  one domain, end to end
+[Module 5: Living With a Framework]   what transfers into Laravel/Symfony, and what does not
+         ↓
+[Capstone]                            one domain, end to end
 ```
 
 ---
@@ -102,18 +105,33 @@ Each lesson keeps the shape that worked: **README** to read, **examples/** to ru
 ## The running domain: a vehicle workshop
 
 Every lesson works on **one** domain, built up incrementally: a workshop job-card system.
-Module 1 models a `Money` and a `RegistrationNumber`. Module 2 turns `JobCard` into an
-aggregate with a lifecycle. Module 3 persists it. Module 4 gives it an exception tree. Module 5
-assembles the lot behind an API.
+Module 1 models `Money` and `RegistrationNumber`. Module 2 turns `JobCard` into an aggregate
+with a lifecycle. Module 3 persists it. Module 4 gives it an exception tree. Module 5 assembles
+the lot behind an API.
 
-This is deliberate. The main weakness of the OOP Mastery course is that nothing accumulates
-until the Module 4 capstone — you complete seventeen standalone exercises and never build
-anything. Here, every challenge adds to a codebase you keep.
+**Why a running domain at all.** The main weakness of the OOP Mastery course is that nothing
+accumulates until the Module 4 capstone — you complete seventeen standalone exercises and never
+build anything. Here every challenge adds to a codebase you keep.
 
-The domain is chosen because it has genuinely interesting rules: a job card cannot be invoiced
-before it is completed, parts cannot be added after invoicing, labour is billed in six-minute
-units, a courtesy vehicle cannot be allocated to two jobs at once. Those are real invariants,
-not `if ($x === null)`.
+**Why this domain in particular.** Three criteria, in order:
+
+1. **The rules are genuinely interesting.** A job card cannot be invoiced before completion.
+   Parts cannot be added after invoicing. Labour bills in fixed time units. A courtesy vehicle
+   cannot be on two jobs at once. Additional work needs authorisation before it can proceed.
+   Those are real invariants that span multiple entities — exactly the conditions that justify
+   aggregates. A blog or a to-do list has no rules worth modelling, which is why tutorials
+   built on them make DDD look like pointless ceremony.
+2. **It needs no prior knowledge.** Everyone understands "car goes in, work happens, bill comes
+   out." Compare a course built on insurance underwriting or double-entry bookkeeping, where
+   students spend half their attention learning the business instead of the modelling.
+3. **It is concrete enough to argue about.** Students can form opinions on whether a line item
+   belongs inside the job card aggregate. That argument is the lesson.
+
+**This is a teaching vehicle, not a product plan.** Nobody finishing this course is expected to
+want workshop software. Every module ends with a **"Where else this shows up"** note mapping the
+pattern onto other domains — order/line-item in e-commerce, policy/claim in insurance,
+booking/leg in travel, invoice/entry in accounting — so the transfer is explicit rather than
+assumed.
 
 ---
 
@@ -275,7 +293,33 @@ not `if ($x === null)`.
 
 ---
 
-## Module 5 — Capstone
+## Module 5 — Living With a Framework, and the Capstone
+
+*3 lessons · 3 challenges · 3 quizzes*
+
+- [ ] **5.1 — When the framework owns your models**
+  - The situation almost every student is actually in: an existing Laravel, Symfony or CodeIgniter
+    application where the ORM's Active Record model *is* the domain object, and rewriting is not
+    an option.
+  - What transfers cheaply and immediately: value objects behind ORM casts, invariants enforced
+    in the model rather than in a service, typed domain exceptions mapped to HTTP, named methods
+    replacing public setters.
+  - What costs real money: a separate domain layer with mapping to and from ORM entities. When
+    that price is worth paying, and when it is architecture theatre.
+  - **Deliberately framework-neutral.** The lesson teaches the decision, not one vendor's API.
+    Examples are given twice — once in an Active Record style and once in a Data Mapper style —
+    because those two shapes cover nearly everything in PHP.
+
+- [ ] **5.2 — Strangling a legacy model**
+  - Introducing a domain layer into a working application without stopping to rewrite it.
+  - Start at the invariant that keeps biting you, extract one value object, put one rule behind
+    a named method — and stop there if the value has been captured.
+  - **Challenge:** take a supplied anemic ORM-style model with logic scattered across three
+    services, and extract exactly one aggregate — leaving the rest untouched and still working.
+
+---
+
+## Capstone
 
 *1 lesson · 1 challenge · 1 quiz*
 
@@ -285,7 +329,10 @@ not `if ($x === null)`.
     container from the previous course.
   - **Acceptance:** the entire `domain/` directory has zero imports from Slim, PDO, PHP-DI or
     anything else infrastructural. A test proves it by scanning the imports.
-  - That test is the course's thesis in executable form.
+  - That test is the course's thesis in executable form — *for a codebase built this way from
+    the start*. Module 5.1 is explicit that it is an ideal to reason with, not a standard to
+    hold every existing application to. A course that implies otherwise sends students back to
+    work to pick fights they cannot win.
 
 ---
 
@@ -298,8 +345,9 @@ not `if ($x === null)`.
 | 2 — Aggregates & Consistency | 4 | 4 | 4 | `[ ] Not started` |
 | 3 — Persistence Without Leakage | 4 | 4 | 4 | `[ ] Not started` |
 | 4 — Domain Exception Trees | 4 | 4 | 4 | `[ ] Not started` |
-| 5 — Capstone | 1 | 1 | 1 | `[ ] Not started` |
-| **Total** | **19** | **18** | **19** | |
+| 5 — Living With a Framework | 2 | 2 | 2 | `[ ] Not started` |
+| Capstone | 1 | 1 | 1 | `[ ] Not started` |
+| **Total** | **21** | **20** | **21** | |
 
 Roughly one challenge per lesson, matching the OOP course's ratio. The earlier draft had three
 challenges across nine lessons; that would not have been enough. DDD is judgement, and

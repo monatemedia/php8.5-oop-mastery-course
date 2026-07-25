@@ -111,6 +111,33 @@ Module 5 (TDD cycle, red-green-refactor discipline).
 
 ---
 
+## A Note on PHP Versions
+
+This course targets PHP 8.5, but you will not always be working on 8.5 — and you will certainly
+read code written for older versions.
+
+So wherever a lesson uses a feature newer than PHP 8.0, it says so inline:
+
+```php
+// Asymmetric visibility — PHP 8.4. On 8.3 and below, use a private property
+// with a public getter.
+public private(set) string $email = '';
+```
+
+This is deliberate, and it cuts both ways. It tells you what you can take back to a codebase
+running 8.2, and it tells you *why* older code looks the way it does — a 2019 project assigning
+every property by hand in the constructor is not badly written, it is pre-8.0.
+
+[`PHP_VERSION_REFERENCE.md`](PHP_VERSION_REFERENCE.md) lists every feature the course uses with
+its introduction version.
+
+**The architecture is version-independent.** Dependency injection, composition, SOLID, test
+doubles and container lifecycles predate PHP 8 and will outlive PHP 9. Syntax improves each
+release; the design decisions do not change. The features are how you express the ideas — the
+ideas are the point.
+
+---
+
 ## How These Rules Connect
 
 ```
