@@ -9,7 +9,7 @@ declare(strict_types=1);
  * No PHPUnit needed — pure assertions printed as ✓ / ✗.
  *
  * Run from project root:
- *   php challenge/tests/routes.test.php
+ *   php module-4-container-automation/lesson-4.5-slim-phpdi-capstone/challenge/tests/routes.test.php
  *
  * Course Philosophy Rule 2: Test behaviours, not layouts.
  * Each test asserts observable HTTP behaviour:
@@ -18,7 +18,7 @@ declare(strict_types=1);
  *   - Data payload fields
  */
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;

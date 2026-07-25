@@ -46,7 +46,7 @@
 
 - A) `$new = $original; $new->status = 'shipped';`
 - B) `$new = new static(...$original, status: 'shipped');`
-- C) `$new = clone $original with { status: 'shipped' };`
+- C) `$new = clone($original, ['status' => 'shipped']);`
 - D) `$new = $original->with(status: 'shipped');`
 
 ---
@@ -233,7 +233,7 @@ class InvoiceBuilder
 | 2 | **B** | The key move for Anti-pattern 1: the caller accumulates in their own variable. `$rows = []; $rows[] = $service->processRow($raw);`. The service transforms one item and returns it; accumulation is the caller's concern. |
 | 3 | **C** | `recordCall(int $currentCount): int` — pass in the current count, get back the new count. The caller passes their local `$count` and stores the return value. This is the "pass-and-return" pattern that eliminates the `$count` property from the class. |
 | 4 | **B** | An immutable `RequestContext` value object is constructed at the start of each request (by a factory at the composition root) and injected into services as a method parameter. The `AuthService` becomes a stateless factory that produces the context; services that need identity receive the context object directly. |
-| 5 | **C** | PHP 8.5 `clone with` syntax: `$new = clone $original with { propertyName: newValue };`. This produces a new object where all properties are copied from `$original` except those listed in the `with` block. A is invalid (readonly cannot be reassigned). B is not PHP syntax. D does not exist. |
+| 5 | **C** | PHP 8.5 "clone with" is spelled as a call: `clone($original, ['propertyName' => $newValue])`. It produces a new object with every property copied from `$original` except the keys listed in the array — and `readonly` properties may be replaced this way, which is the whole point of the feature. A is invalid (a readonly property cannot be reassigned after construction). B and D are not PHP syntax. |
 | 6 | **B** | `Money` is a value object: `$cents` and `$currency` are set in the constructor (`readonly`) and never changed. `add()` returns `new self(...)` — it never calls `$this->cents = ...`. Value objects hold state correctly — they are not "stateful" in the dangerous sense, because their state is immutable. |
 | 7 | **C** | The constructor loads flags eagerly — `$this->flags = $configSource;` — with no guard clause. For a PHP-DI singleton, the constructor is called exactly once. No flag is needed because "runs only once" is enforced structurally (by the object lifecycle) rather than by a runtime check. |
 | 8 | **B** | `BoundLogger` is transient: created fresh per request, it holds the current `correlationId` as a readonly constructor argument and delegates to the singleton `OperationLogger`. The singleton never stores the ID — it is passed as a parameter. This is the correct pattern: transient wrapper + stateless singleton. |

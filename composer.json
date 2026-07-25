@@ -1,0 +1,32 @@
+{
+    "name": "php85-oop-mastery/course",
+    "description": "PHP 8.5 OOP Mastery Course — dependencies for Modules 4, 5 and 6",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.5",
+        "php-di/php-di": "^7.0",
+        "slim/slim": "^4.12",
+        "slim/psr7": "^1.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "module-4-container-automation/lesson-4.5-slim-phpdi-capstone/challenge/src/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "scripts": {
+        "verify": "php verify.php",
+        "test": "phpunit"
+    },
+    "scripts-descriptions": {
+        "verify": "Syntax-check every example in the course against your local PHP",
+        "test": "Run the Module 5 and 6 PHPUnit suites"
+    }
+}

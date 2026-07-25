@@ -76,11 +76,11 @@ class UserProfile {
     }
 
     public string $firstName {
-        set(string $v) => $this->firstName = trim($v);
+        set(string $v) => trim($v);
     }
 
     public string $lastName {
-        set(string $v) => $this->lastName = trim($v);
+        set(string $v) => trim($v);
     }
 
     // Virtual property — computed, not stored
@@ -116,7 +116,7 @@ class MyClass {
     }
 
     public Type $validated {
-        set(Type $value) => $this->validated = transform($value);
+        set(Type $value) => transform($value);
     }
 }
 ```
@@ -158,8 +158,9 @@ class Product {
     private float $rawPrice = 0.0;
 
     public float $price {
-        get => round($this->rawPrice, 2); // Always returns rounded value
-        set(float $value) => $this->rawPrice = $value;
+        get => round($this->rawPrice, 2);       // Always returns rounded value
+        set(float $value) { $this->rawPrice = $value; }  // Block form: writes to the
+                                                        // separate backing field
     }
 }
 ```
@@ -214,7 +215,7 @@ $account->balance = -50.00;   // InvalidArgumentException
 ```php
 class Tag {
     public string $name {
-        set(string $value) => $this->name = strtolower(trim($value));
+        set(string $value) => strtolower(trim($value));
     }
 }
 
@@ -229,7 +230,7 @@ Inside a `set` hook, `$value` is the value being assigned. It is available impli
 
 ```php
 public string $slug {
-    set => $this->slug = strtolower(preg_replace('/\s+/', '-', $value));
+    set => strtolower(preg_replace('/\s+/', '-', $value));
 }
 ```
 
@@ -311,7 +312,7 @@ class Contact implements HasName, HasEmail {
 
     public string $email {
         get => $this->email;
-        set(string $value) => $this->email = strtolower(trim($value));
+        set(string $value) => strtolower(trim($value));
     }
 }
 ```
@@ -385,7 +386,7 @@ public Type $prop = defaultValue {
 
 // Backed property — set only (get returns raw value automatically)
 public string $email {
-    set(string $v) => $this->email = strtolower($v);
+    set(string $v) => strtolower($v);
 }
 
 // Virtual property — get only, no storage

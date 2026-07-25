@@ -1,20 +1,26 @@
 # PHP 8.5 OOP Mastery Course
 ### Learn · Code · Quiz — Interactive, fully local, version-locked
 
-> **How to use this README:** Work through each module in order. Tick off `[ ]` checkboxes as you complete each topic. Do **not** move to the next module until all items in the current one are checked.
+> **How to use this README:** This is the map. Work through the modules in order and do not move on until the current one is finished.
+>
+> Track what you have actually completed in **[`PROGRESS.md`](PROGRESS.md)** — one file, every lesson, challenge and quiz in one place. The checkboxes further down this page are a summary; `PROGRESS.md` is the record.
 
 ---
 
 ## 🛠️ Local Environment
+
+Everything in this course runs from the **command line**. There is no web server, no Apache, no virtual host. Open a terminal in the course folder and run `php path/to/example.php`.
 
 | Operating System | Recommended Tool | Command to activate PHP 8.5 |
 |-----------------|-----------------|------------------------------|
 | **Windows / macOS** | [Laravel Herd](https://herd.laravel.com) | `herd use 8.5` |
 | **Linux** | [Lerd](https://github.com/geodro/lerd) | `lerd init` → select PHP 8.5 |
 
-**Why not XAMPP?** XAMPP bundles PHP as a monolithic install and lags behind new releases. Laravel Herd and Lerd give you one-click PHP version switching — `herd use 8.5` and you are done. No DLL hunting, no `httpd.conf` editing, no environment pollution.
+**Why Herd rather than XAMPP?** XAMPP bundles PHP as a monolithic install and lags behind new releases — at the time of writing it does not ship PHP 8.5 at all. Herd and Lerd give you one-click version switching: `herd use 8.5` and you are done. No DLL hunting, no `httpd.conf` editing.
 
-> ⚠️  Every example in this course requires **PHP 8.5**. Some features (property hooks, `clone with`, `#[NoDiscard]`, static asymmetric visibility) do not exist in earlier versions and will throw a parse error if you run them on PHP 8.5 or below.
+> **If this folder lives under `C:\xampp\htdocs\`, that is fine.** The location is irrelevant — nothing here is served over HTTP. What matters is that the `php` on your PATH is 8.5. Verify with `php -v` before you start. If it reports 8.4 or lower, run `herd use 8.5` first.
+
+> ⚠️  Every example requires **PHP 8.5**. Property hooks need 8.4; `clone(...)` with-syntax, `#[\NoDiscard]`, `#[\Override]` on properties, `#[\Deprecated]` on traits/constants and static asymmetric visibility all need 8.5. On PHP 8.4 or below these are parse errors, not warnings.
 
 ---
 
@@ -24,19 +30,20 @@
 php8.5-oop-mastery-course/
 ├── README.md                      ← You are here
 ├── COURSE_PHILOSOPHY.md           ← Six golden rules — read before starting
-├── module-1-oop-building-blocks/
-│   └── README.md
-├── module-2-advanced-types/
-│   └── README.md
-├── module-3-dependency-injection/
-│   └── README.md
-├── module-4-container-automation/
-│   └── README.md
-├── module-5-testing-and-tdd/
-│   └── README.md
-└── module-6-object-lifecycle-and-state/
-    └── README.md
+├── PROGRESS.md                    ← Your single progress tracker
+├── composer.json                  ← Dependencies for Modules 4–6
+├── phpunit.xml                    ← PHPUnit config for Module 5–6 tests
+├── verify.php                     ← Pre-flight check — run this first
+└── module-N-.../
+    ├── README.md                  ← Module overview + checklist
+    └── lesson-N.M-.../
+        ├── README.md              ← The lesson itself
+        ├── examples/              ← Runnable scripts: php examples/01-....php
+        ├── challenge/             ← starter.php (your work) + solution.php
+        └── quiz/QUIZ.md           ← Questions + answer key at the bottom
 ```
+
+Every lesson follows that same four-part shape: **read** the README → **run** the examples → **do** the challenge → **take** the quiz.
 
 ---
 
@@ -67,10 +74,10 @@ PHP 8.5 introduces several OOP-relevant features that are woven into the appropr
 | Property hooks (`get` / `set`) | 8.4 | Lesson 2.2 |
 | Asymmetric visibility for instance properties (`public private(set)`) | 8.4 | Lesson 1.1 |
 | **Asymmetric visibility for static properties** | **8.5** | **Lesson 1.1** |
-| **`clone with` syntax** | **8.5** | **Lesson 1.2 + Lesson 2.2** |
+| **`clone($obj, [...])` "clone with"** | **8.5** | **Lesson 1.2 + Lesson 2.2** |
 | **`#[NoDiscard]` attribute** | **8.5** | **Lesson 2.1 + Module 3** |
 | **`#[Override]` on properties** | **8.5** | **Lesson 2.0** |
-| **`#[Deprecated]` on constants and traits** | **8.5** | **Lesson 1.3** |
+| **`#[\Deprecated]` on constants and traits** *(attribute itself is 8.4)* | **8.5** | **Lesson 1.3** |
 | Backed enums | 8.1 | Lesson 2.3 |
 | Intersection types | 8.1 | Lesson 2.1 |
 | `readonly` properties | 8.1 | Lesson 1.2 |
@@ -190,11 +197,13 @@ PHP 8.5 introduces several OOP-relevant features that are woven into the appropr
 | 3 — DI & IoC | 4 (3.1–3.4) | 4 | 4 | `[ ] Not started` |
 | 4 — Container Automation | 5 (4.1–4.5) | 5 | 5 | `[ ] Not started` |
 | 5 — Testing & TDD | 6 (5.0–5.5) | 5 | 5 | `[ ] Not started` |
-| 6 — Object Lifecycle | 5 (6.1–6.5) | 4 | 4 | `[ ] Not started` |
+| 6 — Object Lifecycle | 5 (6.1–6.5) | 5 | 5 | `[ ] Not started` |
 
 ---
 
 ## 🔧 Project Setup (one-time)
+
+Run these once, from the course root, before starting Module 1.
 
 ```bash
 # 1. Activate PHP 8.5
@@ -202,17 +211,27 @@ herd use 8.5          # Windows/macOS
 # or
 lerd init             # Linux — select PHP 8.5
 
-# 2. Verify
+# 2. Verify you are on 8.5
 php -v
 # PHP 8.5.x ...
 
-# 3. Clone or create the project folder
-mkdir php8.5-oop-mastery-course
-cd php8.5-oop-mastery-course
-
-# 4. Install Composer dependencies (from Module 4 onwards)
+# 3. Install dependencies (PHP-DI, Slim, PHPUnit — needed from Module 4 on)
 composer install
+
+# 4. Pre-flight check — lints every example and reports anything broken
+php verify.php
 ```
+
+`verify.php` syntax-checks all 190+ example files against your local PHP and tells you if your version is too old. If it reports all green, the whole course will run on your machine.
+
+**Running things:**
+
+```bash
+php module-1-oop-building-blocks/lesson-1.1-interfaces/examples/01-defining-and-implementing.php   # any example
+vendor/bin/phpunit --testsuite module-5                                                            # Module 5 tests
+```
+
+> Modules 1–3 need nothing but PHP itself. Composer only matters from Module 4 onwards, but installing up front means you never have to stop mid-lesson.
 
 ---
 

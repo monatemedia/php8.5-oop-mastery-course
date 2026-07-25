@@ -26,7 +26,7 @@ declare(strict_types=1);
 // ║                                                                          ║
 // ║  The VIOLATION would be: an if/elseif chain inside process() that       ║
 // ║  checks the channel type string and grows every time a new one is added.║
-// ║  See lesson-1.0-solid-overview/examples/ocp.php for the full violation. ║
+// ║  See lesson-1.0-solid-overview/examples/02-ocp.php for the full violation.║
 // ╠══════════════════════════════════════════════════════════════════════════╣
 // ║  SOLID CALLOUT — D: Dependency Inversion Principle (DIP) — PREVIEW      ║
 // ╠══════════════════════════════════════════════════════════════════════════╣

@@ -16,7 +16,7 @@ declare(strict_types=1);
  * Three scenarios:
  *   A. Value objects with readonly properties
  *   B. Objects with PHP 8.4 property hooks
- *   C. Pairing clone with with #[NoDiscard] (PHP 8.5)
+ *   C. Pairing "clone with" with #[\NoDiscard] (PHP 8.5)
  */
 
 echo "╔══════════════════════════════════════════════════════╗\n";
@@ -88,24 +88,24 @@ readonly class Money {
     // Only the CHANGED property appears in the with array
     #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
     public function withAmount(int $newAmount): static {
-        return clone $this with ['amountCents' => $newAmount];
+        return clone($this, ['amountCents' => $newAmount]);
         // All other properties (currency, locale, precision) are carried over automatically
     }
 
     #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
     public function withCurrency(string $currency): static {
-        return clone $this with ['currency' => $currency];
+        return clone($this, ['currency' => $currency]);
     }
 
     #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
     public function withLocale(string $locale): static {
-        return clone $this with ['locale' => $locale];
+        return clone($this, ['locale' => $locale]);
     }
 
     // Change MULTIPLE properties at once
     #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
     public function withAmountAndCurrency(int $amountCents, string $currency): static {
-        return clone $this with ['amountCents' => $amountCents, 'currency' => $currency];
+        return clone($this, ['amountCents' => $amountCents, 'currency' => $currency]);
     }
 
     public function format(): string {
@@ -145,12 +145,12 @@ class UserProfile {
 
     #[\NoDiscard('Returns a new UserProfile — the original is unchanged')]
     public function withRole(string $role): static {
-        return clone $this with ['role' => $role];
+        return clone($this, ['role' => $role]);
     }
 
     #[\NoDiscard('Returns a new UserProfile — the original is unchanged')]
     public function withAvatar(string $url): static {
-        return clone $this with ['avatarUrl' => $url];
+        return clone($this, ['avatarUrl' => $url]);
     }
 
     public function summary(): string {
@@ -178,11 +178,11 @@ echo "── Part 4: clone with + PHP 8.4 property hooks ──────\n\n"
 // When cloning a property with a set hook, the hook runs on the cloned value
 class BlogPost {
     public string $title = '' {
-        set(string $value) => $this->title = trim($value);
+        set(string $value) => trim($value);
     }
 
     public string $author = '' {
-        set(string $value) => $this->author = ucwords(strtolower(trim($value)));
+        set(string $value) => ucwords(strtolower(trim($value)));
     }
 
     // Virtual property — derived from title, no storage
@@ -202,14 +202,14 @@ class BlogPost {
 
 $post    = new BlogPost('  Hello PHP World  ', '  alice smith  ');
 // clone with — the set hook normalises the new title automatically
-$updated = clone $post with ['title' => '  PHP 8.5 Is Here  '];
+$updated = clone($post, ['title' => '  PHP 8.5 Is Here  ']);
 
 echo "Original title:  '{$post->title}'\n";
 echo "Original slug:    {$post->slug}\n";
 echo "Original author: '{$post->author}'\n\n";
 echo "Updated title:   '{$updated->title}'\n";
 echo "Updated slug:     {$updated->slug}\n";    // Virtual — re-computed from new title
-echo "Updated author:  '{$updated->author}'\n"; // Carried over from original\n\n";
+echo "Updated author:  '{$updated->author}'\n"; // Carried over from original
 
 echo "Note: The set hook ran on the cloned title — it was normalised.\n";
 echo "Note: The virtual slug was re-computed — it reflects the new title.\n\n";
@@ -238,8 +238,8 @@ echo "Correct: " . $adjusted->format() . "\n";
 // $price->withAmount(19999); // ← would emit warning in PHP 8.5
 
 echo "\n--- Recap ---\n";
-echo "clone with:     clone \$this with ['property' => \$newValue]\n";
-echo "Multiple props: clone \$this with ['a' => 1, 'b' => 2]\n";
+echo "clone with:     clone(\$this, ['property' => \$newValue])\n";
+echo "Multiple props: clone(\$this, ['a' => 1, 'b' => 2])\n";
 echo "Set hooks run:  the hook normalises the new value during cloning.\n";
 echo "Virtual props:  re-computed on the clone (not in the with array).\n";
 echo "Non-readonly:   clone with works on any class, not just readonly.\n";

@@ -8,13 +8,37 @@
 
 This is the Module 4 capstone. You will build a complete Slim PHP API that wires all your controller dependencies using PHP-DI. Every file in the `src/` folder must follow Course Philosophy Rule 1 — zero `getenv()` calls, zero `$container->get()` calls, zero manual `new` on infrastructure classes.
 
+> ⚠️ **Read this before you open any file in `challenge/`.**
+>
+> Unlike every other challenge in the course, this folder does **not** contain a
+> `starter.php` with TODOs — it contains the finished reference implementation.
+> If you read it first, you have read the answer.
+>
+> **Do this instead:** create an empty folder somewhere outside the course
+> (`~/capstone` is fine), build the whole thing there from the tasks below, and
+> only open `challenge/` when you are done — or when you are genuinely stuck on
+> one specific piece. Point your own project at the course-root autoloader, or
+> run `composer require slim/slim slim/psr7 php-di/php-di` inside it.
+>
+> The task list below is a complete specification. You do not need to look at
+> the reference implementation to complete it.
+
 ---
 
 ## Prerequisites
 
+Nothing extra — `composer install` at the **course root** already installed Slim,
+Slim PSR-7 and PHP-DI, and the root `composer.json` maps `App\` to this
+challenge's `src/` folder. If you skipped that step:
+
 ```bash
-composer require slim/slim slim/psr7 php-di/php-di
+cd <course root>
+composer install
 ```
+
+> The `composer.json` sitting in this `challenge/` folder is only there if you
+> want to lift the capstone out into a standalone project later. You do not need
+> to run `composer install` inside it.
 
 ---
 
@@ -166,8 +190,10 @@ Minimum tests required:
 
 ## Running the Tests
 
+From the course root:
+
 ```bash
-php challenge/tests/routes.test.php
+php module-4-container-automation/lesson-4.5-slim-phpdi-capstone/challenge/tests/routes.test.php
 ```
 
 All tests print `✓` or `✗`. No PHPUnit needed — pure request simulation.

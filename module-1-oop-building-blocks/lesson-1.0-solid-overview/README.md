@@ -314,11 +314,11 @@ Module 3 (Lessons 3.1–3.4) covers DIP end-to-end. Module 4 automates it with a
 ## ✅ Lesson Checklist
 
 - [ ] Read this README fully — understand what each letter stands for
-- [ ] Run `examples/srp.php` — Single Responsibility
-- [ ] Run `examples/ocp.php` — Open/Closed
-- [ ] Run `examples/lsp.php` — Liskov Substitution
-- [ ] Run `examples/isp.php` — Interface Segregation
-- [ ] Run `examples/dip.php` — Dependency Inversion
+- [ ] Run `examples/01-srp.php` — Single Responsibility
+- [ ] Run `examples/02-ocp.php` — Open/Closed
+- [ ] Run `examples/03-lsp.php` — Liskov Substitution
+- [ ] Run `examples/04-isp.php` — Interface Segregation
+- [ ] Run `examples/05-dip.php` — Dependency Inversion
 - [ ] Without looking at the README, write a one-sentence definition of each principle from memory
 
 ---

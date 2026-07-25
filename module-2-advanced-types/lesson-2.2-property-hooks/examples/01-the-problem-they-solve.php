@@ -120,11 +120,11 @@ class UserProfileAfter {
 
     // Set-only hook — trim on write, raw read
     public string $firstName = '' {
-        set(string $v) => $this->firstName = trim($v);
+        set(string $v) => trim($v);
     }
 
     public string $lastName = '' {
-        set(string $v) => $this->lastName = trim($v);
+        set(string $v) => trim($v);
     }
 
     // Both hooks — validate on set, read directly
@@ -139,7 +139,7 @@ class UserProfileAfter {
 
     // Set hook normalises the username
     public string $username = '' {
-        set(string $v) => $this->username = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $v));
+        set(string $v) => strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', $v));
     }
 
     // Virtual property — computed from other properties, no storage

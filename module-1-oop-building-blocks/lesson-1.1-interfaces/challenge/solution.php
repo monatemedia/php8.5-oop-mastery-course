@@ -44,7 +44,7 @@ interface ReceiptPrinter {
 
 class StripeGateway implements PaymentGateway {
     public function charge(float $amount, string $currency, string $token): bool {
-        echo "[STRIPE] Charging R{$amount} {$currency} on token {$token}... OK\n";
+        echo "[STRIPE] Charging R" . number_format($amount, 2) . " {$currency} on token {$token}... OK\n";
         return true;
     }
 }
@@ -54,7 +54,7 @@ class PdfReceiptPrinter implements ReceiptPrinter {
         $id    = $invoiceData['id'];
         $name  = $invoiceData['customer_name'];
         $total = $invoiceData['total'];
-        echo "[PDF RECEIPT] Printing invoice #{$id} for {$name} (R{$total})\n";
+        echo "[PDF RECEIPT] Printing invoice #{$id} for {$name} (R" . number_format($total, 2) . ")\n";
     }
 }
 
@@ -65,7 +65,7 @@ class PdfReceiptPrinter implements ReceiptPrinter {
 
 class PayFastGateway implements PaymentGateway {
     public function charge(float $amount, string $currency, string $token): bool {
-        echo "[PAYFAST] Initiating payment of R{$amount} {$currency} (token: {$token})... OK\n";
+        echo "[PAYFAST] Initiating payment of R" . number_format($amount, 2) . " {$currency} (token: {$token})... OK\n";
         return true;
     }
 }
@@ -75,7 +75,7 @@ class EmailReceiptPrinter implements ReceiptPrinter {
         $id    = $invoiceData['id'];
         $email = $invoiceData['customer_email'];
         $total = $invoiceData['total'];
-        echo "[EMAIL RECEIPT] Sending invoice #{$id} to {$email} (R{$total})\n";
+        echo "[EMAIL RECEIPT] Sending invoice #{$id} to {$email} (R" . number_format($total, 2) . ")\n";
     }
 }
 
@@ -146,7 +146,7 @@ echo "\n=== PayFast + Email ===\n";
 
 class PayPalGateway implements PaymentGateway {
     public function charge(float $amount, string $currency, string $token): bool {
-        echo "[PAYPAL] Processing R{$amount} {$currency} via token {$token}... OK\n";
+        echo "[PAYPAL] Processing R" . number_format($amount, 2) . " {$currency} via token {$token}... OK\n";
         return true;
     }
 }

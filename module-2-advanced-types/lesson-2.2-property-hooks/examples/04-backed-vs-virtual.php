@@ -160,7 +160,7 @@ class OrderSummary {
     }
     public string $currency = 'ZAR';
     public string $status   = 'pending' {
-        set(string $v) => $this->status = strtolower($v);
+        set(string $v) => strtolower($v);
     }
 
     // VIRTUAL — derived from the backed properties above

@@ -14,7 +14,7 @@ By the end of this module you will be able to:
 2. Declare strict types on every parameter and return value
 3. Use the `#[NoDiscard]` attribute to enforce that return values are used
 4. Write PHP 8.4 property hooks in place of getter/setter boilerplate
-5. Use `clone with` (PHP 8.5) on value objects with property hooks
+5. Use "clone with" — `clone($obj, [...])` (PHP 8.5) — on value objects with property hooks
 6. Use backed enums as type-safe replacements for magic string constants
 7. Define anonymous class stubs for one-off interface implementations
 
@@ -25,7 +25,7 @@ By the end of this module you will be able to:
 | Feature | Lesson | What it replaces / improves |
 |---------|--------|-----------------------------|
 | **`#[NoDiscard]`** attribute | **2.1** | Silent discard of return values causing invisible bugs |
-| **`clone with`** on hooked properties | **2.2** | Manual wither methods on value objects with hooks |
+| **`clone($obj, [...])`** on hooked properties | **2.2** | Manual wither methods on value objects with hooks |
 | **`#[Override]` on properties** | **2.0** | Runtime discovery of missing parent property overrides |
 
 ---
@@ -77,11 +77,11 @@ This is particularly valuable in deep hierarchies — exactly the kind of hierar
 
 ### Lesson checklist
 - [ ] Preconditions, postconditions, invariants
-- [ ] Four violation types (examples/01-the-violation.php)
-- [ ] Fixing each violation (examples/02-fix-the-hierarchy.php)
-- [ ] Covariance (examples/03-covariance.php)
-- [ ] Contravariance (examples/04-contravariance.php)
-- [ ] PHP 8.5 `#[Override]` on properties
+- [ ] Four violation types (`lesson-2.0-lsp/examples/01-the-violation.php`)
+- [ ] Fixing each violation (`lesson-2.0-lsp/examples/02-fix-the-hierarchy.php`)
+- [ ] Covariance (`lesson-2.0-lsp/examples/03-covariance.php`)
+- [ ] Contravariance (`lesson-2.0-lsp/examples/04-contravariance.php`)
+- [ ] PHP 8.5 `#[\Override]` on properties (`lesson-2.0-lsp/examples/05-override-on-properties.php`)
 - [ ] **Code Challenge:** Fix three LSP violations in a CMS codebase
 - [ ] **Quiz:** LSP rules, covariance, contravariance
 
@@ -161,12 +161,12 @@ $order->applyDiscount(0.10);
 
 ### PHP 8.5 addition: `clone with` on hooked properties
 
-`clone with` works seamlessly on classes with property hooks:
+"clone with" — `clone($obj, [...])` — works seamlessly on classes with property hooks:
 
 ```php
 class UserProfile {
     public string $email = '' {
-        set(string $value) => $this->email = strtolower(trim($value));
+        set(string $value) => strtolower(trim($value));
     }
 
     public string $displayName = '';
@@ -182,7 +182,7 @@ $profile->email       = '  ALICE@EXAMPLE.COM  ';
 $profile->displayName = 'Alice Smith';
 
 // clone with — produces a new object; the set hook runs on the new value
-$updated = clone $profile with ['email' => 'ALICE-NEW@EXAMPLE.COM'];
+$updated = clone($profile, ['email' => 'ALICE-NEW@EXAMPLE.COM']);
 // $updated->email === 'alice-new@example.com' (hook normalised it)
 // $profile->email  === 'alice@example.com'    (original unchanged)
 
@@ -256,7 +256,7 @@ Anonymous classes received no significant changes in PHP 8.5.
 
 - [ ] Lesson 2.0 — LSP + PHP 8.5 `#[Override]` on properties
 - [ ] Lesson 2.1 — Type Hinting + PHP 8.5 `#[NoDiscard]`
-- [ ] Lesson 2.2 — Property Hooks + PHP 8.5 `clone with`
+- [ ] Lesson 2.2 — Property Hooks + PHP 8.5 `clone($obj, [...])`
 - [ ] Lesson 2.3 — Enums
 - [ ] Lesson 2.4 — Anonymous Classes
 

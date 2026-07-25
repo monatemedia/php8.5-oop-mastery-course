@@ -10,8 +10,8 @@
 
 - A) `public string $name = '' { get => strtoupper($this->name); }`
 - B) `public string $name { get => strtoupper($this->firstName . ' ' . $this->lastName); }`
-- C) `public string $name = 'default' { set(string $v) => $this->name = $v; }`
-- D) `public string $name { set(string $v) => $this->name = $v; }`
+- C) `public string $name = 'default' { set(string $v) => trim($v); }`
+- D) `public string $name { set(string $v) => trim($v); }`
 
 ---
 
@@ -53,7 +53,7 @@ Which implementing class satisfies this contract?
 - A) A class with `private string $title;` and a `getTitle()` method.
 - B) A class with `public string $title = '';` (a plain public property).
 - C) A class with `protected string $title = '';`.
-- D) A class with `public string $title { set(string $v) => $this->title = $v; }` only.
+- D) A class with `public string $title { set(string $v) => trim($v); }` only.
 
 ---
 
@@ -111,7 +111,7 @@ public ?\DateTimeImmutable $publishedAt = null {
 
 ---
 
-**Q16.** A colleague writes this and reports it does not work as expected:
+**Q16.** A colleague writes this and reports that the file will not even run:
 
 ```php
 class Circle {
@@ -120,13 +120,9 @@ class Circle {
         get => M_PI * $this->radius ** 2;
     }
 }
-
-$c = new Circle();
-$c->radius = 5.0;
-echo $c->area; // Expected ~78.54, got 0.0
 ```
 
-Explain the bug and how to fix it.
+Explain why PHP rejects this declaration and how to fix it.
 
 *Your answer:*
 
@@ -189,7 +185,7 @@ interface Labelled {
 
 abstract class BaseItem implements Labelled {
     public string $name = '' {
-        set(string $v) => $this->name = strtoupper(trim($v));
+        set(string $v) => strtoupper(trim($v));
     }
 }
 
@@ -262,20 +258,20 @@ echo $c->csv   . "\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | A virtual property has no default value and no `set` hook. Option A has a default `''` (backed). Option C has a default and set hook (backed). Option D has only a `set` hook — it would be backed (no default, but a set hook means it stores values). Only B has solely a `get` hook and no default. |
+| 1 | **B** | A property is **virtual** when *neither* of its hooks references the property itself (`$this->name`). B's `get` hook reads `$this->firstName`/`$this->lastName`, never `$this->name` — so nothing is stored and the value is derived on every read. A has a default value (only backed properties may have one). C and D use a short-form `set`, which implies a backing store to write into. |
 | 2 | **B** | The `get` hook runs every time the property is read — `$obj->prop` triggers it. It is not cached unless you implement caching explicitly inside the hook. |
 | 3 | **C** | If only a `set` hook is defined, PHP provides a default `get` behaviour that returns the raw stored value. No error occurs. |
-| 4 | **C** | Assigning to a virtual property (get-only, no default) is a fatal `Error`: *"Cannot write to a non-writable property."* |
+| 4 | **C** | A virtual property with only a `get` hook has no `set` operation at all, so assigning to it throws an `Error` at runtime. (A is fine — a backed property with only a `set` hook keeps the default read behaviour. B is fine for the same reason in reverse. D is ordinary and valid.) |
 | 5 | **B** | A plain `public string $title = '';` is naturally readable — it satisfies `{ get; }`. Option A uses a private property (not readable by callers). Option C uses protected (not readable from outside). Option D provides only a `set` hook — not readable. |
 | 6 | **B** | The property's declared type is `?\DateTimeImmutable`. The `set` hook accepts a wider input type (`string|\DateTimeImmutable`). The hook converts strings to `DateTimeImmutable` before storing. The stored value is always `?\DateTimeImmutable`. |
 | 7 | **B** | An abstract class can have concrete property hooks, which subclasses inherit just like concrete methods. Abstract hook declarations are also possible, forcing subclasses to provide them. |
-| 8 | **B** | `$area` has no default value and no `set` hook — it is virtual. It is recomputed on every read. The value is not cached. Assigning to it would be a fatal error. |
+| 8 | **B** | The `get` hook references `$this->width` and `$this->height` but never `$this->area`, so `$area` is virtual — no storage, recomputed on every read, never cached. With no `set` hook there is no write operation, so assigning to it throws an `Error`. |
 
 ## Section B
 | # | Answer | Explanation |
 |---|--------|-------------|
 | 9  | **T** | Block `get { ... }` requires `return`. Arrow `get => expr` implicitly returns the expression. |
-| 10 | **F** | A virtual property is defined by having NO default value and NO `set` hook. If you add a default value, the property becomes backed and can theoretically have a `set` hook. |
+| 10 | **F** | Backwards on both counts. A virtual property *may* have a `set` hook (the manual explicitly allows defining both `get` and `set` on a virtual property), but it may **never** have a default value — there is no backing store to hold one, and PHP rejects the declaration at compile time. |
 | 11 | **F** | Property hooks cannot be `static` — they always operate on instance properties via `$this`. |
 | 12 | **T** | `{ get; set; }` in an interface means callers can both read and write the property. |
 | 13 | **T** | A plain `public` property is naturally readable and writable, satisfying both `{ get; }` and `{ set; }` requirements. |
@@ -284,13 +280,47 @@ echo $c->csv   . "\n";
 ## Section C
 
 **Q15 — Model answer:**
-A virtual property has no default value and no `set` hook, so PHP allocates no memory to store a value for it. It is defined entirely by its `get` hook, which computes a value on every read. Because there is no storage and no `set` hook, there is nowhere for an assigned value to go — PHP throws a fatal `Error` to prevent the silent data loss that would otherwise occur.
+A property is virtual when neither its `get` nor its `set` hook refers to the property itself (`$this->propName`) — PHP then allocates no storage for it and the value is derived on every read instead of being held in memory. Assignment fails when the virtual property defines only a `get` hook: with no backing store and no `set` operation, there is nowhere for the assigned value to go, so PHP raises an `Error` rather than silently discarding it. (A virtual property that *does* define a `set` hook can be assigned to — the hook decides what to do with the value.)
 
 **Q16 — Model answer:**
-The bug is that `$area` is declared with a default value (`= 0.0`), which makes it a **backed** property. The `get` hook runs and correctly computes `M_PI * 5.0² ≈ 78.54`, but the hook's expression `M_PI * $this->radius ** 2` is the return value — so reading `$c->area` does return the correct value. *Actually, this code works correctly as written.* If the colleague got `0.0`, they may have been reading the property before setting `$radius`, or using a PHP version prior to 8.4. The fix if there truly is an issue: ensure `$radius` is set before reading `$area`, or make `$area` a virtual property by removing the `= 0.0` default. The computation is already correct.
+`$area` is a **virtual** property: neither of its hooks references `$this->area`, so PHP allocates no backing storage for it. A virtual property cannot have a default value, because there is nowhere to store one. PHP therefore rejects the declaration at compile time with *"Cannot specify default value for virtual hooked property Circle::$area"* — the file never runs.
+
+The fix is to drop the default:
+
+```php
+class Circle {
+    public float $radius = 0.0;
+    public float $area {
+        get => M_PI * $this->radius ** 2;
+    }
+}
+```
+
+Now `$area` is virtual and recomputed on every read: after `$c->radius = 5.0`, reading `$c->area` gives ≈ 78.54.
 
 **Q17 — Model answer:**
-Declare the property with a `set` hook that has `private` visibility. With property hooks there is no direct `private set` modifier, but you can achieve read-only-from-outside by making the property have only a `get` hook (virtual, no set), and use a separate private method or constructor assignment internally. Alternatively, declare the property without a hook but as `public readonly string $email` — `readonly` makes it writable only once (typically in the constructor) and read-only thereafter. For full hook control: declare the property with a public `get` and keep the `set` hook — the property can be assigned internally by calling `$this->email = ...` inside the class, but since there is no public set hook visible from outside... actually in PHP 8.4 the set hook visibility cannot be `private` independently. The standard pattern is: use a `readonly` property or only initialise via constructor.
+Use **asymmetric visibility** (PHP 8.4), which is the feature designed for exactly this. It composes with hooks:
+
+```php
+class Account {
+    public private(set) string $email = '' {
+        set(string $value) => strtolower(trim($value));   // still normalises on write
+    }
+
+    public function changeEmail(string $new): void {
+        $this->email = $new;    // ✅ write from inside the class
+    }
+}
+
+$a = new Account();
+echo $a->email;                 // ✅ read from anywhere
+$a->email = 'x@y.com';          // ❌ Error — cannot modify private(set) property
+$a->changeEmail('X@Y.com');     // ✅ the supported route
+```
+
+`public private(set)` makes the property publicly readable but privately writable. The `set` hook still runs on every internal write, so validation and normalisation are preserved. This is the pattern the PHP manual recommends: *"If there is a need to restrict access to a `get` or `set` operation in addition to altering its behavior, use asymmetric property visibility."*
+
+Note that `readonly` is **not** an alternative here — `readonly` properties are incompatible with property hooks, and `readonly` allows only one write ever, whereas this property must stay updatable from inside the class.
 
 ## Section D
 
@@ -298,9 +328,9 @@ Declare the property with a `set` hook that has `private` visibility. With prope
 ```
 100
 212
-Error: Cannot modify read-only property Temperature::$fahrenheit
+Error: <engine message — the property cannot be written to>
 ```
-`$celsius` is backed with a `set` hook (validation). Setting `100.0` passes. `$fahrenheit` is virtual (no default, no set hook) — reading it computes `100 * 9/5 + 32 = 212.0`. Trying to assign to the virtual property throws `Error: Cannot modify read-only property`.
+`$celsius` is backed (its `set` hook writes `$this->celsius`) and the hook validates on write; `100.0` passes and echoes as `100`. `$fahrenheit` is virtual — its `get` hook reads `$this->celsius`, never `$this->fahrenheit` — so reading it computes `100 * 9/5 + 32 = 212.0`, which echoes as `212`. Assigning to it throws an `Error`, because a virtual property with no `set` hook has no write operation. Mark yourself correct if you predicted the two numbers and an `Error` on the write; the exact wording of the engine's message is not the point.
 
 **Q19 — Answer:**
 ```

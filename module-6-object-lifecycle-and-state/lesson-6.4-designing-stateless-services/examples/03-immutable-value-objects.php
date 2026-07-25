@@ -149,7 +149,7 @@ final class Money
 //   return new self($this->id, $this->customerId, 'shipped', $this->total);
 //
 // PHP 8.5 (clean):
-//   $updated = clone $original with { status: 'shipped' };
+//   $updated = clone($original, ['status' => 'shipped']);
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -176,7 +176,7 @@ final class Order
             throw new \RuntimeException("Cannot pay an order in status: {$this->status}");
         }
         // PHP 8.5: clone with copies all properties and overrides the listed ones
-        return clone $this with { status: 'paid' };
+        return clone($this, ['status' => 'paid']);
     }
 
     /**
@@ -187,7 +187,7 @@ final class Order
         if ($this->status !== 'paid') {
             throw new \RuntimeException("Cannot ship an order in status: {$this->status}");
         }
-        return clone $this with { status: 'shipped', trackingNumber: $trackingNumber };
+        return clone($this, ['status' => 'shipped', 'trackingNumber' => $trackingNumber]);
     }
 
     /**
@@ -198,7 +198,7 @@ final class Order
         if (in_array($this->status, ['shipped', 'cancelled'], true)) {
             throw new \RuntimeException("Cannot cancel an order in status: {$this->status}");
         }
-        return clone $this with { status: 'cancelled' };
+        return clone($this, ['status' => 'cancelled']);
     }
 
     public function isPending(): bool   { return $this->status === 'pending'; }
@@ -252,9 +252,9 @@ final class DateRange
      */
     public function extendBy(int $days): self
     {
-        return clone $this with {
-            end: $this->end->modify("+{$days} days")
-        };
+        return clone($this, [
+            'end' => $this->end->modify("+{$days} days"),
+        ]);
     }
 }
 

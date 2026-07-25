@@ -53,11 +53,11 @@ class UserEntity implements Entity, HasSlug {
     public int $id;
 
     public string $name = '' {
-        set(string $v) => $this->name = trim($v);
+        set(string $v) => trim($v);
     }
 
     public string $email = '' {
-        set(string $v) => $this->email = strtolower(trim($v));
+        set(string $v) => strtolower(trim($v));
     }
 
     // Virtual — satisfies HasSlug's { get; } requirement

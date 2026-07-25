@@ -247,6 +247,38 @@ RED FLAGS (likely violations):
 
 ---
 
+## PHP 8.5 — `#[\Override]` on Properties
+
+`#[\Override]` arrived in PHP 8.3 for methods. PHP 8.5 extends it to properties, and it belongs in this lesson because it catches a specific, quiet kind of LSP violation.
+
+When a child class redeclares a property to change its default, it is asserting something about the parent's contract. If the parent later renames or removes that property, the child does not break — it simply declares a brand-new property that nothing reads, and the parent's default silently takes effect instead. Behaviour changes; no error appears anywhere.
+
+```php
+abstract class BaseRepository {
+    protected string $table = 'generic';
+}
+
+class UserRepository extends BaseRepository {
+    #[\Override]                        // ← asserts: a parent property named $table exists
+    protected string $table = 'users';
+}
+```
+
+If someone renames `BaseRepository::$table` to `$tableName`, the `#[\Override]` line now fails at compile time:
+
+```
+Fatal error: UserRepository::$table has #[\Override] attribute,
+             but no matching parent property exists
+```
+
+Without the attribute, that same refactor produces a repository quietly reading from the wrong table.
+
+**Use it when** you redeclare a property to change its default, the parent belongs to a package or team you do not control, or the hierarchy runs deeper than one level. **Do not use it** on properties that are genuinely new to the child — those are not overrides.
+
+> **Full runnable example:** `examples/05-override-on-properties.php`
+
+---
+
 ## ✅ Lesson Checklist
 
 - [ ] Read this README fully
@@ -254,6 +286,7 @@ RED FLAGS (likely violations):
 - [ ] Run and study `examples/02-fix-the-hierarchy.php`
 - [ ] Run and study `examples/03-covariance.php`
 - [ ] Run and study `examples/04-contravariance.php`
+- [ ] Run and study `examples/05-override-on-properties.php` *(PHP 8.5)*
 - [ ] Read `challenge/CHALLENGE.md` and complete `challenge/starter.php`
 - [ ] Check your work against `challenge/solution.php`
 - [ ] Complete `quiz/QUIZ.md` without looking at any files

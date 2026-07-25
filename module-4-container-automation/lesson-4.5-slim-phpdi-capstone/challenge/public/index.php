@@ -16,7 +16,9 @@ declare(strict_types=1);
  * everything transparently via constructor injection.
  */
 
-require __DIR__ . '/../vendor/autoload.php';
+// Autoloader comes from the course-root vendor/ created by `composer install`.
+// The root composer.json maps App\ -> this challenge's src/ directory.
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;

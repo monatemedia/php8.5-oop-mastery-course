@@ -336,7 +336,7 @@ This is called the **Template Method Pattern** — the abstract class defines th
 
 ## 8 — PHP 8.5 — `clone with` for Immutable Copies
 
-PHP 8.5 introduces the `clone with` syntax for producing immutable copies of objects with targeted property changes.
+PHP 8.5 introduces "clone with" for producing immutable copies of objects with targeted property changes. Despite the name, it is written as a call — `clone($object, ['prop' => $value])` — not as a `with` keyword. There is no `with` keyword in PHP.
 
 ### The problem it solves
 
@@ -372,13 +372,13 @@ readonly class Money {
 
     #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
     public function withAmount(int $newAmount): static {
-        return clone $this with ['amountCents' => $newAmount];
+        return clone($this, ['amountCents' => $newAmount]);
         // currency, locale, precision all carried over automatically
     }
 
     #[\NoDiscard('Returns a new Money instance — the original is unchanged')]
     public function withAmountAndCurrency(int $cents, string $currency): static {
-        return clone $this with ['amountCents' => $cents, 'currency' => $currency];
+        return clone($this, ['amountCents' => $cents, 'currency' => $currency]);
     }
 }
 
@@ -395,7 +395,7 @@ When a property has a `set` hook, the hook runs on the new value during cloning:
 ```php
 class BlogPost {
     public string $title = '' {
-        set(string $value) => $this->title = trim($value);
+        set(string $value) => trim($value);
     }
     public string $slug {
         get => strtolower(preg_replace('/[^A-Za-z0-9]+/', '-', trim($this->title)));
@@ -405,7 +405,7 @@ class BlogPost {
 $post    = new BlogPost();
 $post->title = '  Hello PHP World  ';
 
-$updated = clone $post with ['title' => '  PHP 8.5 Is Here  '];
+$updated = clone($post, ['title' => '  PHP 8.5 Is Here  ']);
 // set hook normalised the new title automatically
 // virtual $slug is re-computed from the new title
 ```

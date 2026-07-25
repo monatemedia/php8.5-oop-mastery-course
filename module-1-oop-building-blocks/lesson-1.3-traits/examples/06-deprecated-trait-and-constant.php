@@ -4,7 +4,8 @@ declare(strict_types=1);
 /**
  * Example 06 — #[Deprecated] on Traits and Constants (PHP 8.5)
  * ---------------------------------------------------------------
- * PHP 8.0 introduced the #[Deprecated] attribute for functions and methods.
+ * PHP 8.4 introduced the #[\Deprecated] attribute for functions, methods and
+ * class constants.
  * PHP 8.5 extends it to:
  *   - Traits (the entire trait is deprecated)
  *   - Class constants (a specific constant is deprecated)
@@ -37,7 +38,8 @@ echo "── Part 1: Before PHP 8.5 — unenforced @deprecated ──\n\n";
 trait LegacyLogTrait {
     public function writeLog(string $message): void {
         // Old implementation — writes to flat file, no levels, no context
-        file_put_contents('/tmp/legacy.log', date('Y-m-d H:i:s') . " {$message}\n", FILE_APPEND);
+        $logFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'legacy.log'; // portable temp path
+        file_put_contents($logFile, date('Y-m-d H:i:s') . " {$message}\n", FILE_APPEND);
         echo "  [LEGACY-LOG] {$message}\n";
     }
 }

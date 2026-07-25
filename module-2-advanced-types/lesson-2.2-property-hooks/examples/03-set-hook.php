@@ -97,21 +97,21 @@ echo "\n── Pattern B: Transformation on write ──────────
 class ContactRecord {
     // Always stored lowercase and trimmed
     public string $email = '' {
-        set(string $value) => $this->email = strtolower(trim($value));
+        set(string $value) => strtolower(trim($value));
     }
 
     // Stored as digits only (strip spaces, dashes, brackets)
     public string $phone = '' {
-        set(string $value) => $this->phone = preg_replace('/[^0-9+]/', '', $value);
+        set(string $value) => preg_replace('/[^0-9+]/', '', $value);
     }
 
     // Stored as sentence-case (first letter capitalised, rest lowercased)
     public string $firstName = '' {
-        set(string $v) => $this->firstName = ucfirst(strtolower(trim($v)));
+        set(string $v) => ucfirst(strtolower(trim($v)));
     }
 
     public string $lastName = '' {
-        set(string $v) => $this->lastName = ucfirst(strtolower(trim($v)));
+        set(string $v) => ucfirst(strtolower(trim($v)));
     }
 
     // Stored as a URL-safe slug
@@ -222,7 +222,7 @@ echo "\n── set hook: block vs arrow syntax ───────────
 class Examples {
     // Arrow: single expression — must assign $this->prop
     public string $tagArrow = '' {
-        set(string $v) => $this->tagArrow = strtolower(trim($v));
+        set(string $v) => strtolower(trim($v));
     }
 
     // Block: multiple statements — useful for complex validation
@@ -237,7 +237,7 @@ class Examples {
 
     // Implicit $value — arrow set without parameter declaration
     public string $code = '' {
-        set => $this->code = strtoupper($value); // $value is implicit
+        set => strtoupper($value); // $value is implicit
     }
 }
 

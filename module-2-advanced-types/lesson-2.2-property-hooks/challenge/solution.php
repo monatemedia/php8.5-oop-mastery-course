@@ -31,17 +31,17 @@ class BlogArticle implements Article {
 
     // Task 2 — title: trim on write (arrow set hook)
     public string $title = '' {
-        set(string $value) => $this->title = trim($value);
+        set(string $value) => trim($value);
     }
 
     // Task 2 — body: trim on write
     public string $body = '' {
-        set(string $value) => $this->body = trim($value);
+        set(string $value) => trim($value);
     }
 
     // Task 3 — author: trim + title-case on write
     public string $author = '' {
-        set(string $value) => $this->author = ucwords(strtolower(trim($value)));
+        set(string $value) => ucwords(strtolower(trim($value)));
     }
 
     // Task 4 — publishedAt: accepts string OR DateTimeImmutable, stores only DT

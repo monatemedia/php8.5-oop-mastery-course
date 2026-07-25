@@ -68,6 +68,7 @@ You know you are done when:
 - If you are unsure about syntax, look back at `examples/01-defining-and-implementing.php`.
 - For the type hints in `InvoiceService`, look at `examples/03-type-hints-and-polymorphism.php`.
 - Do not change the `process()` method's logic — only change how its dependencies arrive.
+- Money is formatted with `number_format($amount, 2)`. Interpolating a float straight into a string (`"R{$amount}"`) prints `R1500`, not `R1500.00` — PHP drops trailing zeros. Keep the `number_format()` calls if you want your output to match the expected output below.
 
 ---
 

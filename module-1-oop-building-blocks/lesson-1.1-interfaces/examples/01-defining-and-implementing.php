@@ -4,8 +4,11 @@ declare(strict_types=1);
 /**
  * Example 01 — Defining and Implementing a Single Interface
  * ---------------------------------------------------------
- * Run this file in your browser: http://localhost/module-1-oop-building-blocks/lesson-1.1-interfaces/examples/01-defining-and-implementing.php
- * Or via CLI: php examples/01-defining-and-implementing.php
+ * Run from the course root:
+ *   php module-1-oop-building-blocks/lesson-1.1-interfaces/examples/01-defining-and-implementing.php
+ *
+ * Every example in this course is a CLI script. Do not open them in a browser —
+ * the box-drawing output and \n line breaks only render correctly in a terminal.
  *
  * What you will see:
  *  - How to declare an interface

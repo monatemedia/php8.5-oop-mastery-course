@@ -27,7 +27,7 @@ declare(strict_types=1);
 // ║                                                                          ║
 // ║  The VIOLATION would be: one fat interface with all five methods,       ║
 // ║  forcing ThumbnailImage to stub out exportToCsv() with an exception.    ║
-// ║  See lesson-1.0-solid-overview/examples/isp.php for the full violation. ║
+// ║  See lesson-1.0-solid-overview/examples/04-isp.php for the full violation.║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
 // ─────────────────────────────────────────────────────────────────────────────

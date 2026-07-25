@@ -251,7 +251,7 @@ echo $g->greet() . "\n";
 | 9  | **F** | Interfaces cannot be instantiated. `new Flyable()` is a fatal error. |
 | 10 | **T** | `class Foo extends Bar implements Baz {}` is perfectly valid. |
 | 11 | **T** | `MyInterface::CONST` is the canonical way to access interface constants. |
-| 12 | **F** | Interface methods are **implicitly** abstract. Writing `abstract` is redundant and was deprecated in PHP 7. |
+| 12 | **F** | Interface methods are **implicitly** abstract. Writing `abstract` is not merely redundant — PHP rejects it outright with *"Access type for interface method ... must be omitted"*. The same applies to any visibility modifier other than `public`. |
 | 13 | **T** | `instanceof` checks the full contract chain, including implemented interfaces. |
 
 ## Section C

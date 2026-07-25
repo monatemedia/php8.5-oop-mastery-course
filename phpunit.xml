@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    PHPUnit configuration — PHP 8.5 OOP Mastery Course
+    ====================================================
+
+    IMPORTANT: always run with an explicit testsuite argument.
+
+        vendor/bin/phpunit  &#45;&#45;testsuite lesson-5.1
+        vendor/bin/phpunit  &#45;&#45;testsuite lesson-6.4
+
+    Do NOT run `vendor/bin/phpunit` with no arguments. The lessons deliberately
+    reuse class names (OrderService, ShoppingCart, SpyLogger, SimpleContainer)
+    across lessons so that each lesson reads standalone, and none of them are
+    namespaced. Loading every lesson into one process therefore dies with
+    "Cannot declare class X, name already in use".
+
+    To run everything at once, use the runner instead — it gives each file its
+    own process:
+
+        php run-tests.php
+
+    Each suite below covers one lesson: its examples/ plus the reference
+    solution. challenge/starter/ is excluded everywhere, because those files
+    are the deliberately-incomplete versions you are meant to complete
+    yourself; they are supposed to fail until you have.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         beStrictAboutOutputDuringTests="false"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         failOnWarning="false"
+         failOnNotice="false">
+
+    <testsuites>
+        <!-- ── Module 5 — Automated Testing &amp; TDD ────────────────────── -->
+        <testsuite name="lesson-5.1">
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/examples</directory>
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.1-phpunit-fundamentals/challenge/solution</directory>
+        </testsuite>
+
+        <testsuite name="lesson-5.2">
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/examples</directory>
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.2-unit-testing-with-fakes-and-stubs/challenge/solution</directory>
+        </testsuite>
+
+        <testsuite name="lesson-5.3">
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.3-tdd/examples</directory>
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.3-tdd/challenge/solution</directory>
+        </testsuite>
+
+        <!-- 5.4: 01 and 03 both declare SqliteProductRepository, so they
+             cannot share a process. Use: php run-tests.php 5.4 -->
+        <testsuite name="lesson-5.4">
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.4-integration-testing/challenge/solution</directory>
+        </testsuite>
+
+        <testsuite name="lesson-5.5">
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/examples</directory>
+            <directory suffix=".php">module-5-testing-and-tdd/lesson-5.5-testing-behaviours-not-layouts/challenge/solution</directory>
+        </testsuite>
+
+        <!-- ── Module 6 — Object Lifecycle &amp; State ───────────────────── -->
+        <testsuite name="lesson-6.1">
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/examples</directory>
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.1-share-nothing-architecture/challenge/solution</directory>
+        </testsuite>
+
+        <!-- 6.2: 03-dangerous-singletons and the solution both declare
+             SimpleContainer — solution only here. Use run-tests.php for both. -->
+        <testsuite name="lesson-6.2">
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.2-transient-vs-singleton-scopes/challenge/solution</directory>
+        </testsuite>
+
+        <testsuite name="lesson-6.3">
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/examples</directory>
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.3-danger-of-stateful-services/challenge/solution</directory>
+        </testsuite>
+
+        <testsuite name="lesson-6.4">
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/examples</directory>
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.4-designing-stateless-services/challenge/solution</directory>
+        </testsuite>
+
+        <!-- 6.5: examples 01/02/03 collide with the solution file. -->
+        <testsuite name="lesson-6.5">
+            <directory suffix=".php">module-6-object-lifecycle-and-state/lesson-6.5-factory-definitions/challenge/solution</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>module-5-testing-and-tdd</directory>
+            <directory>module-6-object-lifecycle-and-state</directory>
+        </include>
+    </source>
+</phpunit>
