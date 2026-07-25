@@ -80,10 +80,21 @@ echo "After clearing: " . $bob->getLabel() . "\n";
 echo "\n── Nullable return: finding records ─────────────────\n\n";
 
 class UserRepository {
-    private array $users = [
-        1 => new UserProfile(1, 'alice@example.com', 'Alice', null, 30),
-        2 => new UserProfile(2, 'bob@example.com',   'Bob',   null, 25),
-    ];
+    /** @var array<int, UserProfile> */
+    private array $users;
+
+    public function __construct() {
+        // NOTE: these cannot be a property default. PHP's "new in initializers"
+        // (8.1) covers parameter defaults, static variables, global constants and
+        // attribute arguments — but NOT class property defaults. Writing
+        //     private array $users = [1 => new UserProfile(...)];
+        // is a fatal "New expressions are not supported in this context" on every
+        // PHP version, 8.5 included. Object graphs get built in the constructor.
+        $this->users = [
+            1 => new UserProfile(1, 'alice@example.com', 'Alice', null, 30),
+            2 => new UserProfile(2, 'bob@example.com',   'Bob',   null, 25),
+        ];
+    }
 
     // Returns UserProfile if found, null if not — honest about the possibility
     public function findById(int $id): ?UserProfile {

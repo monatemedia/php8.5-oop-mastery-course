@@ -61,14 +61,14 @@ Which implementing class satisfies this contract?
 
 ```php
 public ?\DateTimeImmutable $publishedAt = null {
-    set(string|\DateTimeImmutable $value) { ... }
+    set(string|\DateTimeImmutable|null $value) { ... }
 }
 ```
 
-- A) The property stores either a string or a DateTimeImmutable — both are valid stored values.
-- B) The set hook accepts a string or DateTimeImmutable as input, but the property always stores a `?\DateTimeImmutable`. The set hook must convert strings before storing.
+- A) The property stores a string, a DateTimeImmutable or null — all three are valid stored values.
+- B) The set hook accepts a string, a DateTimeImmutable or null as input, but the property always stores a `?\DateTimeImmutable`. The hook must convert strings before storing.
 - C) This is a syntax error — the set hook type must match the property type exactly.
-- D) The property stores a string, and the get hook converts it to DateTimeImmutable on read.
+- D) Dropping `|null` from the hook's parameter type would make no difference, since the property is already nullable.
 
 ---
 
@@ -263,7 +263,7 @@ echo $c->csv   . "\n";
 | 3 | **C** | If only a `set` hook is defined, PHP provides a default `get` behaviour that returns the raw stored value. No error occurs. |
 | 4 | **C** | A virtual property with only a `get` hook has no `set` operation at all, so assigning to it throws an `Error` at runtime. (A is fine — a backed property with only a `set` hook keeps the default read behaviour. B is fine for the same reason in reverse. D is ordinary and valid.) |
 | 5 | **B** | A plain `public string $title = '';` is naturally readable — it satisfies `{ get; }`. Option A uses a private property (not readable by callers). Option C uses protected (not readable from outside). Option D provides only a `set` hook — not readable. |
-| 6 | **B** | The property's declared type is `?\DateTimeImmutable`. The `set` hook accepts a wider input type (`string|\DateTimeImmutable`). The hook converts strings to `DateTimeImmutable` before storing. The stored value is always `?\DateTimeImmutable`. |
+| 6 | **B** | The property's declared type is `?\DateTimeImmutable` (i.e. `DateTimeImmutable\|null`). The `set` hook's parameter type must be the same or **wider**, so it must still accept `null` — hence `string\|\DateTimeImmutable\|null`. The hook converts strings before storing; the stored value is always `?\DateTimeImmutable`. **D is the trap:** dropping `\|null` *narrows* the type and is a fatal error — *"Type of parameter $value of hook ...::set must be compatible with property type"*. Nullable property, nullable hook parameter. |
 | 7 | **B** | An abstract class can have concrete property hooks, which subclasses inherit just like concrete methods. Abstract hook declarations are also possible, forcing subclasses to provide them. |
 | 8 | **B** | The `get` hook references `$this->width` and `$this->height` but never `$this->area`, so `$area` is virtual — no storage, recomputed on every read, never cached. With no `set` hook there is no write operation, so assigning to it throws an `Error`. |
 
@@ -275,7 +275,7 @@ echo $c->csv   . "\n";
 | 11 | **F** | Property hooks cannot be `static` — they always operate on instance properties via `$this`. |
 | 12 | **T** | `{ get; set; }` in an interface means callers can both read and write the property. |
 | 13 | **T** | A plain `public` property is naturally readable and writable, satisfying both `{ get; }` and `{ set; }` requirements. |
-| 14 | **F** | The `set` hook parameter type may be **wider** (a supertype) than the property's declared type. This is how you accept multiple input types (e.g. `string|\DateTimeImmutable`) while storing only one (`?\DateTimeImmutable`). |
+| 14 | **F** | The `set` hook parameter type may be **wider** (contravariant) than the property's type — that is how you accept several input shapes while storing one. But wider means *strictly a superset*: a `?\DateTimeImmutable` property needs `string\|\DateTimeImmutable\|null`, not `string\|\DateTimeImmutable`. Forgetting `\|null` on a nullable property narrows the type and is a fatal error. |
 
 ## Section C
 

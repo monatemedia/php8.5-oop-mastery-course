@@ -65,17 +65,28 @@ $dispatcher->emit('order.placed'); // No listeners
 // void return type error demonstration
 function returnsVoid(): void {
     echo "This function returns void.\n";
-    // Returning a value from a void function is a TypeError:
+    // A bare `return;` is fine. `return $something;` is not — see below.
 }
 
 returnsVoid();
 
-try {
-    $fn = function(): void { return 42; }; // Trying to return a value
-    $fn();
-} catch (\TypeError $e) {
-    echo "void TypeError: " . $e->getMessage() . "\n";
-}
+// IMPORTANT: returning a value from a void function is NOT a catchable TypeError.
+// PHP rejects it at COMPILE time, before any of this file executes:
+//
+//     $fn = function(): void { return 42; };
+//     Fatal error: A void function must not return a value
+//
+// That is why the line below is commented out — uncommenting it does not throw
+// an exception you can catch, it stops the whole file from compiling. Try it.
+//
+// try {
+//     $fn = function(): void { return 42; };
+//     $fn();
+// } catch (\TypeError $e) {          // ← never reached; catch cannot help here
+//     echo "void TypeError: " . $e->getMessage() . "\n";
+// }
+
+echo "void: `return;` is allowed, `return \$value;` is a compile-time error.\n";
 
 
 // ─────────────────────────────────────────────────────────────────────────────

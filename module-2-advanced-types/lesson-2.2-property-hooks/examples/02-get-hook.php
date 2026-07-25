@@ -136,7 +136,13 @@ echo "\n── Pattern C: Lazy-loaded property ───────────
 
 class UserReport {
     private ?array $cachedStats = null;
-    private int    $loadCount   = 0;
+
+    // How many times was the expensive computation actually run?
+    // Readable from anywhere, writable only inside this class. Declaring BOTH a
+    // `private int $loadCount` and a `public int $loadCount { get; }` would be a
+    // duplicate property declaration — asymmetric visibility (PHP 8.4, Lesson
+    // 1.1) is the tool for "public read, private write".
+    public private(set) int $loadCount = 0;
 
     public function __construct(private int $userId) {}
 
@@ -150,11 +156,6 @@ class UserReport {
             }
             return $this->cachedStats;
         }
-    }
-
-    // How many times was the expensive computation actually run?
-    public int $loadCount {
-        get => $this->loadCount;
     }
 
     private function expensiveComputation(): array {

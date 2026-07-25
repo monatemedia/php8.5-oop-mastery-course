@@ -45,10 +45,17 @@ class BlogArticle implements Article {
     }
 
     // Task 4 — publishedAt: accepts string OR DateTimeImmutable, stores only DT
-    // The set parameter type (string|\DateTimeImmutable) is WIDER than the
-    // property's declared type (?DateTimeImmutable) — this is legal in PHP 8.4.
+    // The set parameter type must be the SAME as, or WIDER than, the property
+    // type. The property is ?\DateTimeImmutable — i.e. DateTimeImmutable|null —
+    // so the hook must accept null too. Omitting |null narrows the type and is a
+    // fatal error: "Type of parameter $value of hook ...::set must be compatible
+    // with property type".
     public ?\DateTimeImmutable $publishedAt = null {
-        set(string|\DateTimeImmutable $value) {
+        set(string|\DateTimeImmutable|null $value) {
+            if ($value === null) {
+                $this->publishedAt = null;
+                return;
+            }
             if (is_string($value)) {
                 $parsed = \DateTimeImmutable::createFromFormat('Y-m-d', $value);
                 if ($parsed === false) {
