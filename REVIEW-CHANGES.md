@@ -200,6 +200,28 @@ That last one is the one to remember. A harness that fails loudly gets investiga
 
 ---
 
+## Cover page and progress checker
+
+Added later, after the course was already verified green.
+
+`index.php` is a self-contained cover page. Herd serves this folder at a `.test` domain, and with no index file the site preview looks like a broken site. It is PHP rather than static HTML so it can show live state: your actual detected PHP version, whether dependencies are installed, and your real completion percentage parsed from `PROGRESS.md`.
+
+`check.php` answers the question nothing else did — *where am I?* `verify.php` only ever said whether the course was intact. `check.php` runs environment → integrity → progress, walking the 28 challenges in course order and stopping at the first unsolved one.
+
+### What building it uncovered
+
+Grading challenges meant comparing solution output to the documented "Expected Output" blocks — and those blocks had never been executed. **Twelve of them did not match their own reference solutions.** Regenerating them from verified runs exposed three further defects that no earlier check could see, because `php -l` proves a file parses and PHPUnit proves tests pass; neither notices a reference solution misbehaving at runtime:
+
+- **Lesson 1.4's solution failed its own assertions** — it printed `Some assertions FAILED` while its checklist asked "All seven test assertions pass?". Both `publish()` methods injected `StorageInterface` and never called it: an unused injected dependency, in the lesson about composing injected collaborators. It now persists before publishing.
+- **Lesson 2.3's solution emitted six PHP warnings.** `"Notification.$channel"` in a double-quoted string interpolated three variables that do not exist; they were meant to be literal property names.
+- **Lesson 3.3 leaked floating-point noise** into a JSON payload — `2999.9700000000003` instead of `2999.97`.
+
+Money formatting was also wrong across Modules 1–4: sixteen `number_format($x, 2)` calls used the default thousands separator, so documented values like `R1500.00` printed as `R1,500.00`. All now pass `'.', ''` explicitly.
+
+The expected-output blocks were then regenerated from verified solution output, truncated before each solution's self-review tail, with non-deterministic values masked — random order ids to `XXXXX`, object hashes and timestamps likewise. That is a deliberate editorial choice: the blocks are now longer and more literal than the hand-written excerpts they replace, but they describe what the code actually does. One of the originals referenced a test, `testLoggerCaptures`, that does not exist.
+
+---
+
 ## Running it
 
 ```bash

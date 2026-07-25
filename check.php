@@ -29,18 +29,17 @@ declare(strict_types=1);
  * HOW A CHALLENGE IS JUDGED
  * --------------------------
  * Modules 1-4 are scripts: your challenge/starter.php is run, and its output is
- * checked against the "Expected Output" block in CHALLENGE.md. The match is an
- * ORDERED SUBSEQUENCE, not an exact string — every expected line must appear,
- * in order, but you may print whatever else you like around them. Adding a
- * debug echo will not fail you.
+ * checked against the "Expected Output" block in CHALLENGE.md. Every expected
+ * line must appear SOMEWHERE in your output; order is not required and extra
+ * output is fine, so a debug echo will not fail you. Lines containing "...",
+ * "XXXXX" or "[timestamp]" are placeholders and match anything.
  *
  * Modules 5-6 are PHPUnit files: your challenge/starter/*Test.php is executed
  * by run-tests.php. It passes when your tests pass.
  *
  * If your output does not match, the checker runs the REFERENCE SOLUTION against
- * the same expected block before blaming you. Those blocks were written by hand
- * and at least one was wrong. If the solution fails too, that is a course bug,
- * you are told so, and you are not blocked by it.
+ * the same expected block before blaming you. If the solution fails too, that is
+ * a course bug: you are told so, it is not counted, and it does not block you.
  */
 
 $root = __DIR__;
