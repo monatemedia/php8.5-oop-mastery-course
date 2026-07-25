@@ -104,6 +104,15 @@ echo str_repeat('-', 70) . "\n";
 $passedFiles  = 0;
 $failedFiles  = [];
 $skippedFiles = [];
+$tempCopies   = [];
+
+// If this run dies partway through, do not leave stray <Class>.php files
+// sitting in the lesson folders.
+register_shutdown_function(static function () use (&$tempCopies): void {
+    foreach ($tempCopies as $stray) {
+        @unlink($stray);
+    }
+});
 
 foreach ($testFiles as $path) {
     $label = str_replace(str_replace('\\', '/', $root) . '/', '', $path);
@@ -190,43 +199,77 @@ foreach ($testFiles as $path) {
         continue;
     }
 
-    $shimDir = $tmpDir . DIRECTORY_SEPARATOR . md5($path);
-    @mkdir($shimDir, 0777, true);
-    $shims = [];
+    // PHPUnit wants the test class PHYSICALLY DECLARED in the file it is given.
+    // A shim that require()s the real file does not satisfy that — PHPUnit
+    // reports "does not extend PHPUnit\Framework\TestCase" even when it plainly
+    // does. So: if the filename already matches the class, run the file as-is;
+    // otherwise drop a temporary COPY next to it named after the class, run
+    // that, and delete it. Copying as a sibling (rather than into a temp dir)
+    // keeps __DIR__ intact, which Lesson 5.4 relies on to find ../app.php.
+    $basename = pathinfo($path, PATHINFO_FILENAME);
+    $targets  = [];
+
     foreach ($classes as $class) {
-        $shim = $shimDir . DIRECTORY_SEPARATOR . $class . '.php';
-        file_put_contents($shim, "<?php\nrequire_once " . var_export($path, true) . ";\n");
-        $shims[] = $shim;
+        if ($class === $basename) {
+            $targets[$class] = [$path, false];
+            continue;
+        }
+        $sibling = dirname($path) . DIRECTORY_SEPARATOR . $class . '.php';
+        if (file_exists($sibling)) {
+            // Never clobber a real course file.
+            $targets[$class] = [$sibling, false];
+            continue;
+        }
+        if (!@copy($path, $sibling)) {
+            echo "FAIL (could not stage {$class})\n";
+            $failedFiles[$label] = "Could not create temporary copy at {$sibling}";
+            continue 2;
+        }
+        $tempCopies[]    = $sibling;
+        $targets[$class] = [$sibling, true];
     }
 
-    $fileEls = '';
-    foreach ($shims as $shim) {
-        $fileEls .= '    <file>' . htmlspecialchars($shim, ENT_XML1) . '</file>' . "\n";
+    $out         = [];
+    $status      = 0;
+    $combined    = '';
+    $anyFailure  = false;
+
+    foreach ($targets as $class => [$runFile, $isTemp]) {
+        $cfg = $tmpDir . DIRECTORY_SEPARATOR . 'phpunit_' . md5($runFile) . '.xml';
+        file_put_contents($cfg, sprintf(
+            '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+            . '<phpunit bootstrap="%s" colors="false" cacheResult="false"' . "\n"
+            . '         beStrictAboutOutputDuringTests="false"' . "\n"
+            . '         failOnWarning="false" failOnNotice="false" failOnDeprecation="false">' . "\n"
+            . '  <testsuites><testsuite name="single"><file>%s</file></testsuite></testsuites>' . "\n"
+            . '</phpunit>' . "\n",
+            htmlspecialchars($root . '/vendor/autoload.php', ENT_XML1),
+            htmlspecialchars($runFile, ENT_XML1)
+        ));
+
+        $cmd = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($phpunit)
+             . ' --configuration ' . escapeshellarg($cfg)
+             . ' --colors=never --do-not-cache-result 2>&1';
+
+        $one = [];
+        $rc  = 0;
+        exec($cmd, $one, $rc);
+        @unlink($cfg);
+        if ($isTemp) {
+            @unlink($runFile);
+            $tempCopies = array_values(array_diff($tempCopies, [$runFile]));
+        }
+
+        $text = implode("\n", $one);
+        // "No tests executed" is a runner problem, not a pass.
+        if ($rc !== 0 || str_contains($text, 'No tests executed')) {
+            $anyFailure = true;
+        }
+        $combined .= ($combined === '' ? '' : "\n") . "--- {$class} ---\n" . $text;
     }
 
-    $cfg = $tmpDir . DIRECTORY_SEPARATOR . 'phpunit_' . md5($path) . '.xml';
-    file_put_contents($cfg, sprintf(
-        '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-        . '<phpunit bootstrap="%s" colors="false" cacheResult="false"' . "\n"
-        . '         beStrictAboutOutputDuringTests="false"' . "\n"
-        . '         failOnWarning="false" failOnNotice="false" failOnDeprecation="false">' . "\n"
-        . '  <testsuites><testsuite name="single">' . "\n%s"
-        . '  </testsuite></testsuites>' . "\n"
-        . '</phpunit>' . "\n",
-        htmlspecialchars($root . '/vendor/autoload.php', ENT_XML1),
-        $fileEls
-    ));
-
-    $cmd = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($phpunit)
-         . ' --configuration ' . escapeshellarg($cfg)
-         . ' --colors=never --do-not-cache-result 2>&1';
-
-    $out = [];
-    $status = 0;
-    exec($cmd, $out, $status);
-    @unlink($cfg);
-    foreach ($shims as $shim) { @unlink($shim); }
-    @rmdir($shimDir);
+    $status = $anyFailure ? 1 : 0;
+    $out    = explode("\n", $combined);
 
     if ($status === 0) {
         echo "PASS\n";

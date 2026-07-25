@@ -66,3 +66,4 @@ yarn-error.log
 **/tests/.phpunit.result.cache
 
 prompt.md
+# stray test-runner copies (run-tests.php cleans these up itself)
