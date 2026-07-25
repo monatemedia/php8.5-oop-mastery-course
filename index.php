@@ -259,6 +259,7 @@ $rules = [
     border-radius: var(--radius);
     padding: 1.35rem;
     display: flex; flex-direction: column;
+    min-width: 0; overflow-wrap: anywhere;
   }
   .card h3 { margin: 0.5rem 0 0.5rem; font-size: 1.08rem; }
   .num {
@@ -299,6 +300,11 @@ $rules = [
     counter-increment: s;
     background: var(--bg-card); border: 1px solid var(--line);
     border-radius: var(--radius); padding: 1.1rem 1.25rem 1.1rem 3.4rem; position: relative;
+    /* Grid children default to min-width:auto, so the long unbreakable command
+       inside <pre> below would otherwise stretch this card past the viewport
+       and force the whole page to scroll sideways on a phone. */
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   ol.steps li::before {
     content: counter(s);
@@ -312,8 +318,12 @@ $rules = [
   pre {
     background: #0b0e13; border: 1px solid var(--line);
     border-radius: 8px; padding: 0.75rem 0.9rem; margin: 0.6rem 0 0;
-    overflow-x: auto; font-size: 0.86rem;
+    overflow-x: auto;                 /* long commands scroll inside the card... */
+    max-width: 100%; min-width: 0;    /* ...instead of widening it */
+    font-size: 0.86rem;
+    -webkit-overflow-scrolling: touch;
   }
+  pre code { white-space: pre; }
   pre code { color: #cbd5e1; }
   .cmt { color: #6b7785; }
 

@@ -298,9 +298,9 @@ foreach ($requests as $req) {
 echo "\n--- Self-review checklist ---\n";
 echo "[ ] Three backed enums with correct cases and backing values?\n";
 echo "[ ] All required methods (label, shouldAlert/supportsRichText/etc.) present?\n";
-echo "[ ] Notification.$channel is NotificationChannel, not string?\n";
-echo "[ ] Notification.$priority is NotificationPriority, not string?\n";
-echo "[ ] Notification.$status is NotificationStatus with default ::Pending?\n";
+echo "[ ] Notification.\$channel is NotificationChannel, not string?\n";
+echo "[ ] Notification.\$priority is NotificationPriority, not string?\n";
+echo "[ ] Notification.\$status is NotificationStatus with default ::Pending?\n";
 echo "[ ] NotificationService has zero CHANNEL_* / PRIORITY_* string constants?\n";
 echo "[ ] sendFromRequest() uses tryFrom() for both channel and priority?\n";
 echo "[ ] All branching uses match() or enum methods — no string comparisons?\n";

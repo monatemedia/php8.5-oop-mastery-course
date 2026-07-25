@@ -112,19 +112,59 @@ After the composition root, add a second wiring that uses anonymous class stubs 
 
 ```
 === Production wiring ===
-[INFO] Checkout request received
-[INFO] Starting checkout for alice@example.com
-[CACHE] GET product_1
-[INFO] DB fetch: product #1
-[CACHE] SET product_1
-[INVENTORY] Checking WDG-001 × 2
-[INVENTORY] Reserving WDG-001 × 2
-[MAIL] To: alice@example.com | Subject: Order Confirmed #XXXXX
-[INFO] Checkout complete. Order #XXXXX
+
+  [INFO] Checkout request received
+  [INFO] Starting checkout for alice@example.com
+  [CACHE] MISS: product_1
+  [INFO] DB fetch: product #1
+  [DB] SELECT id, sku, name, price, stock FROM products WHERE id =
+  [CACHE] SET: product_1
+  [INVENTORY] Checking WDG-001 × 2
+  [DB] SELECT quantity FROM inventory WHERE sku = $1
+  [INVENTORY] Reserving WDG-001 × 2
+  [DB] EXEC: UPDATE inventory SET quantity = quantity - $1 WHERE sku = $2
+  [MAIL] To: alice@example.com | Subject: Order Confirmed #XXXXX
+  [INFO] Checkout complete. Order #XXXXX
+
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 59998,
+    "items": [
+        {
+            "name": "Widget Pro",
+            "quantity": 2,
+            "price": 29999,
+            "subtotal": 59998
+        }
+    ]
+}
 
 === Test wiring (anonymous class stubs — no infrastructure) ===
-[TEST] Logger: INFO — Checkout request received
-[TEST] Logger: INFO — Starting checkout for alice@example.com
-[TEST] Logger: INFO — Checkout complete.
-Test result: {"success":true,...}
+
+  [TEST] Logger: INFO — Checkout request received
+  [TEST] Logger: INFO — Starting checkout for alice@example.com
+  [TEST] Logger: INFO — DB fetch: product #1
+  [TEST] Logger: INFO — Checkout complete. Order #XXXXX
+
+Test result:
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 59998,
+    "items": [
+        {
+            "name": "Widget Pro",
+            "quantity": 2,
+            "price": 29999,
+            "subtotal": 59998
+        }
+    ]
+}
+
+Test assertions:
+  ✓ checkout succeeded
+  ✓ mailer was called once
+  ✓ email sent to alice
+  ✓ logger captured INFO entries
 ```

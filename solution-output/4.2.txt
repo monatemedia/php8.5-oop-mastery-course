@@ -1,0 +1,53 @@
+── Assertions ────────────────────────────────────────
+
+  ✓ FullyAutoWirable: 3 params
+  ✓ FullyAutoWirable: param[0] auto=true
+  ✓ FullyAutoWirable: param[0] builtin=false
+  ✓ FullyAutoWirable: param[0] optional=false
+  ✓ NoConstructor: returns []
+  ✓ EmptyConstructor: returns []
+  ✓ PrimitiveParams: 3 params
+  ✓ PrimitiveParams: param[0] builtin=true (string)
+  ✓ PrimitiveParams: param[0] auto=false
+  ✓ PrimitiveParams: param[2] builtin=false (interface)
+  ✓ PrimitiveParams: param[2] auto=true
+  ✓ OptionalLogger: 2 params
+  ✓ OptionalLogger: param[0] optional=false
+  ✓ OptionalLogger: param[1] optional=true
+  ✓ OptionalLogger: param[1] nullable=true
+  ✓ OptionalLogger: param[1] auto=true (interface)
+  ✓ PrimitiveWithDefault: 3 params
+  ✓ PrimitiveWithDefault: param[0] optional=false
+  ✓ PrimitiveWithDefault: param[1] optional=true
+  ✓ PrimitiveWithDefault: param[1] builtin=true
+  ✓ UnionType: 2 params
+  ✓ UnionType: param[0] auto=false (union)
+  ✓ UnionType: param[1] auto=true (interface)
+  ✓ MissingTypeHint: 2 params
+  ✓ MissingTypeHint: param[0] type=none
+  ✓ MissingTypeHint: param[0] auto=false
+  ✓ MissingTypeHint: param[1] auto=true
+
+── Benchmark ─────────────────────────────────────────
+
+Without cache: 34.27ms
+With cache:    1.55ms
+Cache stats:   {"classes_cached":4,"params_cached":4}
+Cached faster: YES
+
+Note: On first run, getConstructorDependencies() is comparable to ReflectionCache
+because PHP opcache may have warmed the reflection data already.
+The cache advantage is most visible when resolving the same class many times
+across many requests in a long-running process.
+
+--- Self-review checklist ---
+[ ] No constructor and empty constructor both return []?
+[ ] ReflectionNamedType with isBuiltin()=false → auto=true?
+[ ] ReflectionNamedType with isBuiltin()=true  → auto=false, builtin=true?
+[ ] Nullable (?Type) → nullable=true, auto=true (still an interface)?
+[ ] Union type → auto=false?
+[ ] No type hint → type='none', auto=false?
+[ ] Optional param → optional=true?
+[ ] All eight assertion groups pass?
+[ ] ReflectionCache::getClass() caches — same instance returned on second call?
+[ ] Cache stats show classes_cached = number of distinct classes reflected?

@@ -99,23 +99,62 @@ Assert that the spy mailer received exactly one `send()` call after checkout.
 
 ```
 === Flat wiring (buildApp) ===
+
+  [INFO] Request received
   [CACHE] MISS: product_1
-  ...
+  [INFO] DB fetch: product #1
+  [CACHE] SET: product_1
+  [INVENTORY] Checking WDG-001 × 2
+  [INVENTORY] Reserving WDG-001 × 2
+  [MAIL] To: alice@example.com | Order #XXXXX Confirmed
   [INFO] Order #XXXXX placed
-{"success":true,...}
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 59998,
+    "items": [
+        {
+            "name": "Widget Pro",
+            "qty": 2
+        }
+    ]
+}
 
 === PHP-DI wiring ===
+
+  [INFO] Request received
   [CACHE] MISS: product_1
-  ...
+  [INFO] DB fetch: product #1
+  [CACHE] SET: product_1
+  [INVENTORY] Checking WDG-001 × 2
+  [INVENTORY] Reserving WDG-001 × 2
+  [MAIL] To: alice@example.com | Order #XXXXX Confirmed
   [INFO] Order #XXXXX placed
-{"success":true,...}
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 59998,
+    "items": [
+        {
+            "name": "Widget Pro",
+            "qty": 2
+        }
+    ]
+}
+
+  [CACHE] MISS: product_1
+  [CACHE] SET: product_1
+  [INVENTORY] Checking TST × 1
+  [INVENTORY] Reserving TST × 1
 
 === Assertions ===
+
   ✓ Same controller (singleton)
   ✓ Same DB in ProductCatalog and InventoryChecker
   ✓ Spy mailer called once
   ✓ Checkout response has success=true
-  All assertions PASSED
+
+All assertions PASSED ✓
 ```
 
 ---

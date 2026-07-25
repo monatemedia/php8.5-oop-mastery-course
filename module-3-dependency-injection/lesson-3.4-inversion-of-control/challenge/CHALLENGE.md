@@ -94,20 +94,33 @@ At the bottom, add a test wiring section that uses anonymous class stubs for all
 ## Expected Output
 
 ```
-=== Flat IoC wiring ===
-[INFO] Handling request: listPosts
-[INFO] Fetching all posts
-[DB] Query: SELECT * FROM blog_posts
-[INFO] Returning 3 posts
-Response: {"success":true,"posts":[...]}
+=== Current (tightly coupled) output ===
 
-=== Container auto-wiring ===
-[INFO] Handling request: listPosts
-[INFO] Fetching all posts
-[DB] Query: SELECT * FROM blog_posts
-[INFO] Returning 3 posts
-Response: {"success":true,"posts":[...]}
-
-=== Test wiring (anonymous stubs) ===
-Assertion: response contains "success":true → PASSED
+  [INFO] Handling request: listPosts
+  [INFO] Fetching all posts
+  [DB] Query: SELECT * FROM blog_posts
+  [INFO] Returning 3 posts
+{
+    "success": true,
+    "posts": [
+        {
+            "id": 1,
+            "title": "Hello PHP 8.5",
+            "status": "published",
+            "author": "alice@example.com"
+        },
+        {
+            "id": 2,
+            "title": "IoC in Practice",
+            "status": "published",
+            "author": "bob@example.com"
+        },
+        {
+            "id": 3,
+            "title": "DI vs DIP",
+            "status": "draft",
+            "author": "alice@example.com"
+        }
+    ]
+}
 ```

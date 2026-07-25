@@ -227,11 +227,13 @@ class InvoiceService implements LoggerAwareInterface {
         // Dispatch event
         $this->dispatcher->dispatch('invoice.generated', [
             'id'    => $invoiceId,
-            'total' => $total,
+            // round() before serialising: 1499.99 * 2 is 2999.9700000000003 in
+            // binary floating point, and json_encode prints every digit of it.
+            'total' => round($total, 2),
         ]);
 
-        $this->logger->log('INFO', "Invoice #{$invoiceId} generated. Total: R" . number_format($total, 2));
-        echo "Invoice #{$invoiceId} generated. Total: R" . number_format($total, 2) . "\n";
+        $this->logger->log('INFO', "Invoice #{$invoiceId} generated. Total: R" . number_format($total, 2, '.', ''));
+        echo "Invoice #{$invoiceId} generated. Total: R" . number_format($total, 2, '.', '') . "\n";
 
         return $invoice;
     }

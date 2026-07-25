@@ -1,0 +1,95 @@
+=== BlogPost ===
+Logs:
+  [2026-07-25 11:39:12] created {}
+  [2026-07-25 11:39:12] published {"slug":"my-first-post"}
+JSON:
+{
+    "title": "My First Post",
+    "slug": "my-first-post",
+    "author": "Alice",
+    "created_at": "2026-07-25 11:39:12",
+    "updated_at": "2026-07-25 11:39:12"
+}
+
+=== LandingPage ===
+Logs:
+  [2026-07-25 11:39:12] created {}
+  [2026-07-25 11:39:12] went_live {"url":"\/promo\/summer","campaign":"SUMMER2024"}
+JSON:
+{
+    "url": "\/promo\/summer",
+    "headline": "Summer Sale \u2014 50% Off",
+    "campaign": "SUMMER2024",
+    "is_live": true,
+    "created_at": "2026-07-25 11:39:12",
+    "updated_at": "2026-07-25 11:39:12"
+}
+
+=== Product ===
+Logs:
+  [2026-07-25 11:39:12] created {}
+  [2026-07-25 11:39:12] stock_updated {"from":100,"to":85}
+JSON:
+{
+    "sku": "WDG-001",
+    "name": "Widget Pro",
+    "price": 299,
+    "stock": 85,
+    "created_at": "2026-07-25 11:39:12",
+    "updated_at": "2026-07-25 11:39:12"
+}
+
+=== Order ===
+Logs:
+  [2026-07-25 11:39:12] created {"id":1042,"total":1500}
+  [2026-07-25 11:39:12] confirmed {}
+  [2026-07-25 11:39:12] shipped {"customer":"bob@example.com"}
+JSON:
+{
+    "id": 1042,
+    "status": "shipped",
+    "total": 1500,
+    "customer_email": "bob@example.com",
+    "created_at": "2026-07-25 11:39:12",
+    "updated_at": "2026-07-25 11:39:12"
+}
+
+=== Type-safe function calls ===
+Logs for BlogPost:
+  [2026-07-25 11:39:12] created {}
+  [2026-07-25 11:39:12] published {"slug":"my-first-post"}
+Logs for Order:
+  [2026-07-25 11:39:12] created {"id":1042,"total":1500}
+  [2026-07-25 11:39:12] confirmed {}
+  [2026-07-25 11:39:12] shipped {"customer":"bob@example.com"}
+
+Product JSON via exportToJson():
+{
+    "sku": "WDG-001",
+    "name": "Widget Pro",
+    "price": 299,
+    "stock": 85,
+    "created_at": "2026-07-25 11:39:12",
+    "updated_at": "2026-07-25 11:39:12"
+}
+
+=== BONUS: Customer (fifth model, zero trait/interface changes) ===
+Logs for Customer:
+  [2026-07-25 11:39:12] registered {"email":"carol@example.com"}
+  [2026-07-25 11:39:12] tier_upgraded {"from":"standard","to":"premium"}
+{
+    "id": 1,
+    "email": "carol@example.com",
+    "tier": "premium",
+    "created_at": "2026-07-25 11:39:12",
+    "updated_at": "2026-07-25 11:39:12"
+}
+
+--- Self-review checklist ---
+[ ] Three interfaces defined with the correct method signatures?
+[ ] LoggableTrait owns the $log array and all three log methods?
+[ ] TimestampableTrait owns $createdAt, $updatedAt and initTimestamps()?
+[ ] JsonSerialisableTrait provides toJson() ONLY — not toArray()?
+[ ] All four classes have zero duplicated log/timestamp/toJson code?
+[ ] printEntityLog() and exportToJson() typed against interfaces, not traits?
+[ ] Adding Customer required only: implement + use + toArray() — nothing else changed?

@@ -165,7 +165,7 @@ class InvoiceService {  // TODO Task 2: implements LoggerAwareInterface
             'items' => $lineItems,
         ];
 
-        echo "Invoice #{$invoiceId} generated. Total: R" . number_format($total, 2) . "\n";
+        echo "Invoice #{$invoiceId} generated. Total: R" . number_format($total, 2, '.', '') . "\n";
         return $invoice;
     }
 

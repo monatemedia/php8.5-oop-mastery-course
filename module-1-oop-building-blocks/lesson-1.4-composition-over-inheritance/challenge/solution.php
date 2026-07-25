@@ -132,6 +132,15 @@ class BlogPost implements ContentInterface {
     public function publish(): bool {
         if (!$this->validate()) return false;
 
+        // Persist first, then publish. Without this the injected
+        // StorageInterface would be a dependency the class never uses —
+        // exactly the smell this lesson is about.
+        $this->storage->save($this->id, [
+            'title'        => $this->title,
+            'body'         => $this->body,
+            'author_email' => $this->authorEmail,
+        ]);
+
         $published = $this->publisher->publish($this->id, [
             'title'        => $this->title,
             'author_email' => $this->authorEmail,
@@ -188,6 +197,11 @@ class VideoPost implements ContentInterface {
 
     public function publish(): bool {
         if (!$this->validate()) return false;
+
+        $this->storage->save($this->id, [
+            'title'     => $this->title,
+            'video_url' => $this->videoUrl,
+        ]);
 
         $published = $this->publisher->publish($this->id, [
             'title'     => $this->title,
@@ -312,7 +326,8 @@ $assertions = [
 ];
 
 echo "Spy logger entries: " . count($spyLogger->entries) . "\n";
-echo "validate results: BlogPost={$blogValid}, VideoPost={$videoValid}\n\n";
+echo "validate results: BlogPost=" . var_export($blogValid, true)
+   . ", VideoPost=" . var_export($videoValid, true) . "\n\n";
 
 $allPassed = true;
 foreach ($assertions as $label => $result) {

@@ -79,19 +79,20 @@ At the bottom of the file, wire up all the fixed classes and call the functions.
 ```
 === Renderers ===
 [HTML] <div class="content">Hello World</div>
-[HTML+LAYOUT] <html><body><main>Hello World</main></body></html>
 [RSS] <item><description>Hello World</description></item>
+[HTML+LAYOUT] <html><body><main>Hello World</main></body></html>
 
 === Storage ===
 [DB] Persisted record with id=1
-[DB] Found: {"id":1,"name":"Alice"}
+[DB] Found: {"name":"Alice","id":1}
 [MEMORY] Persisted record with id=1
-[MEMORY] Found: {"id":1,"name":"Alice"}
+[MEMORY] Found: {"name":"Alice","id":1}
 [FILE] Read record id=1: {"id":1,"name":"Alice (from file)"}
-(ReadOnlyFileStorage cannot be passed to persist() — PHP prevents it)
+(ReadOnlyFileStorage cannot be passed to persistRecord() — PHP prevents it)
 
 === Notifications ===
-[EMAIL] To: alice@example.com | alice@example.com | CC: manager@example.com | Msg: Hello Alice
+[EMAIL] To: alice@example.com | CC: manager@example.com | Msg: Hello Alice
 [SMS]   To: +27821234567 | Msg: Hello Bob
+[EMAIL] To: bob@example.com | CC: manager@example.com | Msg: Hello from basic sender
 (SmsNotificationSender cannot be passed to sendRichNotification() — PHP prevents it)
 ```

@@ -100,26 +100,90 @@ At the bottom of the file, write a `BadCheckoutController` class that stores the
 
 ```
 === Flat wiring (buildApp) ===
-[INFO] Checkout request received
-[INFO] Starting checkout for alice@example.com
-[CACHE] MISS: product_1
-[INFO] DB fetch: product #1
-[CACHE] SET: product_1
-[INVENTORY] Checking WDG-001 × 2
-[INVENTORY] Reserving WDG-001 × 2
-[MAIL] To: alice@example.com | Order Confirmed #XXXXX
-[INFO] Checkout complete. Order #XXXXX
+
+  [INFO] Checkout request received
+  [INFO] Starting checkout for alice@example.com
+  [CACHE] MISS: product_1
+  [INFO] DB fetch: product #1
+  [CACHE] SET: product_1
+  [INVENTORY] Checking WDG-001 × 2
+  [INVENTORY] Reserving WDG-001 × 2
+  [MAIL] To: alice@example.com | Order Confirmed #XXXXX
+  [INFO] Checkout complete. Order #XXXXX
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 59998,
+    "items": [
+        {
+            "name": "Widget Pro",
+            "qty": 2,
+            "subtotal": 59998
+        }
+    ]
+}
 
 === Container wiring ===
-[INFO] Checkout request received
-... (identical output)
+
+  [INFO] Checkout request received
+  [INFO] Starting checkout for alice@example.com
+  [CACHE] MISS: product_1
+  [INFO] DB fetch: product #1
+  [CACHE] SET: product_1
+  [INVENTORY] Checking WDG-001 × 2
+  [INVENTORY] Reserving WDG-001 × 2
+  [MAIL] To: alice@example.com | Order Confirmed #XXXXX
+  [INFO] Checkout complete. Order #XXXXX
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 59998,
+    "items": [
+        {
+            "name": "Widget Pro",
+            "qty": 2,
+            "subtotal": 59998
+        }
+    ]
+}
 
 === Singleton assertions ===
-Same controller? YES ✓
+
+Same controller instance? YES ✓
 Same DB in ProductCatalog and InventoryChecker? YES ✓
+DB instance ID: 4c675c
 
 === Service Locator anti-pattern (BadCheckoutController) ===
-[INFO] Request received (bad pattern)
-...
-// Comment: BadCheckoutController is wrong because...
+
+  [INFO] Request received (bad pattern — Service Locator)
+  [INFO] Starting checkout for bob@example.com
+  [CACHE] MISS: product_2
+  [INFO] DB fetch: product #2
+  [CACHE] SET: product_2
+  [INVENTORY] Checking WDG-002 × 1
+  [INVENTORY] Reserving WDG-002 × 1
+  [MAIL] To: bob@example.com | Order Confirmed #XXXXX
+  [INFO] Checkout complete. Order #XXXXX
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 14999,
+    "items": [
+        {
+            "name": "Widget Lite",
+            "qty": 1,
+            "subtotal": 14999
+        }
+    ]
+}
+
+Why BadCheckoutController is wrong:
+  ✗ Constructor signature reveals nothing about real dependencies
+  ✗ To test: must pre-populate a full container — not just pass fakes
+  ✗ Coupled to SimpleContainer class name and API
+  ✗ If the container were static, concurrent tests would share state
+
+The correct version (CheckoutController) has:
+  __construct(CheckoutService $service, LoggerInterface $logger)
+  — both dependencies visible, injectable with fakes in one line
 ```

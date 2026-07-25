@@ -113,13 +113,13 @@ Replace all string literals with enum cases and all `->getStatus() === 'sent'` c
 
 ```
 === Sending notifications ===
-[EMAIL] 🚨 Urgent: Server is down! (retries: 10)
+[Email] 🚨 Urgent: Server is down! (retries: 10)
   Channel: Email | Rich text: YES | Max length: 10000 chars
 [SMS] 🔴 High: Disk usage above 90% (retries: 5)
   Channel: SMS | Rich text: NO | Max length: 160 chars
-[PUSH] 📢 Normal: Weekly summary is ready (retries: 3)
+[Push] 📢 Normal: Weekly summary is ready (retries: 3)
   Channel: Push Notification | Rich text: NO | Max length: 256 chars
-[SLACK] 🟢 Low: Cron job completed (retries: 1)
+[Slack] 🟢 Low: Cron job completed (retries: 1)
   Channel: Slack | Rich text: YES | Max length: 4000 chars
 
 === Status transitions ===
@@ -128,12 +128,14 @@ INF-002: ⏳ Pending → ❌ Failed
 INF-002: canRetry=YES → ⏳ Pending → ✅ Sent
 
 === Repository queries ===
-Email notifications: 2
-Failed notifications: 1
+Email notifications: 1
+Failed notifications: 0
 
 === Parsing from external request ===
 ✓ Parsed channel: Email
-✓ Parsed priority: High
+✓ Parsed priority: 🔴 High
+[Email] 🔴 High: Test (retries: 5)
+  Channel: Email | Rich text: YES | Max length: 10000 chars
 ✗ Invalid channel 'telegram' — valid options: email, sms, push, slack
 ✗ Invalid priority '7' — valid options: 1, 5, 10, 99
 ```

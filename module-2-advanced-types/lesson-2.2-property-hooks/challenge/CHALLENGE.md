@@ -83,9 +83,9 @@ Replace all `->getX()` and `->setX()` calls with direct property access. The out
 
 ```
 === Article 1 ===
-Title:  PHP 8.4 is Here
+Title:  php 8.4 is here
 Author: Alice Smith
-Slug:   php-8-4-is-here
+Slug:   php-84-is-here
 Tags:   hooks, new-features, php
 Published: 2024-11-21
 Body preview: PHP 8.4 introduces property hooks, which replace boilerplate...
@@ -96,10 +96,10 @@ Author: Bob Jones
 Slug:   oop-design-patterns
 Tags:   design-patterns, oop, php
 Published: (not yet published)
-Body preview: Design patterns are reusable solutions to common problems...
+Body preview: Design patterns are reusable solutions to common problems in...
 
 === Type-safe function ===
-[ARTICLE] php-8-4-is-here by Alice Smith (hooks, new-features, php)
+[ARTICLE] php-84-is-here by Alice Smith (hooks, new-features, php)
 [ARTICLE] oop-design-patterns by Bob Jones (design-patterns, oop, php)
 ```
 

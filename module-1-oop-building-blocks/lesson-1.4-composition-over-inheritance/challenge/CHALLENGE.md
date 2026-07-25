@@ -112,21 +112,34 @@ Add a second wiring that uses anonymous class stubs for `StorageInterface` and a
 
 ```
 === Production wiring ===
-[INFO] Creating blog post: PHP 8.5 Features
-[INFO] BlogPost validated: PHP 8.5 Features
-[INFO] Publishing content: blog-001
-[STORAGE] Saved: blog-001
-[INFO] BlogPost published successfully
 
-[INFO] Creating video post: PHP 8.5 Demo
-[INFO] VideoPost validated: PHP 8.5 Demo
-[INFO] Publishing content: video-001
-[STORAGE] Saved: video-001
-[INFO] VideoPost published successfully
+  [INFO] Creating blog post: PHP 8.5 Features
+  [INFO] Creating video post: PHP 8.5 Demo
+  [INFO] BlogPost validated: PHP 8.5 Features
+  [STORAGE] Saved: blog-001
+  [INFO] Publishing content: blog-001
+  [STORAGE] Saved: blog-001
+  [INFO] BlogPost published successfully
+
+  [INFO] VideoPost validated: PHP 8.5 Demo
+  [STORAGE] Saved: video-001
+  [INFO] Publishing content: video-001
+  [STORAGE] Saved: video-001
+  [INFO] VideoPost published successfully
 
 === Test wiring (anonymous stubs) ===
-Spy logger entries: 6
+
+Spy logger entries: 8
 validate results: BlogPost=true, VideoPost=true
+
+  ✓ BlogPost validates correctly
+  ✓ VideoPost validates correctly
+  ✓ Logger captured 6+ entries
+  ✓ Blog publish logged
+  ✓ Video publish logged
+  ✓ Blog was saved in fake storage
+  ✓ Video was published
+
 All assertions PASSED
 ```
 

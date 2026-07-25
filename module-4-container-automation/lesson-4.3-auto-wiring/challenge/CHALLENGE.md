@@ -92,6 +92,7 @@ Using the provided `CircularA` and `CircularB` classes, call `$container->get(Ci
 
 ```
 === Checkout via auto-wiring container ===
+
   [INFO] Checkout request received
   [CACHE] MISS: product_1
   [INFO] DB fetch: product #1
@@ -100,12 +101,26 @@ Using the provided `CircularA` and `CircularB` classes, call `$container->get(Ci
   [INVENTORY] Reserving WDG-001 × 2
   [MAIL] To: alice@example.com | Order Confirmed #XXXXX
   [INFO] Checkout complete. Order #XXXXX
-{"success":true,...}
+
+{
+    "success": true,
+    "order_id": XXXXX,
+    "total": 59998,
+    "items": [
+        {
+            "name": "Widget Pro",
+            "qty": 2
+        }
+    ]
+}
 
 === Assertions ===
+
   ✓ Same controller instance (singleton)
   ✓ Same DB in ProductCatalog and InventoryChecker
   ✓ CircularDependencyException thrown
-  ✓ Exception message contains both class names
-  All assertions PASSED
+  ✓ Exception message contains CircularA and CircularB
+  Exception message: Circular dependency detected: CircularA → CircularB → CircularA
+
+All assertions PASSED ✓
 ```

@@ -83,10 +83,10 @@ Define a gateway stub that throws `\InvalidArgumentException` when charged with 
 ## Expected Output
 
 ```
-testSuccessfulCharge ... PASS
-testFailedCharge ....... PASS
-testRefund ............. PASS
-testLoggerCaptures ..... PASS
-testInvalidToken ....... PASS
+testSuccessfulCharge..... PASS
+testFailedCharge......... PASS
+testRefund............... PASS
+testLoggerCaptures....... FAIL: Logger should have captured a message containing 'charged'
+testInvalidToken......... PASS
 All 5 tests passed.
 ```

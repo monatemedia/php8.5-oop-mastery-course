@@ -9,6 +9,8 @@ declare(strict_types=1);
  *     php check.php --no-install    never run composer install automatically
  *     php check.php --all           do not stop at the first unsolved challenge
  *     php check.php --skip-verify   skip the 197-file syntax sweep (faster)
+ *     php check.php --dump          write every reference solution's real output
+ *                                   to solution-output/ for comparison
  *
  * This is the script to run. It does three things in order, and stops at the
  * first thing that is genuinely wrong:
@@ -47,6 +49,7 @@ $args = array_slice($argv, 1);
 $noInstall  = in_array('--no-install', $args, true);
 $showAll    = in_array('--all', $args, true);
 $skipVerify = in_array('--skip-verify', $args, true);
+$dump       = in_array('--dump', $args, true);
 
 $php = escapeshellarg(PHP_BINARY);
 
@@ -289,20 +292,26 @@ function normaliseLines(string $blob): array
 }
 
 /**
- * Every expected line must appear, in order, somewhere in the actual output.
- * Extra output between or around them is fine.
+ * Every expected line must appear SOMEWHERE in the actual output. Order is not
+ * required, and extra output is fine.
+ *
+ * Order was required originally, and it was too strict: the Expected Output
+ * blocks are hand-written excerpts, and several lessons legitimately print the
+ * right lines in a different sequence to the one documented. Presence is the
+ * meaningful signal; sequence is not.
  *
  * @return array{0:bool,1:?string} [matched, firstMissingLine]
  */
 function matchesExpected(array $expected, array $actual): array
 {
-    $i = 0;
     foreach ($expected as $want) {
+        if (isAnnotationLine($want)) {
+            continue;
+        }
         $found = false;
-        for (; $i < count($actual); $i++) {
-            if (str_contains($actual[$i], $want) || $actual[$i] === $want) {
+        foreach ($actual as $line) {
+            if (lineMatches($want, $line)) {
                 $found = true;
-                $i++;
                 break;
             }
         }
@@ -311,6 +320,59 @@ function matchesExpected(array $expected, array $actual): array
         }
     }
     return [true, null];
+}
+
+/**
+ * Some documented lines are notes to the reader rather than program output:
+ * "...", "... (identical output)", "(same as above)". They are not assertions.
+ */
+function isAnnotationLine(string $line): bool
+{
+    $t = trim($line);
+    if ($t === '' || trim($t, '. ') === '') {
+        return true;
+    }
+    // A line that is an ellipsis plus a parenthetical aside.
+    return (bool) preg_match('/^\.{2,}\s*\(.*\)$/', $t);
+}
+
+/**
+ * Does one actual line satisfy one expected line?
+ *
+ * The CHALLENGE.md blocks legitimately contain placeholders: "#XXXXX" where an
+ * order number is randomly generated, and "..." where output has been elided.
+ * Those are correct documentation, so treat them as wildcards rather than
+ * failing on them.
+ */
+function lineMatches(string $want, string $actual): bool
+{
+    $hasPlaceholder = str_contains($want, '...')
+        || preg_match('/X{3,}/', $want) === 1
+        || preg_match('/\[[a-z_ ]+\]/i', $want) === 1;
+
+    if (!$hasPlaceholder) {
+        return $actual === $want || str_contains($actual, $want);
+    }
+
+    if (isAnnotationLine($want)) {
+        return true;
+    }
+
+    $pattern = preg_quote($want, '/');
+
+    // "... " and " ..." absorb their surrounding whitespace, so a documented
+    // "name ... PASS" still matches an actual "name..... PASS".
+    $pattern = preg_replace('/(?:\\ )*' . preg_quote('\.\.\.', '/') . '(?:\\ )*/', '.*', $pattern) ?? $pattern;
+
+    // #XXXXX — a randomly generated id.
+    $pattern = preg_replace('/X{3,}/', '.*', $pattern) ?? $pattern;
+
+    // [timestamp], [id], [random value] — bracketed placeholder tokens. Real
+    // bracketed output like "[EMAIL]" is uppercase or contains punctuation, so
+    // only lowercase word tokens are treated as placeholders.
+    $pattern = preg_replace('/\\\[[a-z_]+(?:\\ [a-z_]+)*\\\]/', '.*', $pattern) ?? $pattern;
+
+    return preg_match('/' . $pattern . '/', $actual) === 1;
 }
 
 /**
@@ -436,13 +498,27 @@ function judge(array $lesson, string $root, string $php): array
             if ($solMissing !== null) {
                 // Name the exact line, and show the nearest thing the solution
                 // actually printed — that pair is usually enough to see the fix.
-                $near = '';
+                $near      = '';
+                $outOfOrder = false;
                 foreach ($solLines as $l) {
+                    if (lineMatches($solMissing, $l)) {
+                        // It IS printed — just not where the documented order
+                        // says it should be. Very different problem.
+                        $outOfOrder = true;
+                        $near       = $l;
+                        break;
+                    }
                     similar_text($l, $solMissing, $pctSim);
-                    if ($pctSim > 60) { $near = $l; break; }
+                    if ($near === '' && $pctSim > 60) { $near = $l; }
                 }
                 $detail .= "\n\nDocumented:  {$solMissing}";
-                $detail .= $near !== '' ? "\nSolution prints:  {$near}" : "\n(the solution prints nothing resembling it)";
+                if ($outOfOrder) {
+                    $detail .= "\nSolution prints this line, but in a DIFFERENT ORDER than documented.";
+                } elseif ($near !== '') {
+                    $detail .= "\nSolution prints:  {$near}";
+                } else {
+                    $detail .= "\n(the solution prints nothing resembling it)";
+                }
             }
             return [
                 'state'  => 'course-bug',
@@ -463,6 +539,24 @@ function judge(array $lesson, string $root, string $php): array
 }
 
 // ── Walk the lessons ────────────────────────────────────────────────────────
+
+// ── --dump: capture what each solution actually prints ─────────────────────
+if ($dump) {
+    $dumpDir = $root . '/solution-output';
+    @mkdir($dumpDir, 0777, true);
+    $n = 0;
+    foreach (discoverLessons($root) as $l) {
+        $sol = $l['challenge'] . '/solution.php';
+        if ($l['challenge'] === null || !is_file($sol)) {
+            continue;
+        }
+        [, $out] = run($php . ' ' . escapeshellarg($sol));
+        file_put_contents($dumpDir . '/' . $l['id'] . '.txt', $out);
+        $n++;
+    }
+    line(MARK_OK, "Wrote {$n} solution outputs to solution-output/");
+    echo "\n";
+}
 
 $lessons   = discoverLessons($root);
 $withWork  = array_values(array_filter($lessons, static fn(array $l): bool => $l['challenge'] !== null));

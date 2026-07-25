@@ -50,7 +50,7 @@ abstract class PaymentProcessor {
 
     protected function logTransaction(string $type, float $amount, bool $success): void {
         $status    = $success ? 'SUCCESS' : 'FAILED';
-        $formatted = number_format($amount, 2);
+        $formatted = number_format($amount, 2, '.', '');
         $name      = strtoupper($this->getProcessorName());
         echo "[{$name}] LOG {$type} R{$formatted} {$status}\n";
     }
@@ -66,7 +66,10 @@ abstract class PaymentProcessor {
         $header = $this->buildReceiptHeader($amount, $currency, $token);
 
         // STEP 2: shared body (concrete — identical for all processors)
-        $body = "Fee: R{$fee} | Net: R{$net}";
+        // Money is always two decimals. Interpolating the raw float prints
+        // "14.8", not "14.80" — PHP drops the trailing zero.
+        $body = "Fee: R" . number_format($fee, 2, '.', '')
+              . " | Net: R" . number_format($net, 2, '.', '');
 
         // STEP 3: shared footer (concrete — identical for all processors)
         $footer = "Merchant: {$this->merchantId}\nProcessed at: " . date('Y-m-d H:i:s');
@@ -83,7 +86,7 @@ abstract class PaymentProcessor {
 
 class StripeProcessor extends PaymentProcessor {
     public function charge(float $amount, string $currency, string $token): bool {
-        echo "[STRIPE] Charging R" . number_format($amount, 2) . " {$currency} on token {$token}\n";
+        echo "[STRIPE] Charging R" . number_format($amount, 2, '.', '') . " {$currency} on token {$token}\n";
         $success = true;
         $this->logTransaction('charge', $amount, $success);
         return $success;
@@ -92,13 +95,13 @@ class StripeProcessor extends PaymentProcessor {
     public function getProcessorName(): string { return 'Stripe'; }
 
     protected function buildReceiptHeader(float $amount, string $currency, string $token): string {
-        return "Stripe Payment Receipt\nTransaction: {$token} | R" . number_format($amount, 2) . " {$currency}";
+        return "Stripe Payment Receipt\nTransaction: {$token} | R" . number_format($amount, 2, '.', '') . " {$currency}";
     }
 }
 
 class PayFastProcessor extends PaymentProcessor {
     public function charge(float $amount, string $currency, string $token): bool {
-        echo "[PAYFAST] Initiating R" . number_format($amount, 2) . " {$currency} via token {$token}\n";
+        echo "[PAYFAST] Initiating R" . number_format($amount, 2, '.', '') . " {$currency} via token {$token}\n";
         $success = true;
         $this->logTransaction('charge', $amount, $success);
         return $success;
@@ -107,7 +110,7 @@ class PayFastProcessor extends PaymentProcessor {
     public function getProcessorName(): string { return 'PayFast'; }
 
     protected function buildReceiptHeader(float $amount, string $currency, string $token): string {
-        return "PayFast Payment Confirmation\nTransaction: {$token} | R" . number_format($amount, 2) . " {$currency}";
+        return "PayFast Payment Confirmation\nTransaction: {$token} | R" . number_format($amount, 2, '.', '') . " {$currency}";
     }
 }
 
@@ -121,12 +124,12 @@ $payfast = new PayFastProcessor('pf_key_xyz789', 'MERCH-001234');
 
 echo "=== Stripe ===\n";
 $stripe->charge(500.00, 'ZAR', 'tok_abc123');
-echo "Fee: R" . $stripe->calculateFee(500.00) . "\n\n";
+echo "Fee: R" . number_format($stripe->calculateFee(500.00), 2, '.', '') . "\n\n";
 echo $stripe->generateReceipt(500.00, 'ZAR', 'tok_abc123') . "\n";
 
 echo "\n=== PayFast ===\n";
 $payfast->charge(500.00, 'ZAR', 'tok_pf456');
-echo "Fee: R" . $payfast->calculateFee(500.00) . "\n\n";
+echo "Fee: R" . number_format($payfast->calculateFee(500.00), 2, '.', '') . "\n\n";
 echo $payfast->generateReceipt(500.00, 'ZAR', 'tok_pf456') . "\n";
 
 echo "\n=== Constructor validation ===\n";
@@ -148,7 +151,7 @@ try {
 
 class PayPalProcessor extends PaymentProcessor {
     public function charge(float $amount, string $currency, string $token): bool {
-        echo "[PAYPAL] Processing R" . number_format($amount, 2) . " {$currency} token {$token}\n";
+        echo "[PAYPAL] Processing R" . number_format($amount, 2, '.', '') . " {$currency} token {$token}\n";
         $success = true;
         $this->logTransaction('charge', $amount, $success);
         return $success;
@@ -157,14 +160,14 @@ class PayPalProcessor extends PaymentProcessor {
     public function getProcessorName(): string { return 'PayPal'; }
 
     protected function buildReceiptHeader(float $amount, string $currency, string $token): string {
-        return "PayPal Transaction Record\nRef: {$token} | R" . number_format($amount, 2) . " {$currency}";
+        return "PayPal Transaction Record\nRef: {$token} | R" . number_format($amount, 2, '.', '') . " {$currency}";
     }
 }
 
 echo "\n=== BONUS: PayPal (zero changes to existing code) ===\n";
 $paypal = new PayPalProcessor('pp_live_def456', 'MERCH-001234');
 $paypal->charge(500.00, 'ZAR', 'tok_pp789');
-echo "Fee: R" . $paypal->calculateFee(500.00) . "\n\n";
+echo "Fee: R" . number_format($paypal->calculateFee(500.00), 2, '.', '') . "\n\n";
 echo $paypal->generateReceipt(500.00, 'ZAR', 'tok_pp789') . "\n";
 
 
