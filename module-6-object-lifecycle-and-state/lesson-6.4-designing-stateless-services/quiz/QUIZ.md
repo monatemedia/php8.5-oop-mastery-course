@@ -83,11 +83,11 @@
 | # | Statement | Answer |
 |---|-----------|--------|
 | 9  | After the stateless refactor of `NotificationQueue`, `flush()` still returns the pending list — but it is now the caller's responsibility to reset their `$pending` variable after calling `flush()`. | |
-| 10 | A value object with all `readonly` properties is equivalent to a stateless service — neither can cause lifecycle bugs when used as a singleton. | |
+| 10 | A value object and a stateless service are the same kind of thing, so either one can be registered in the container and shared by every caller. | |
 | 11 | The `BoundLogger` pattern (a transient wrapper around a stateless singleton) is an example of Anti-pattern 3 because it stores a `correlationId` as instance state. | |
 | 12 | After refactoring `CurrentOperationContext` to an immutable value object, two concurrent operations can safely share the same `CurrentOperationContext` instance. | |
 | 13 | The stateless refactor of `ApiCallTracker` (passing and returning the count) means the caller must check `isOverLimit()` using their own `$count` variable rather than relying on the tracker to maintain the count internally. | |
-| 14 | The `clone with` syntax in PHP 8.5 modifies the original object's properties in-place and returns a reference to it. | |
+| 14 | `clone($obj, ['status' => 'shipped'])` in PHP 8.5 modifies the original object's properties in-place and returns a reference to it. | |
 
 ---
 
@@ -243,11 +243,11 @@ class InvoiceBuilder
 | # | Answer | Explanation |
 |---|--------|-------------|
 | 9  | **T** | After the stateless refactor, `flush(array $pending): array` simply returns the array. The "clearing" is done by the caller: `$pending = []` after `$sent = $queue->flush($pending)`. The queue has nothing to reset — it never held the array. |
-| 10 | **F** | A value object with all `readonly` properties is safe as a singleton because it cannot be mutated. A stateless service is safe because it holds no mutable state. They are equivalent in that both are lifecycle-safe. However, value objects are typically not used as singletons — they are created fresh for each value they represent. The statement conflates lifecycle safety with usage pattern. |
+| 10 | **F** | They share a property and differ in purpose, and the statement runs the two together.<br><br>Both are lifecycle-safe, for different reasons: a stateless service holds no mutable state, an immutable value object holds state that cannot change. Either is safe to share. But a service is a *thing that does work* and there is sensibly one of it; a value object *is a value* — `new Money(1999, 'ZAR')` — and you create one per value you need. Registering `Money` in the container and sharing it is not dangerous, it is meaningless: which amount would the shared one hold?<br><br>Safe to share and worth sharing are separate questions, and only the first is about lifecycle. |
 | 11 | **F** | `BoundLogger` stores `$correlationId` as a readonly constructor argument — not as a mutating property. The `correlationId` is the intended per-request context, set immutably at construction. This is NOT Anti-pattern 3. Anti-pattern 3 is a mutable property set by `setCorrelationId()` after construction. The distinction: immutable constructor state is safe (value object pattern); mutable post-construction state is the anti-pattern. |
 | 12 | **F** | After refactoring to an immutable value object, each operation creates its OWN `CurrentOperationContext` with its own name and timestamp. They should NOT share the same instance — sharing would be incorrect (operation A's context should not be operation B's context). The point of the refactor is that the objects are independent by design, not shareable. |
 | 13 | **T** | With the stateless refactor, the caller owns the count: `$count = 0; $count = $tracker->recordCall($count);`. `isOverLimit($count)` takes the caller's count as a parameter. The tracker has no internal count — it is a rules engine, not a state container. |
-| 14 | **F** | `clone with` produces a NEW object. The original is completely unchanged. The new object has all the original's property values except those explicitly overridden in the `with` block. This is copy-on-write semantics, not in-place mutation. |
+| 14 | **F** | It produces a **new** object and leaves the original untouched. The copy carries every property value from the original except the keys given in the array, and those keys may include `readonly` properties — which is the entire point, since that is the one moment PHP permits a readonly property to take a different value.<br><br>Note the spelling while you are here: it is a function call, `clone($obj, [...])`. The RFC is nicknamed "clone with" and it is tempting to write `clone $obj with [...]`, but no such syntax exists and it will not parse. |
 
 ## Section C
 

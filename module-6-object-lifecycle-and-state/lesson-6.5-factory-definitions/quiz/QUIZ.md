@@ -15,12 +15,12 @@
 
 ---
 
-**Q2.** In PHP-DI, which definition syntax produces a **new instance on every resolution** (transient scope)?
+**Q2.** Which of these gives you a **new instance on every resolution** in PHP-DI?
 
 - A) `autowire(ShoppingCart::class)`
 - B) `create(ShoppingCart::class)`
 - C) `factory(fn() => new ShoppingCart())`
-- D) `get(ShoppingCart::class)`
+- D) None of them — `$container->make()` is the only built-in way to get a fresh instance.
 
 ---
 
@@ -99,7 +99,7 @@
 
 ---
 
-**Q16.** A team registers their `RequestContext` as a singleton instead of a transient. Describe exactly what goes wrong on the second HTTP request to a FrankenPHP worker, and explain how the factory definition should be changed.
+**Q16.** A team resolves their `RequestContext` with `$container->get()`. Describe exactly what goes wrong on the second HTTP request to a FrankenPHP worker, and explain how to fix it. (Careful: changing the definition to `factory()` is not the fix.)
 
 *Your answer:*
 
@@ -218,7 +218,7 @@ Describe, step by step, what PHP-DI resolves and in what order. Which classes ar
 | Q | Answer | Explanation |
 |---|--------|-------------|
 | 1 | **C** | A single `LoggerInterface` typed dependency is exactly what auto-wiring handles — it resolves the type from the container and injects it. No factory needed. All other options (scalar string, transient scope, decorator wrapping) require a factory definition. |
-| 2 | **C** | `factory(fn() => new ShoppingCart())` is called on every `get()` — producing a new instance each time. `autowire()` (A) and `create()` (B) both default to singleton. `get()` (D) is a reference to another existing binding, not a new factory. |
+| 2 | **D** | Every definition style is resolved once and shared: PHP-DI dropped scopes in v6, and `factory()` is a build recipe, not a lifetime instruction. Compare Q8, which asks how many times a `factory()` callable fires across five resolutions — the answer there is *once*, and it has to be the same answer here. Use `$container->make()` when you need a fresh object. |
 | 3 | **C** | If both `StripeGateway` and `LoggingGateway` are bound to `PaymentGatewayInterface`, and `LoggingGateway`'s factory requests `PaymentGatewayInterface` as `$inner`, the container tries to resolve `PaymentGatewayInterface` — which triggers the `LoggingGateway` factory again — creating infinite recursion. PHP-DI detects this as a circular dependency and throws. |
 | 4 | **B** | Register `StripeGateway` under its own concrete class name (`StripeGateway::class`), then declare the factory for `PaymentGatewayInterface` as `function(StripeGateway $stripe, ...)`. PHP-DI resolves `StripeGateway::class` (the concrete), not `PaymentGatewayInterface` — no circularity. |
 | 5 | **B** | PHP-DI inspects the factory callable's parameter types and resolves each type-hinted parameter from the container before invoking the factory. The resolved instances are passed as arguments. This is the same parameter injection mechanism used for class constructors. |
@@ -230,17 +230,17 @@ Describe, step by step, what PHP-DI resolves and in what order. Which classes ar
 
 | # | Answer | Explanation |
 |---|--------|-------------|
-| 9  | **F** | `create()` always produces a **singleton**. There is no transient version of `create()`. To produce a transient binding, you must use `factory(fn() => new Foo())`. The `DI\env()` helper is about resolving the constructor argument value — it does not affect scope. |
+| 9  | **F** | `create()` gives you one shared instance — but so does `factory()`, and so does `autowire()`. There is no transient *definition* of any kind in PHP-DI; `$container->make()` is the only way to get a new instance. `DI\env()` resolves the constructor argument's value and has nothing to do with lifetime. |
 | 10 | **T** | PHP-DI inspects the factory callable's type-hinted parameters using reflection and resolves each from the container before invoking the factory. This is explicitly documented and is the mechanism shown in Sections 2 and 6 of the README. |
 | 11 | **T** | This is exactly the correct pattern. `LoggingGateway`'s factory declares `function(StripeGateway $stripe, ...)` — injecting the concrete class, not the interface. `StripeGateway::class` and `PaymentGatewayInterface::class` are different keys in the container. No circular reference can form. |
 | 12 | **F** | This is the opposite of the correct pattern. The environment check belongs in the factory/composition root (Rule 1). Moving it into the implementations means each class must know about `APP_ENV` — they are now coupled to the deployment environment. This makes them untestable without setting environment variables, and it violates the single-responsibility principle. |
-| 13 | **T** | `factory(fn() => new Foo())` for a class with only typed constructor args and singleton scope is redundant — `autowire(Foo::class)` achieves the same result with less code. `factory()` adds value when you need scalar args, transient scope, runtime branching, or decorator construction. Using it unnecessarily adds noise to the definitions file. |
+| 13 | **T** | `factory(fn() => new Foo())` for a class with only typed constructor args is redundant — `autowire(Foo::class)` gets you the same shared instance with less code. `factory()` earns its place when you need scalar arguments, runtime branching or decorator construction. Note what is missing from that list: freshness. A `factory()` cannot give you a new instance per resolution, so "I need this to be transient" is never the reason to reach for one. |
 | 14 | **F** | Stacking two decorators only requires TWO bindings: one for `StripeGateway::class` (the concrete inner) and one for `PaymentGatewayInterface::class` (which builds the full stack). The factory for `PaymentGatewayInterface` constructs both `LoggingGateway` and `MetricsGateway` inline: `$metered = new MetricsGateway(new LoggingGateway($stripe, $logger)); return $metered;`. No separate binding for `LoggingGateway` is needed unless something else depends on it directly. |
 
 ## Section C
 
 **Q15 — Model answer:**
-Both `create()->constructor(DI\env('DB_DSN'))` and `factory(fn() => new DatabaseConnection(getenv('DB_DSN')))` produce singletons because that is PHP-DI's default for both `create()` and `factory()` without explicit transient scope. The factory is called once and the result is cached.
+Both `create()->constructor(DI\env('DB_DSN'))` and `factory(fn() => new DatabaseConnection(getenv('DB_DSN')))` give you one shared instance — not by default, but always: PHP-DI has no transient scope to opt into. The factory is called once and the result is cached for every later `get()`.
 
 The `factory()` version is more powerful because it executes arbitrary PHP code at construction time. One concrete example: validation with a useful error message:
 
@@ -321,7 +321,8 @@ return [
         return new LoggingGateway($stripe, $logger);
     }),
 
-    ShoppingCart::class => factory(fn() => new ShoppingCart()), // ← transient
+    ShoppingCart::class => factory(fn() => new ShoppingCart()), // still SHARED —
+    //   resolve with $container->make(ShoppingCart::class) where a fresh cart matters
 
     PasswordHasher::class => factory(function(): PasswordHasher {
         return new PasswordHasher(cost: (int)(getenv('BCRYPT_COST') ?: 12));

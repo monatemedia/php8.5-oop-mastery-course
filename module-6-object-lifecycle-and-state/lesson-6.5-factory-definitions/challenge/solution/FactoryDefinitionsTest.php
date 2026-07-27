@@ -238,7 +238,8 @@ class FactoryDefinitionsTest extends TestCase
         //
         // WHY transient(): ShoppingCart has private array $items that accumulates
         // per session. A singleton would share one cart across all users/requests.
-        // factory(fn() => new ShoppingCart()) is the PHP-DI idiom for transient.
+        // In real PHP-DI this would be $container->make(ShoppingCart::class) —
+        // a factory() definition is still shared by get() and would NOT fix it.
         $this->container->transient(
             ShoppingCart::class,
             fn(): ShoppingCart => new ShoppingCart()

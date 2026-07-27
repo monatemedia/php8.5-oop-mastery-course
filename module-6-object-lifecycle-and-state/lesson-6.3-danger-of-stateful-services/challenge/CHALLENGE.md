@@ -108,7 +108,7 @@ $this->assertSomethingWrong(..., 'BUG: description of what leaked');
 
 For each service, choose one:
 
-- **transient scope** — the service class is fine; use `factory()` in PHP-DI so a fresh instance is created per request/job
+- **a fresh instance per request/job** — the service class is fine, it just must not be shared. In PHP-DI that means resolving it with `$container->make()`; note that a `factory()` definition does **not** do this, as every definition is shared by `get()`
 - **external store** — the state must persist beyond one request (e.g. global totals, audit trails); move it to Redis, a database, or a session store
 - **stateless redesign** — eliminate the instance property entirely; accept state as method parameters and return it as values (covered in Lesson 6.4)
 

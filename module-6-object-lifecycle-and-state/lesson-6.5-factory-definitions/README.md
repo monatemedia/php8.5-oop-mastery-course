@@ -94,7 +94,7 @@ return [
 ];
 ```
 
-The `factory()` callable has full PHP power: you can validate, throw, branch, or call any code. It runs each time the binding is resolved (making it transient by default in terms of invocation — but if you want singleton behaviour, use `DI\value()` or wrap in a `static` variable).
+The `factory()` callable has full PHP power: you can validate, throw, branch, or call any code. It runs **once** — PHP-DI caches what it returns and hands the same object to every subsequent `get()`. A factory is a recipe for building the thing, not an instruction to keep building it.
 
 ### PHP-DI's `factory()` callable argument injection
 
@@ -110,13 +110,16 @@ factory(function (LoggerInterface $logger, ClockInterface $clock): SomeService {
 
 ---
 
-## 3 — Transient Factories
+## 3 — Factories and Freshness
 
-As covered in Lesson 6.2, `factory()` is the PHP-DI idiom for transient scope. Every `$container->get()` call invokes the factory and returns a new instance.
+A warning before the examples, because this is the single most common misunderstanding about
+PHP-DI: **`factory()` does not give you a new instance per resolution.** PHP-DI removed scopes in
+version 6, and every definition — `autowire()`, `create()`, `factory()` — is resolved once and
+shared by `get()`. Freshness comes from `$container->make()`.
 
 ```php
 return [
-    // Transient: new cart per resolution — prevents cross-user contamination
+    // NOT per-user. One cart, shared. See below for what actually works.
     ShoppingCart::class => factory(fn() => new ShoppingCart()),
 
     // Transient with injected dependency:
@@ -132,18 +135,29 @@ return [
 ];
 ```
 
-### Verifying transient scope
+### Verifying it for yourself
 
 ```php
 $a = $container->get(ShoppingCart::class);
 $b = $container->get(ShoppingCart::class);
 
-assert($a !== $b); // different instances — factory was invoked twice
+assert($a === $b);   // SAME object — the factory ran once
+
+$c = $container->make(ShoppingCart::class);
+$d = $container->make(ShoppingCart::class);
+
+assert($c !== $d);   // different objects — make() bypasses the shared cache
 ```
 
-### Combining transient scope with lifecycle-safe design
+Run it. A `factory()` binding you assumed was per-request is a bug that no test will catch unless
+the test resolves the service twice from one container.
 
-Transient scope solves the singleton contamination bug from Lesson 6.1–6.3. But the preferred long-term approach is to design services to be stateless (Lesson 6.4) so scope becomes irrelevant. Use transient scope when:
+### Getting a fresh instance, and when to want one
+
+The preferred long-term approach is to design services that hold no mutable state (Lesson 6.4), so
+the question stops mattering. Where a genuinely per-request object is unavoidable, resolve it with
+`make()` at the edge — a controller or job handler — rather than trying to express it as a
+definition. Reach for that when:
 
 - The class has legitimate per-request state that cannot be eliminated (e.g. `RequestContext`, a per-request logger with a bound request ID)
 - You are working with a third-party class whose statefulness you cannot change
@@ -271,7 +285,7 @@ In practice, the type-hinted closure is the most readable for simple cases; an i
 ```
 When to use factory():
   - Constructor has non-type-hinted scalar args (string, int, array)
-  - Class needs transient scope (new instance per resolution)
+  - (NOT for freshness — factory() is still shared; use $container->make())
   - Construction requires runtime data (APP_ENV, request data)
   - Decorator pattern: wrapping one implementation in another
 
@@ -298,9 +312,12 @@ Environment branching:
       };
   })
 
-Verifying singleton vs transient:
-  Singleton: assertSame($a, $b)        // same object
-  Transient: assertNotSame($a, $b)     // different objects
+Shared vs fresh:
+  $container->get($id)   → always the same object, for EVERY definition style
+  $container->make($id)  → a new object every call
+
+  assertSame($c->get($id),  $c->get($id));      // passes — including factory()
+  assertNotSame($c->make($id), $c->make($id));  // passes
 ```
 
 ---

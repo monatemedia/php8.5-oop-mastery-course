@@ -87,7 +87,8 @@ class SimpleContainer
 
     /**
      * Register a transient: factory called every time.
-     * This mirrors: factory(fn() => new ClassName()) in PHP-DI.
+     * This mirrors PHP-DI's $container->make(). It does NOT mirror factory(),
+     * which is a build recipe and is still shared by get().
      */
     public function transient(string $id, callable $factory): void
     {
@@ -179,7 +180,8 @@ class ShoppingCartScopeTest extends TestCase
      *
      * In PHP-DI, this change looks like:
      *   BEFORE: autowire(ShoppingCart::class)     // singleton (default)
-     *   AFTER:  factory(fn() => new ShoppingCart()) // transient
+     *   AFTER:  resolve with $container->make(ShoppingCartInterface::class)
+     *           — or better, redesign it to hold no state (Lesson 6.4)
      */
     public function testShoppingCartAsTransientIsolatesUsers(): void
     {
@@ -323,7 +325,8 @@ class AuthContextScopeTest extends TestCase
      *
      * The PHP-DI change:
      *   BEFORE: autowire(AuthContext::class)          // singleton
-     *   AFTER:  factory(fn() => new AuthContext())    // transient
+     *   AFTER:  build the context per request and pass it as a parameter
+     *           (Lesson 6.4) — a factory() definition would NOT fix this
      */
     public function testAuthContextAsTransientIsolatesIdentityBetweenRequests(): void
     {
@@ -405,7 +408,9 @@ class AuthContextScopeTest extends TestCase
 // The audit process:
 //   1. Find all autowire() and create() definitions
 //   2. Open the class — look for private properties with public setters/appenders
-//   3. If any mutable state is found, switch to factory() (transient)
+//   3. If any mutable state is found: redesign it away (6.4), or resolve the
+//      service with make(). Switching to factory() changes nothing — it is
+//      still one shared instance.
 //   4. Write a test that simulates worker reuse to confirm the fix
 // ─────────────────────────────────────────────────────────────────────────────
 

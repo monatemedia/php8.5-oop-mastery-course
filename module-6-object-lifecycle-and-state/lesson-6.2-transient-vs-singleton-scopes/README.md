@@ -39,12 +39,22 @@ In Lesson 6.1 you saw what goes wrong when a stateful service lives too long. Th
 
 PHP-DI controls scope through its definition API. The two scopes you need to master:
 
-| Scope | PHP-DI term | Object lifetime | When to use |
-|-------|-------------|-----------------|-------------|
-| **Singleton** | `autowire()` (default), `create()` | One instance per container lifetime | Stateless services, shared infrastructure |
-| **Transient** | `factory()` with a callable | New instance every time the container resolves | Anything that holds per-request or per-job state |
+| Scope | How you get it in PHP-DI | Object lifetime | When to use |
+|-------|--------------------------|-----------------|-------------|
+| **Singleton** | any definition resolved with `$container->get()` | One instance per container lifetime | Stateless services, shared infrastructure |
+| **Transient** | `$container->make()` | New instance on every call | Anything that holds per-request or per-job state |
 
-There is also a **lazy** variant and a **scoped** (per-request) variant available via extensions, but singleton and transient cover 95% of real-world cases. This lesson focuses on those two.
+> **PHP-DI does not have scopes.** This surprises people, so it is worth stating plainly before
+> you read any further: PHP-DI removed the scope concept in version 6. **Every** entry is created
+> once and shared — `autowire()`, `create()` and `factory()` alike. Changing the *definition*
+> style does not change the lifetime.
+>
+> Transience comes from the **call**, not the definition: `$container->make($name)` builds a new
+> instance every time, and it is the only built-in way to get one. Assume otherwise and you will
+> write a `factory()` to "fix" a leaking service and watch it go on leaking.
+>
+> The two ideas — shared versus fresh — are what actually matter, and they exist in every
+> container. This lesson teaches the decision; PHP-DI's particular API is just how you spell it.
 
 ---
 
@@ -92,38 +102,57 @@ If a class satisfies all four conditions, it is **stateless** — and stateless 
 
 ## 3 — Transient Scope
 
-A transient-scoped service returns a fresh instance every time the container resolves it. No sharing, no persistence between resolutions.
+A transient service returns a fresh instance every time you ask for one. No sharing, no
+persistence between requests for it.
 
-PHP-DI does not have a built-in `transient()` helper. The idiomatic way to declare transient scope is with `factory()`:
+In PHP-DI you ask with **`make()`**, not `get()`:
 
 ```php
-use function DI\factory;
+$cart1 = $container->make(ShoppingCartInterface::class);
+$cart2 = $container->make(ShoppingCartInterface::class);
 
+var_dump($cart1 === $cart2);   // bool(false) — different instances
+```
+
+`make()` resolves the definition and its dependencies exactly as `get()` does, but skips the
+shared-instance cache both on the way in and on the way out: the object it returns is new, and it
+is not stored for anyone else.
+
+### The trap
+
+The definition style has nothing to do with it. All three of these are shared when resolved with
+`get()`:
+
+```php
 return [
-    // Transient: new ShoppingCart every resolution
-    ShoppingCartInterface::class => factory(function (): ShoppingCart {
-        return new ShoppingCart();
-    }),
-
-    // Transient with injected dependencies
-    RequestContextInterface::class => factory(
-        function (ServerRequestInterface $request): RequestContext {
-            return RequestContext::fromRequest($request);
-        }
-    ),
+    A::class => autowire(A::class),
+    B::class => create(B::class),
+    C::class => factory(fn() => new C()),   // still ONE instance
 ];
 ```
 
-Every call to `$container->get(ShoppingCartInterface::class)` now returns a **new** `ShoppingCart` instance. State from a previous resolution cannot leak into the next one.
-
-### Verifying transient scope
-
 ```php
-$cart1 = $container->get(ShoppingCartInterface::class);
-$cart2 = $container->get(ShoppingCartInterface::class);
-
-var_dump($cart1 === $cart2); // bool(false) — different instances
+$c1 = $container->get(C::class);
+$c2 = $container->get(C::class);
+var_dump($c1 === $c2);   // bool(true) — the callable ran ONCE
 ```
+
+`factory()` describes *how to build* the object. It says nothing about *how many* to build. Read
+it as "here is a recipe the container could not have guessed", not as "make me a new one each
+time" — the second reading is extremely common and quietly wrong.
+
+### So what do you do about a stateful service?
+
+Three real options, in the order you should consider them:
+
+1. **Redesign it so it holds no mutable state.** Then the question evaporates and the shared
+   instance is correct. This is Lesson 6.4, and it is the answer most of the time.
+2. **Resolve it with `make()`** where a fresh one is genuinely needed — typically at the edge, in
+   a controller or a job handler.
+3. **Build a fresh container per request.** Under PHP-FPM this is what already happens, which is
+   why so much code gets away with being wrong about all of this.
+
+What is *not* an option is writing `factory()` and assuming the problem is solved.
 
 ---
 
@@ -281,9 +310,11 @@ return [
             DI\env('DB_PASS')
         ),
 
-    // ── TRANSIENT ──────────────────────────────────────────────────────────
+    // ── NEEDS A FRESH INSTANCE ─────────────────────────────────────────────
+    // Note: these are still SHARED when resolved with get(). The factory()
+    // is here because the container cannot guess how to build them, not to
+    // control lifetime. Call $container->make() where freshness matters.
 
-    // factory() with a zero-arg callable: new instance every resolution
     ShoppingCartInterface::class => factory(function (): ShoppingCart {
         return new ShoppingCart();
     }),
@@ -311,19 +342,24 @@ Scope decision:
   Stateless after construction? → SINGLETON (safe)
 
 PHP-DI syntax:
-  Singleton:  autowire(ClassName::class)          — auto-resolves constructor args
-              create(ClassName::class)             — manual constructor args
-  Transient:  factory(fn() => new ClassName())    — new instance every resolution
-              factory(fn(Dep $d) => new C($d))    — with injected dependencies
+  Definitions — how to BUILD (never how many):
+    autowire(ClassName::class)        — resolve constructor args from type hints
+    create(ClassName::class)          — you supply the constructor args
+    factory(fn() => new ClassName())  — arbitrary construction logic
+    factory(fn(Dep $d) => new C($d))  — with dependencies injected into the callable
 
-Verifying singleton:
+  Resolution — how MANY:
+    $container->get($id)              — build once, share forever (all definitions)
+    $container->make($id)             — build a new one every call
+
+Verifying shared:
   $a = $container->get(Foo::class);
   $b = $container->get(Foo::class);
   assert($a === $b); // same instance
 
-Verifying transient:
-  $a = $container->get(Bar::class);
-  $b = $container->get(Bar::class);
+Verifying fresh:
+  $a = $container->make(Bar::class);
+  $b = $container->make(Bar::class);
   assert($a !== $b); // different instances
 
 Safe singleton checklist:

@@ -594,8 +594,8 @@ singleton, and by Module 6 you will recognise what that does to isolation.
 **G6.5** *(Module 5 — Lesson 5.1)* Write the shape of a test that proves a service leaks state
 between requests. What is the single detail that gives it its power?
 
-**G6.6** *(Module 4 — Lesson 4.4)* What is PHP-DI's default scope, and what changes in the *class*
-when you move it to transient?
+**G6.6** *(Module 4 — Lesson 4.4)* How many instances does PHP-DI give you for a given definition,
+and how do you get a fresh one when you need it? Does the *class* have to change?
 
 **G6.7** *(Module 1 — Lesson 1.2)* Why is a value object automatically safe as a singleton?
 
@@ -632,10 +632,12 @@ Four of the five are the same defect wearing different clothes — a property wr
 of work and read during the next — which is the point: you are learning one shape, not five rules.
 
 **G6.4** — When construction needs an argument the container cannot resolve, or a decision that
-depends on runtime state. A scope change answers "how many of these should exist"; a factory answers
-"how is this one built". Reaching for a factory to get freshness when transient scope would do is the
-common mistake, and it works, but it buries a lifecycle decision in a closure where the next reader
-will not look for it.
+depends on runtime state. A factory answers "how is this one built" — and *only* that.
+
+The common mistake is reaching for a factory to get freshness, and the reason it is worth naming is
+that it does not work. A `factory()` definition in PHP-DI is resolved once and shared like every
+other definition, so the service you wrote it to fix goes on leaking, silently. "How many" is
+answered at the call: `$container->make()`.
 
 **G6.5** — One instance, constructed once, exercised twice:
 
@@ -654,11 +656,17 @@ that builds the object fresh each time is testing the PHP-FPM case, and the PHP-
 where the bug is invisible — which is why an entire suite of ordinary green unit tests is no evidence
 at all of lifecycle safety.
 
-**G6.6** — Singleton: one instance per container lifetime, for `autowire()`, `create()` and plain
-auto-wiring alike. Moving to transient — `factory(fn() => new Thing())` — changes **nothing in the
-class**. It is a change to the definitions file only. That is the whole lesson: scope is a wiring
-decision, and a class that needs editing to survive a scope change is telling you it had mutable
-state all along.
+**G6.6** — One. PHP-DI removed scopes in version 6, so every definition — `autowire()`, `create()`,
+`factory()` — is built once and shared by every `get()`. There is no transient definition to reach
+for, which is the part that catches people: writing a `factory()` to make a leaking service fresh
+changes how it is built and not how many exist.
+
+A fresh instance comes from `$container->make($id)`, which resolves the same definition but bypasses
+the shared cache in both directions — new object, and not stored for the next caller.
+
+The **class** changes either way: nothing. That much was always the real lesson. Lifetime is a
+wiring decision, and a class that needs editing to survive a change in how often it is constructed
+is telling you it had mutable state all along.
 
 **G6.7** — Because it has no mutable state to leak. Every property is `readonly` and set at
 construction, so no method can write anything another method reads; the "modified copy" methods return

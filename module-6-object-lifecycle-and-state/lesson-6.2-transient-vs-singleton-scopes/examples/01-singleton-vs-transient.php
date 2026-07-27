@@ -61,7 +61,9 @@ class RequestLog
 // ─────────────────────────────────────────────────────────────────────────────
 // PART B — Hand-rolled container simulation
 //
-// Two minimal containers that mirror exactly what PHP-DI does internally:
+// Two minimal containers, one per behaviour. The singleton one mirrors what
+// PHP-DI's get() does; the transient one mirrors what make() does. PHP-DI
+// itself offers no way to declare the second as a definition:
 //   SingletonContainer  — stores a single instance and returns it every time
 //   TransientContainer  — calls the factory callable every time
 //
@@ -109,7 +111,13 @@ class SingletonContainer
 /**
  * Minimal transient container.
  *
- * Mirrors PHP-DI's factory() behaviour:
+ * Mirrors what you want from TRANSIENT scope.
+ *
+ * IMPORTANT: this is NOT what PHP-DI's factory() does. PHP-DI has no scopes —
+ * every definition, factory() included, is built once and shared by get(). The
+ * PHP-DI equivalent of this container is $container->make(), not factory().
+ * The class below shows the behaviour so you can reason about it; see the
+ * README for how to actually obtain it.
  *   - Every call: invoke the factory and return a NEW object
  *   - Nothing is stored between calls
  */

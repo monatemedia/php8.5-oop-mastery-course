@@ -55,7 +55,9 @@ final class User
  *
  * KEY INSIGHT: because RequestContext is immutable and created fresh per request,
  * it can be a singleton within a request but must not survive across requests.
- * In PHP-DI, register it as factory() so a new instance is produced per resolution.
+ * In PHP-DI, build it per request and pass it in. A factory() definition would
+ * NOT produce a new instance per resolution — every definition is shared by
+ * get(). Use $container->make(), or construct it at the entry point.
  */
 final class RequestContext
 {

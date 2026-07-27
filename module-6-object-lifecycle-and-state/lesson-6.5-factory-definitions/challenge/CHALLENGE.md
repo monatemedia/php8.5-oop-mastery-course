@@ -39,10 +39,15 @@ All classes are defined in `starter/FactoryDefinitionsTest.php`. Do not modify t
 
 ### Wiring 2 — `ShoppingCart`
 
-**The problem:** `ShoppingCart` has mutable state — it must be **transient**.
+**The problem:** `ShoppingCart` has mutable state — it must not be shared.
 
 **Your task:**
-- Register `ShoppingCart` using a `factory()` definition with transient scope
+- Register `ShoppingCart` on `SimpleContainer` with `transient()`
+
+> `SimpleContainer` is the small container you have been building through this module, and it
+> has an explicit `transient()` method. Real PHP-DI does not: every definition there is shared
+> by `get()`, and `$container->make()` is how you ask for a fresh instance. Keeping the two
+> straight matters — writing `factory()` and expecting a new object is the classic PHP-DI bug.
 - Write `testShoppingCartFactoryIsTransient()` proving:
   - Two resolutions return different instances (`assertNotSame`)
   - Each instance starts empty

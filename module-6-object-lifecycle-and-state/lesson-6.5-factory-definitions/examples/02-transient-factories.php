@@ -133,7 +133,8 @@ class Container
 
     /**
      * Register a singleton: factory called once, instance reused.
-     * Equivalent to PHP-DI's autowire() or create().
+     * Equivalent to PHP-DI's autowire() or create() — and, for lifetime
+     * purposes, to factory() as well, since all three are shared by get().
      */
     public function singleton(string $id, callable $factory): void
     {
@@ -142,7 +143,11 @@ class Container
 
     /**
      * Register a transient: factory called on every get().
-     * Equivalent to PHP-DI's factory(fn() => new ClassName()).
+     *
+     * NOTE: this is the behaviour of PHP-DI's $container->make(), not of
+     * factory(). A factory() definition is still resolved once and shared by
+     * get(). This container makes the distinction explicit because PHP-DI's
+     * API does not.
      */
     public function transient(string $id, callable $factory): void
     {

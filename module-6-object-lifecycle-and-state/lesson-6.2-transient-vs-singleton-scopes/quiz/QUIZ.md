@@ -15,12 +15,12 @@
 
 ---
 
-**Q2.** Which PHP-DI definition syntax produces a **transient** (new instance per resolution)?
+**Q2.** Which of these gives you a **new instance on every resolution** in PHP-DI?
 
 - A) `autowire(ShoppingCart::class)`
 - B) `create(ShoppingCart::class)`
 - C) `factory(fn() => new ShoppingCart())`
-- D) `get(ShoppingCart::class)`
+- D) None of them — every definition is shared when resolved with `get()`; `$container->make()` is what returns a fresh instance.
 
 ---
 
@@ -214,13 +214,13 @@ Identify two problems with this approach compared to simply using transient scop
 | Q | Answer | Explanation |
 |---|--------|-------------|
 | 1 | **B** | PHP-DI's default scope is singleton — the first resolution creates the instance; all subsequent resolutions return the same object. This applies to auto-wiring, `autowire()`, and `create()`. |
-| 2 | **C** | `factory(fn() => new ShoppingCart())` produces a transient binding — the callable is invoked on every `get()` call. `autowire()` (A) and `create()` (B) both produce singletons. `get()` (D) is a reference to another binding, not a new definition. |
+| 2 | **D** | PHP-DI has no scopes — they were removed in version 6. Every definition style produces one shared instance: `autowire()`, `create()` and `factory()` alike. `factory()` describes *how to build* the object, never *how many*, and the callable runs exactly once no matter how many times you call `get()`.<br><br>Verify it in one line — `$container->get(C::class) === $container->get(C::class)` is `true` for a `factory()` binding. Freshness comes from `$container->make($id)`, which resolves the same definition while bypassing the shared cache in both directions: you get a new object, and it is not stored for anyone else.<br><br>This catches experienced PHP-DI users. Writing a `factory()` to "fix" a leaking singleton is a very common non-fix. |
 | 3 | **C** | `assertSame($a, $b)` checks strict object identity (`===`). Two variables pointing to the same singleton instance pass this check. `assertEquals` (B) checks equality, not identity — two different objects with the same data would pass it. |
 | 4 | **C** | `log()` writes to `$this->entries`, a private property. When the instance is shared as a singleton, entries from consumer A's log calls are present when consumer B reads `getEntries()`. Transient scope ensures each consumer gets a fresh `$entries = []`. |
 | 5 | **C** | `$rate` is `readonly` — it cannot be changed after construction. `calculate()` takes an amount and returns a computed value; it writes nothing to `$this`. Every call to `calculate(100.0)` returns the same result regardless of previous calls. This is the definition of a safe singleton. |
 | 6 | **C** | `$listeners` is assigned in the constructor and no public method ever modifies it. `dispatch()` iterates over `$listeners` but never appends, removes, or replaces it. The dispatcher is effectively immutable after construction — safe singleton. Answer B might seem appealing but misunderstands the pattern: if different consumers need different listeners, they should receive different dispatcher instances constructed with different listeners — that is a constructor argument question, not a scope question. |
-| 7 | **B** | The scope change happens entirely in the container definition. The `ShoppingCart` class code is unchanged. PHP-DI's `factory()` means "call this callable every time `get()` is asked for this binding." The class has no knowledge of its scope. |
-| 8 | **C** | `create(PasswordHasher::class)->constructor(12)` is the correct explicit singleton with a non-type-hinted constructor argument. D is also technically correct but `TaxCalculator(0.20)` wrapped in `factory()` is wasteful — creating a new stateless object on every resolution wastes memory and time for no benefit. The cleanest answer for a stateless class is C (singleton with explicit arg). |
+| 7 | **B** | The class code is untouched — that much is the point of the question, and it holds. But be careful about *what* changed: switching `autowire()` to `factory()` changes how PHP-DI **builds** the cart, not how many it keeps. Both are resolved once and shared by `get()`. To get a fresh cart per resolution, call `$container->make()`; to stop needing one, make the cart stateless (Lesson 6.4). The class still has no knowledge of any of this, which is the durable lesson. |
+| 8 | **C** | `create(PasswordHasher::class)->constructor(12)` states the argument explicitly and gives you a singleton, which is right for a class whose `$cost` is fixed at construction and whose methods write nothing to `$this`.<br><br>D is the tempting answer, because B and C really do both produce singletons. It fails on A: *"must be transient because of the constructor argument"* is a wrong reason, and a constructor argument has nothing to do with scope. The definition A gives would work — a stateless class is safe at any scope — but it would rebuild the hasher on every resolution for no benefit, and it would teach you that arguments force transience. |
 
 ## Section B
 
@@ -231,7 +231,7 @@ Identify two problems with this approach compared to simply using transient scop
 | 11 | **F** | Using transient scope for a stateless service is perfectly valid and causes no errors. It is wasteful (unnecessary object construction on every resolution) but not incorrect. The scope decision rule is about safety, not about prohibition of the other choice. |
 | 12 | **T** | `setTenant()` writes `$this->tenantId`; `getTenant()` reads it. When the `JobContext` singleton is shared between job 1 and job 2, `setTenant()` from job 1 sets the value that job 2's `getTenant()` reads — until job 2 calls `setTenant()` itself. This is exactly the context-leakage anti-pattern. |
 | 13 | **F** | Switching from `autowire(ClassName::class)` to `factory(fn() => new ClassName())` is a change to the container DEFINITION file only. The service class itself is identical. This is the key lesson: scope is a wiring decision, not a class design decision. |
-| 14 | **F** | A `factory()` callable is invoked on EVERY `get()` call — not once. It does not return a clone; it returns a new object from scratch each time. Cloning is a separate PHP operation (`clone`) not involved in PHP-DI's factory mechanism. |
+| 14 | **F** | Read the statement in two halves. "Invoked once per container lifetime, just like a singleton" is **true** — that is exactly what happens, and it is what most people find surprising. "Returns a clone of the instance each time" is **false**: there is no cloning anywhere in PHP-DI's factory mechanism. `get()` hands back the very same object it built the first time, and `clone` is a separate PHP operation that never enters into it. False overall, but only because of the second half. |
 
 ## Section C
 
@@ -260,8 +260,8 @@ With `ShoppingCart` as transient: `$container->get(ShoppingCartInterface::class)
 | `DatabaseConnection` → `create(...)->constructor(...)` | Singleton | ✅ Correct — `$pdo` is readonly, `query()` delegates to `$pdo` without mutating `$this` |
 | `ShoppingCartInterface` → `autowire(ShoppingCart::class)` | Singleton | ❌ **Wrong** — `ShoppingCart` has `private array $items` appended by `add()`; as a singleton, items accumulate across consumers/requests |
 | `AuthContextInterface` → `autowire(AuthContext::class)` | Singleton | ❌ **Wrong** — `AuthContext` has `private ?string $userId` set by `authenticate()`; as a singleton, the user identity from request N is present in request N+1 |
-| `TaxCalculator` → `factory(fn() => new TaxCalculator(0.20))` | Transient | ⚠️ Technically safe but wasteful — `TaxCalculator` is stateless (pure computation), so transient works but creates unnecessary objects. Singleton would be more efficient. Not wrong, just suboptimal. |
-| `ReportBuilderInterface` → `factory(fn() => new ReportBuilder())` | Transient | ✅ Correct — `ReportBuilder` has `private array $rows` appended by `addRow()`; transient ensures each report starts with empty rows |
+| `TaxCalculator` → `factory(fn() => new TaxCalculator(0.20))` | **Shared** — like every other definition | ✅ Fine. The `factory()` is needed because `0.20` is a scalar the container cannot guess, not to control lifetime. `TaxCalculator` is stateless, so one shared instance is correct. |
+| `ReportBuilderInterface` → `factory(fn() => new ReportBuilder())` | **Shared** — `factory()` does not change that | ❌ **Wrong, and it looks right.** `ReportBuilder` has `private array $rows` appended by `addRow()`, so it must be fresh per report — but `get()` returns the same builder every time and rows from report 1 appear in report 2. The `factory()` gives a false sense of safety. Resolve it with `$container->make()`, or redesign it so the caller owns the rows (Lesson 6.4). |
 
 **Q19 — Answer:**
 The container is using **transient** scope. The evidence is in the two assertions:
