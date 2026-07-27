@@ -324,6 +324,69 @@ list that trains you to ignore the list, which is worse than not running the aud
 
 ---
 
+## The 525 keys no script could check
+
+`audit-quizzes.php` covers 31 of the course's 556 questions — the ones whose answer is a claim
+about program output. The other 525 are multiple choice, true/false and short-answer models, and
+they were read one at a time against the language, the libraries and the rest of the course.
+
+**Twenty-three defects. Nine were wrong answers**, not wrong explanations — a student reasoning
+correctly would have been told they had failed:
+
+| | Keyed | Actually |
+|---|---|---|
+| 2.3 Q2 | `Color::Red->value` is a fatal error | Warns *"Undefined property"*, evaluates to `null` — option C, marked wrong |
+| 2.1 Q12 | `mixed` is "precisely equivalent" to no type declaration | `: mixed` cannot be overridden by `: void`; untyped can |
+| 4.4 Q8 | `create()` auto-wires, plus overrides | `create()` does not auto-wire at all |
+| 5.4 Q11 | `addErrorMiddleware(false,false,false)` stops Slim catching exceptions | It is what *starts* catching them |
+| 5.5 Q12 | A test failing after a refactor was testing layout | Or the refactor broke something — you have to read the failure |
+| 6.2 Q2, 6.5 Q2, 6.5 Q9 | `factory()` gives a new instance per resolution | Every PHP-DI definition is shared; `make()` is the fresh one |
+| 6.2 Q18 | `ReportBuilder => factory(...)` ✅ correct | Wrong, and it looks right |
+
+Three of those had spread beyond the quiz into the lesson body. **2.3 Q2's** misconception appeared
+in the README and two examples, so a student met "fatal error" four times before being tested on it.
+**5.4 Q11's** inversion was in six files including the `setUp()` of the course's own integration
+tests — one carried the comment *"Disable Slim's error middleware so exceptions surface in tests"*
+directly above the line that installs it. And the PHP-DI one below.
+
+### The one that mattered most
+
+**PHP-DI has no transient scope, and Module 6 taught that it does.**
+
+Ten files said `factory()` produces a new instance per resolution. It does not: PHP-DI removed
+scopes in v6, every definition is built once and shared by `get()`, and `$container->make()` is the
+only built-in way to get a fresh instance. The course never mentioned `make()` anywhere.
+
+Five `get()` calls on a `factory()` binding invoked the callable **once**, returned the same object
+both times, and leaked state between the two references.
+
+This was the worst defect in the audit because it was the *prescribed fix*. Lessons 6.1–6.3 build up
+a real and well-explained bug — stateful singletons leaking between requests — and then tell you to
+repair it by switching the definition to `factory()`. Follow that advice and you would see no error
+and ship a service that still leaks.
+
+All 43 tests passed throughout, because the examples and challenges use hand-rolled containers with
+a genuine `transient()` method. They were internally consistent and externally wrong — which is the
+same shape as every other bug found in this review: **nobody had run it against the real thing.**
+
+The conceptual teaching stands. *When* a service must be fresh, and why sharing a stateful one is
+dangerous, was always right; only the claim about how you achieve it in PHP-DI was false. Corrected
+in place across 6.2, 6.3, 6.4 and 6.5 — and in `GATES.md`, where two of my own gate answers had
+repeated it.
+
+### On method
+
+Nine of the twenty-three were caught only by executing the claim. `probe-claims.php` exists for
+that: it runs the factual assertions a key makes — exact engine messages, version claims, PHP-DI and
+Slim behaviour — and prints what the key says beside what actually happened.
+
+Reading is not enough, and neither is confidence. Every one of these keys was written by someone who
+knew the material, and several were the sort of thing you would defend in a code review. The enum
+one is instructive: "reading a missing property on an enum is fatal" is the *sensible* design, which
+is probably why the misconception survived four separate retellings. PHP just does not do it.
+
+---
+
 ## Module gates
 
 The gates in `PROGRESS.md` were self-assessment checkboxes, each drawn entirely from the module just
