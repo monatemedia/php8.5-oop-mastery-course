@@ -97,7 +97,11 @@ class ApiIntegrationTest extends TestCase
         $this->app->get('/orders',                      [OrderController::class,   'list']);
         $this->app->post('/orders',                     [OrderController::class,   'create']);
 
-        $this->app->addErrorMiddleware(false, false, false);
+        // NOT adding Slim's error middleware is deliberate. The middleware is what
+        // CATCHES exceptions and renders them as a 500 response; without it, an
+        // exception thrown in a controller escapes handle() and PHPUnit reports it
+        // with its real stack trace. Add it back only if you need to assert on the
+        // shape of Slim's own error responses.
     }
 
     // ─────────────────────────────────────────────────────────────────────────

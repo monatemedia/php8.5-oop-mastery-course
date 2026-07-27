@@ -257,7 +257,10 @@ $container = $builder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-// Add error handling middleware (returns JSON errors instead of HTML)
+// Error middleware CATCHES exceptions and renders them as an error response.
+// The three flags are displayErrorDetails, logErrors, logErrorDetails — none of
+// them picks the format; Slim content-negotiates on the Accept header. Wanted in
+// production, unwanted in tests, where a swallowed exception hides the stack trace.
 $app->addErrorMiddleware(false, false, false);
 
 // Routes (simulates config/routes.php)
@@ -340,7 +343,8 @@ echo "  All service classes: pure business logic, zero config coupling\n";
 
 echo "\n--- Recap ---\n";
 echo "JsonResponseTrait: consistent {success, data/error} envelope across all routes.\n";
-echo "Error handling: addErrorMiddleware() returns JSON errors in production.\n";
+echo "Error handling: addErrorMiddleware() catches exceptions and renders them,\n";
+echo "                negotiating the format from the Accept header.\n";
 echo "Query params:  \$request->getQueryParams() — filters without touching the service.\n";
 echo "Rule 1:        ONLY the definitions array knows which concrete classes to use.\n";
 echo "Rule 1:        Controllers never call getenv() or container->get().\n";

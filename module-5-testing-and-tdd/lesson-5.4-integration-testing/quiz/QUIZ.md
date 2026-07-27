@@ -113,7 +113,7 @@ What does `$this->app->handle($request)` do?
 
 ---
 
-**Q17.** Describe what `addErrorMiddleware(false, false, false)` does in a Slim integration test and why it matters. What happens if you omit it?
+**Q17.** Describe what `addErrorMiddleware(false, false, false)` does in a Slim application, and say whether you want it in an integration test. What changes if you omit it?
 
 *Your answer:*
 
@@ -223,7 +223,7 @@ class ProductIntegrationTest extends TestCase
 |---|--------|-------------|
 | 9  | **F** | Seed helpers should use raw PDO, NOT the repository under test. If the repository has a bug in its save() method, using it to seed would hide that bug — the test would pass even though save() is broken. Raw PDO seeds are independent of the implementation being tested. |
 | 10 | **F** | Integration tests cannot replace unit tests. They are slower, less precise, and do not isolate the cause of failures well. Unit tests cover individual class logic; integration tests cover wiring. Both are needed. |
-| 11 | **T** | `addErrorMiddleware(false, false, false)` tells Slim NOT to catch exceptions. In tests, you want exceptions to propagate as PHPUnit errors so you can see the real stack trace, not a swallowed 500 response. |
+| 11 | **F** | Backwards, and this one is worth getting straight because it silently weakens a whole test suite. `addErrorMiddleware()` is what makes Slim **start** catching exceptions — it wraps the stack and renders any `Throwable` as an error response. The three booleans are `displayErrorDetails`, `logErrors` and `logErrorDetails`; none of them decides whether exceptions are caught.<br><br>Run it and see: a route that throws returns **status 500** with the middleware installed, and the exception **escapes `handle()`** without it. So the call in the statement produces exactly the outcome it claims to prevent — and with `displayErrorDetails` set to `false`, the 500 body does not even carry the message. A test asserting `assertSame(200, ...)` still fails, but it tells you "got 500" instead of naming the `TypeError` and the line.<br><br>To surface exceptions in tests, **omit the middleware**. Add it only when the thing under test is Slim's own error response. |
 | 12 | **T** | SQLite supports standard SQL including JOINs, transactions, subqueries, AUTOINCREMENT, UNIQUE constraints, and FOREIGN KEYS (when enabled with `PRAGMA foreign_keys = ON`). |
 | 13 | **T** | Resolving an interface from the container and asserting the concrete type is a valid integration test — it verifies that the container configuration is correct, which cannot be verified by a unit test. |
 | 14 | **F** | Testing business logic inside a single class belongs at the unit level. `calculateTotal()` with a 10% discount should be tested with a unit test using a fake price source. An integration test adds infrastructure cost for no benefit. |
@@ -238,7 +238,11 @@ A unit test for `ProductService::getAll()` uses a fake repository and verifies t
 2. **Speed and simplicity.** Raw PDO INSERT statements are faster and more direct than going through the service layer. They do not trigger validation, logging, mailer calls, or any other service logic — they just put rows in the database exactly as specified, which is all setup code should do.
 
 **Q17 — Model answer:**
-`addErrorMiddleware(false, false, false)` disables Slim's error-handling middleware, which would otherwise catch all exceptions and convert them into a `500 Internal Server Error` response. In tests, this is harmful because PHPUnit would see a 500 response (which might make the test pass if you forget to assert on the status code) rather than the real PHP exception with its full stack trace. Without disabling the middleware, a bug that throws `\TypeError` deep in the stack appears as a 500 response; with the middleware disabled, PHPUnit reports the exception directly as an error, pointing you immediately to the source.
+`addErrorMiddleware()` **enables** Slim's error handling: it wraps the middleware stack, catches any `Throwable` raised while handling the request, and renders it as an error response — a 500 for an unexpected exception, a 404 or 405 for the routing exceptions Slim raises itself. The three booleans configure that handler (`displayErrorDetails`, `logErrors`, `logErrorDetails`); they do not switch it on or off.
+
+In an integration test you generally do **not** want it. With the middleware installed, a `TypeError` thrown deep in a service becomes a bare `500` — the assertion still fails, but it reports "expected 200, got 500" and says nothing about what threw or where. Omit it and the exception propagates out of `$app->handle()`, so PHPUnit reports the real class, message and stack trace, and you are looking at the offending line immediately.
+
+The cost of omitting it: Slim's `HttpNotFoundException` and `HttpMethodNotAllowedException` also escape rather than becoming 404 and 405 responses. If a test asserts on those status codes, install the middleware for that test — or, better, assert on the exception instead. Note that a 404 your *controller* returns deliberately, with `->withStatus(404)` for a missing record, is an ordinary response and is unaffected either way.
 
 ## Section D
 

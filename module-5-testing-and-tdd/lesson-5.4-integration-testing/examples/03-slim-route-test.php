@@ -188,8 +188,11 @@ class SlimRouteTestExampleTest extends TestCase
         $this->app->get('/products/{id:[0-9]+}', [ProductController::class, 'show']);
         $this->app->post('/products', [ProductController::class, 'create']);
 
-        // Disable Slim's error middleware so exceptions surface in tests
-        $this->app->addErrorMiddleware(false, false, false);
+        // NOT adding Slim's error middleware is deliberate. The middleware is what
+        // CATCHES exceptions and renders them as a 500 response; without it, an
+        // exception thrown in a controller escapes handle() and PHPUnit reports it
+        // with its real stack trace. Add it back only if you need to assert on the
+        // shape of Slim's own error responses.
     }
 
     // ─────────────────────────────────────────────────────────────────────────

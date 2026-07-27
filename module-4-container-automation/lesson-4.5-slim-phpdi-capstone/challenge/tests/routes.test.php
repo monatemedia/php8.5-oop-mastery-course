@@ -51,7 +51,9 @@ $builder->addDefinitions([
 $container = $builder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
-$app->addErrorMiddleware(false, false, false);
+// No error middleware here, on purpose: it would catch exceptions and turn them
+// into 500 responses, so a genuine bug would show up as a status code rather than
+// a stack trace. In production (public/index.php) you DO want it.
 require __DIR__ . '/../config/routes.php';
 
 

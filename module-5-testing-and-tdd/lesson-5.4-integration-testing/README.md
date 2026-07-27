@@ -177,7 +177,10 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 // Boot the app (real container, real routes, test DB)
 $app = AppFactory::createFromContainer($this->container);
 (require __DIR__ . '/../config/routes.php')($app);
-$app->addErrorMiddleware(false, false, false);
+
+// Note what is NOT here: addErrorMiddleware(). It catches exceptions and turns
+// them into a 500 response, which is what you want in production and the last
+// thing you want in a test. Leave it out and PHPUnit sees the real exception.
 
 // Simulate a GET request
 $request  = (new ServerRequestFactory())->createServerRequest('GET', '/products');
