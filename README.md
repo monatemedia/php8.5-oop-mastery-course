@@ -4,6 +4,8 @@
 > **How to use this README:** This is the map. Work through the modules in order and do not move on until the current one is finished.
 >
 > Track what you have actually completed in **[`PROGRESS.md`](PROGRESS.md)** — one file, every lesson, challenge and quiz in one place. The checkboxes further down this page are a summary; `PROGRESS.md` is the record.
+>
+> At the end of each module, take that module's gate in **[`GATES.md`](GATES.md)** with every other file shut. Half of each gate is drawn from modules you finished a while ago, which is the half that does the work.
 
 ---
 
@@ -31,6 +33,7 @@ php8.5-oop-mastery-course/
 ├── README.md                      ← You are here
 ├── COURSE_PHILOSOPHY.md           ← Six golden rules — read before starting
 ├── PROGRESS.md                    ← Your single progress tracker
+├── GATES.md                       ← Module gates — spaced retrieval across modules
 ├── PHP_VERSION_REFERENCE.md       ← Which features need which PHP version
 ├── index.php                      ← Course cover page (Herd site preview)
 ├── check.php                      ← ⭐ The one command to run: where am I?
@@ -261,6 +264,7 @@ If you use Herd, this folder is served at a `.test` domain and `index.php` rende
 
 ## 📖 Reference
 
+- [`GATES.md`](GATES.md) — the six module gates, with answer keys
 - [`PHP_VERSION_REFERENCE.md`](PHP_VERSION_REFERENCE.md) — every feature this course uses and when it arrived
 - [PHP 8.5 Migration Guide](https://www.php.net/manual/en/migration85.php)
 - [PHP 8.4 Migration Guide](https://www.php.net/manual/en/migration84.php)

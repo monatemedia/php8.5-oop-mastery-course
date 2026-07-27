@@ -5,6 +5,11 @@
 
 Do not start a module until the one before it is fully ticked.
 
+Each module ends with a **gate** in [`GATES.md`](GATES.md). Half of it covers the module you have
+just finished; the other half reaches back to modules you finished a while ago. That second half is
+the part that does the work — a concept recalled once, then again three modules later, is held far
+longer than one recalled twice in an afternoon. Take the gate with every other file shut.
+
 **Before Lesson 1.0:**
 
 - [ ] `php -v` reports 8.5 or newer
@@ -38,12 +43,11 @@ Do not start a module until the one before it is fully ticked.
 | 1.3 Traits | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 1.4 Composition over Inheritance ⭐ | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 
-**Module 1 gate — can you do all of these from memory?**
+**Module 1 gate — `GATES.md` § Gate 1.** Book shut. Answer from memory, *then* read the key.
 
-- [ ] State all five SOLID principles in one sentence each
-- [ ] Explain when to reach for an interface vs an abstract class vs a trait
-- [ ] Apply the "can I replace `extends` with a field?" test to real code
-- [ ] Write a value object using `readonly` and `clone($obj, [...])`
+- [ ] Part 1 — 4 prompts on Module 1
+- [ ] Part 2 — carried forward from Lessons 1.0 and 1.1
+- [ ] Every gap logged in *Notes & Sticking Points* at the foot of this file
 
 ---
 
@@ -57,11 +61,11 @@ Do not start a module until the one before it is fully ticked.
 | 2.3 Enums | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 2.4 Anonymous Classes | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 
-**Module 2 gate:**
+**Module 2 gate — `GATES.md` § Gate 2.** Book shut. Answer from memory, *then* read the key.
 
-- [ ] Explain covariance and contravariance with your own example
-- [ ] Say what makes a property *virtual* vs *backed* without looking it up
-- [ ] Replace a set of magic-string constants with a backed enum
+- [ ] Part 1 — 4 prompts on Module 2
+- [ ] Part 2 — carried forward from **Module 1** — composition test, immutability, LSP
+- [ ] Every gap logged in *Notes & Sticking Points* at the foot of this file
 
 ---
 
@@ -74,11 +78,11 @@ Do not start a module until the one before it is fully ticked.
 | 3.3 Setter & Interface Injection | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 3.4 Inversion of Control | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 
-**Module 3 gate:**
+**Module 3 gate — `GATES.md` § Gate 3.** Book shut. Answer from memory, *then* read the key.
 
-- [ ] Spot every coupling smell in an unfamiliar class in under a minute
-- [ ] Explain the difference between DI, DIP and IoC without hedging
-- [ ] Justify where the composition root belongs (Golden Rule 1)
+- [ ] Part 1 — 4 prompts on Module 3
+- [ ] Part 2 — carried forward from **Modules 1–2** — SOLID, LSP, enums, value objects
+- [ ] Every gap logged in *Notes & Sticking Points* at the foot of this file
 
 ---
 
@@ -102,6 +106,12 @@ Do not start a module until the one before it is fully ticked.
 - [ ] All 7 request-simulation tests pass
 - [ ] `grep -r "getenv\|container->get" src/` returns nothing
 
+**Module 4 gate — `GATES.md` § Gate 4.** Book shut. Answer from memory, *then* read the key.
+
+- [ ] Part 1 — 4 prompts on Module 4
+- [ ] Part 2 — carried forward from **Modules 1–3** — SOLID, anonymous classes, IoC, service locator
+- [ ] Every gap logged in *Notes & Sticking Points* at the foot of this file
+
 ---
 
 ## Module 5 — Automated Testing & TDD
@@ -115,11 +125,12 @@ Do not start a module until the one before it is fully ticked.
 | 5.4 Integration Testing | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 5.5 Testing Behaviours, Not Layouts | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 
-**Module 5 gate:**
+**Module 5 gate — `GATES.md` § Gate 5.** Book shut. Answer from memory, *then* read the key.
 
-- [ ] `php run-tests.php 5` is all green
-- [ ] Name the four test-double types and when each is appropriate
-- [ ] Write a failing test *first* without being reminded to
+- [ ] `php run-tests.php module-5` is all green
+- [ ] Part 1 — 4 prompts on Module 5
+- [ ] Part 2 — carried forward from **Modules 1–4** — ISP, anonymous classes, DI, containers
+- [ ] Every gap logged in *Notes & Sticking Points* at the foot of this file
 
 ---
 
@@ -133,11 +144,12 @@ Do not start a module until the one before it is fully ticked.
 | 6.4 Designing Stateless Services | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 | 6.5 Factory Definitions | [ ] | [ ] | [ ] | [ ] | ` /20` | |
 
-**Module 6 gate:**
+**Module 6 gate — `GATES.md` § Gate 6.** Book shut. Answer from memory, *then* read the key.
 
-- [ ] `php run-tests.php 6` is all green
-- [ ] Decide singleton vs transient for a service and defend the choice
-- [ ] Name all five stateful-service anti-patterns from Lesson 6.3
+- [ ] `php run-tests.php module-6` is all green
+- [ ] Part 1 — 4 prompts on Module 6
+- [ ] Part 2 — carried forward from **Modules 1, 3, 4, 5** — value objects, injection, scopes, tests
+- [ ] Every gap logged in *Notes & Sticking Points* at the foot of this file
 
 ---
 
