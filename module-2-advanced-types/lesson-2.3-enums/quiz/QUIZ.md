@@ -28,8 +28,8 @@
 **Q3.** What is the difference between `Status::from('active')` and `Status::tryFrom('active')`?
 
 - A) `from()` is for string-backed enums; `tryFrom()` is for integer-backed enums.
-- B) `from()` throws `\ValueError` if the value is not found; `tryFrom()` returns `null`.
-- C) `from()` returns null if the value is not found; `tryFrom()` throws an exception.
+- B) `from()` returns null if the value is not found; `tryFrom()` throws an exception.
+- C) `from()` throws `\ValueError` if the value is not found; `tryFrom()` returns `null`.
 - D) They are identical — `tryFrom()` is just an alias for `from()`.
 
 ---
@@ -37,17 +37,17 @@
 **Q4.** You define `enum Priority: int { case Low = 1; case High = 10; }`. What does `Priority::High->name` return?
 
 - A) `10`
-- B) `"High"`
+- B) Fatal error — `->name` is only available on pure enums.
 - C) `"Priority::High"`
-- D) Fatal error — `->name` is only available on pure enums.
+- D) `"High"`
 
 ---
 
 **Q5.** An enum implements an interface. Which of the following is **true**?
 
-- A) Enum cases cannot be passed to functions typed against that interface.
+- A) Enum cases are `instanceof` both the enum AND the interface it implements.
 - B) Enum cases are `instanceof` the enum only — not the interface.
-- C) Enum cases are `instanceof` both the enum AND the interface it implements.
+- C) Enum cases cannot be passed to functions typed against that interface.
 - D) Enums cannot implement interfaces in PHP 8.1.
 
 ---
@@ -85,9 +85,9 @@ What happens when `describe(Season::Winter)` is called?
 
 **Q8.** Which of the following statements about enums is **false**?
 
-- A) An enum case can be used as a default parameter value.
+- A) Enums can be extended using `extends`.
 - B) Enum cases can be used as type hints for function parameters.
-- C) Enums can be extended using `extends`.
+- C) An enum case can be used as a default parameter value.
 - D) Enums can contain static methods.
 
 ---
@@ -269,12 +269,12 @@ echo var_export($dir instanceof Labelled, true) . "\n";
 |---|--------|-------------|
 | 1 | **C** | A pure enum case has no backing value — just the name. Options A and B have backing values (making them backed enum cases). Option D is a constant, not a case. |
 | 2 | **C** | This one catches almost everyone, including people who have used enums for years. A pure enum case has no `value` — but reading a property that does not exist on an object is not fatal in PHP. You get *"Warning: Undefined property: Color::$value"* and the expression evaluates to `null`. Option D is the answer most people give, and it is the more *useful* behaviour, which is probably why the misconception is so durable — but PHP does not throw here. The practical lesson is that this mistake fails quietly: `null` flows onward and surfaces somewhere else entirely. `->name` is available on all cases, pure and backed. |
-| 3 | **B** | `from()` throws `\ValueError` on an unknown value — use it for trusted data. `tryFrom()` returns `null` on an unknown value — use it for untrusted external input. |
-| 4 | **B** | `->name` always returns the PHP case identifier as a string — `"High"`. `->value` would return `10`. Both are available on backed enums. |
-| 5 | **C** | Enum cases are `instanceof` both the enum type AND any interface it implements. This is what makes them usable in interface-typed function parameters. |
+| 3 | **C** | `from()` throws `\ValueError` on an unknown value — use it for trusted data. `tryFrom()` returns `null` on an unknown value — use it for untrusted external input. |
+| 4 | **D** | `->name` always returns the PHP case identifier as a string — `"High"`. `->value` would return `10`. Both are available on backed enums. |
+| 5 | **A** | Enum cases are `instanceof` both the enum type AND any interface it implements. This is what makes them usable in interface-typed function parameters. |
 | 6 | **C** | `match` in PHP throws `\UnhandledMatchError` when no arm matches. This is the runtime enforcement of exhaustiveness — a static analyser catches it before runtime. |
 | 7 | **B** | `EnumName::cases()` is the static method that returns all cases. There is no `all()` or `values()` — and PHP's `foreach (Status as ...)` is not valid syntax. |
-| 8 | **C** | Enums cannot use `extends` — they cannot be extended or extend other classes. They CAN implement interfaces, contain static methods, and be used as type hints. |
+| 8 | **A** | Enums cannot use `extends` — they cannot be extended or extend other classes. They CAN implement interfaces, contain static methods, and be used as type hints. |
 
 ## Section B
 | # | Answer | Explanation |

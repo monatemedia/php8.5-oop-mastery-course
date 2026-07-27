@@ -9,8 +9,8 @@
 **Q1.** What is the primary difference between a unit test and an integration test?
 
 - A) Integration tests are slower; unit tests are faster.
-- B) Unit tests replace all dependencies with doubles and test one class in isolation. Integration tests use real implementations to verify that multiple components work correctly when wired together.
-- C) Integration tests use mocking frameworks; unit tests use anonymous classes.
+- B) Integration tests use mocking frameworks; unit tests use anonymous classes.
+- C) Unit tests replace all dependencies with doubles and test one class in isolation. Integration tests use real implementations to verify that multiple components work correctly when wired together.
 - D) Unit tests cover the whole application; integration tests cover individual classes.
 
 ---
@@ -19,16 +19,16 @@
 
 - A) SQLite is faster than all other databases for production workloads.
 - B) It requires a server process and credentials — just like production.
-- C) It is in-process, destroyed when the connection closes, requires no setup, and runs in microseconds.
-- D) It is the only database PHP supports natively.
+- C) It is the only database PHP supports natively.
+- D) It is in-process, destroyed when the connection closes, requires no setup, and runs in microseconds.
 
 ---
 
 **Q3.** In the test pyramid, what sits between unit tests (the wide base) and end-to-end tests (the narrow top)?
 
-- A) Acceptance tests
+- A) Integration tests
 - B) Smoke tests
-- C) Integration tests
+- C) Acceptance tests
 - D) Performance tests
 
 ---
@@ -36,9 +36,9 @@
 **Q4.** You boot a PHP-DI container in `setUp()` and override the `\PDO::class` binding with an in-memory SQLite connection. What does this allow you to test?
 
 - A) That the container source code itself is bug-free.
-- B) That the real repository classes execute correct SQL against a real (in-memory) database, while the rest of the container wiring uses real implementations.
+- B) That unit tests and integration tests produce identical results.
 - C) That anonymous class doubles implement the repository interfaces correctly.
-- D) That unit tests and integration tests produce identical results.
+- D) That the real repository classes execute correct SQL against a real (in-memory) database, while the rest of the container wiring uses real implementations.
 
 ---
 
@@ -79,8 +79,8 @@ What does `$this->app->handle($request)` do?
 
 **Q8.** Your integration test creates a product via `POST /products` and checks the HTTP response. You also want to verify the row was persisted correctly. What should you use?
 
-- A) Call `GET /products/{id}` and compare the response body.
-- B) Assert directly on `$this->pdo` with a raw SQL query: `SELECT * FROM products WHERE sku = ?`
+- A) Assert directly on `$this->pdo` with a raw SQL query: `SELECT * FROM products WHERE sku = ?`
+- B) Call `GET /products/{id}` and compare the response body.
 - C) Add a `getLastInsertedRow()` method to the repository for test use only.
 - D) Trust that if the HTTP response is 201, the data must have been saved correctly.
 
@@ -208,14 +208,14 @@ class ProductIntegrationTest extends TestCase
 
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | Unit tests isolate a single class with doubles. Integration tests use real implementations to verify the wiring and interactions between components. |
-| 2 | **C** | `sqlite::memory:` is fully in-process (no server), ephemeral (destroyed when connection closes), requires zero configuration, and is extremely fast. |
-| 3 | **C** | The test pyramid: wide base = unit tests, middle = integration tests, narrow top = end-to-end tests. |
-| 4 | **B** | The container is booted with real classes — only the PDO binding is overridden with an in-memory test database. This tests real SQL execution and real container autowiring simultaneously. |
+| 1 | **C** | Unit tests isolate a single class with doubles. Integration tests use real implementations to verify the wiring and interactions between components. |
+| 2 | **D** | `sqlite::memory:` is fully in-process (no server), ephemeral (destroyed when connection closes), requires zero configuration, and is extremely fast. |
+| 3 | **A** | The test pyramid: wide base = unit tests, middle = integration tests, narrow top = end-to-end tests. |
+| 4 | **D** | The container is booted with real classes — only the PDO binding is overridden with an in-memory test database. This tests real SQL execution and real container autowiring simultaneously. |
 | 5 | **B** | Slim's `App::handle()` processes the request entirely in-process through the routing engine, middleware stack, controller, and response object — no real HTTP server is involved. |
 | 6 | **B** | A fresh `new PDO('sqlite::memory:')` in `setUp()` creates a brand-new in-memory database before every test. When the previous connection goes out of scope, the entire database is destroyed. |
 | 7 | **B** | Container wiring tests (`ProductRepositoryInterface` → `SqliteProductRepository`) can only be verified by actually building the container. Unit tests cannot catch misconfigured bindings. A–D all belong at the unit level. |
-| 8 | **B** | Direct SQL assertions on `$this->pdo` verify the database state at the most fundamental level — they catch bugs where the service returns the right value but forgets to persist it. |
+| 8 | **A** | Direct SQL assertions on `$this->pdo` verify the database state at the most fundamental level — they catch bugs where the service returns the right value but forgets to persist it. |
 
 ## Section B
 

@@ -11,16 +11,16 @@
 
 - A) A trait can be instantiated directly with `new`.
 - B) A trait can be used as a type-hint in a function parameter.
-- C) A class can use multiple traits simultaneously.
-- D) A trait automatically implements any interfaces the host class declares.
+- C) A trait automatically implements any interfaces the host class declares.
+- D) A class can use multiple traits simultaneously.
 
 ---
 
 **Q2.** A class uses two traits, `TraitA` and `TraitB`, both of which define a method called `process()`. What happens if you do NOT resolve the conflict?
 
 - A) PHP silently uses `TraitA::process()` because it was listed first.
-- B) PHP throws a fatal error when the class is loaded.
-- C) PHP merges both implementations and calls them both.
+- B) PHP merges both implementations and calls them both.
+- C) PHP throws a fatal error when the class is loaded.
 - D) PHP throws a warning but continues using `TraitA::process()`.
 
 ---
@@ -50,16 +50,16 @@ What does `(new Person('Alice'))->greet()` return?
 **Q4.** What does the `insteadof` keyword do in a trait conflict resolution?
 
 - A) It creates an alias for a conflicting method under a new name.
-- B) It chooses one trait's method to use for a given name and discards the other's.
-- C) It marks a method as final so no further overriding is allowed.
+- B) It marks a method as final so no further overriding is allowed.
+- C) It chooses one trait's method to use for a given name and discards the other's.
 - D) It changes a method's visibility.
 
 ---
 
 **Q5.** What does the `as` keyword do in a trait conflict resolution block?
 
-- A) It chooses one trait's method over another for a given name.
-- B) It creates an alias (new name) for a method, and/or changes its visibility.
+- A) It creates an alias (new name) for a method, and/or changes its visibility.
+- B) It chooses one trait's method over another for a given name.
 - C) It declares a method abstract in the trait.
 - D) It prevents the method from being called outside the class.
 
@@ -67,8 +67,8 @@ What does `(new Person('Alice'))->greet()` return?
 
 **Q6.** A trait declares `abstract protected function getLabel(): string;`. What does this mean for any class that uses the trait?
 
-- A) Nothing — abstract methods in traits are optional.
-- B) The class must implement `getLabel()`, or it must itself be declared `abstract`.
+- A) The class must implement `getLabel()`, or it must itself be declared `abstract`.
+- B) Nothing — abstract methods in traits are optional.
 - C) The class automatically gets a default `getLabel()` implementation.
 - D) PHP throws a fatal error because abstract methods cannot exist in traits.
 
@@ -86,8 +86,8 @@ What does `(new Person('Alice'))->greet()` return?
 **Q8.** A trait declares `private string $status = 'draft'`. A class that uses the trait also declares `private string $status = 'active'`. What happens?
 
 - A) The class's declaration wins silently.
-- B) The trait's declaration wins silently.
-- C) PHP throws a fatal error because the same property is declared with a different default value.
+- B) PHP throws a fatal error because the same property is declared with a different default value.
+- C) The trait's declaration wins silently.
 - D) PHP uses whichever declaration appears last in the file.
 
 ---
@@ -270,14 +270,14 @@ echo $api->getCount() . "\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **C** | A class can use any number of traits. Traits cannot be instantiated, cannot be type-hinted, and do not automatically implement interfaces. |
-| 2 | **B** | PHP throws a fatal error at class load time when a method name conflict is not resolved with `insteadof`. |
+| 1 | **D** | A class can use any number of traits. Traits cannot be instantiated, cannot be type-hinted, and do not automatically implement interfaces. |
+| 2 | **C** | PHP throws a fatal error at class load time when a method name conflict is not resolved with `insteadof`. |
 | 3 | **C** | `get_class($this)` returns the class of the object at runtime — which is `Person`, not `Greetable`. `$this` always refers to the host object. |
-| 4 | **B** | `insteadof` chooses one trait's version and discards the conflicting one entirely for that method name. |
-| 5 | **B** | `as` creates an alias so both versions are accessible, and/or changes the method's visibility in the using class. |
-| 6 | **B** | An abstract method in a trait behaves like an abstract method in a class — the host class must implement it, or it must be declared `abstract` itself. |
+| 4 | **C** | `insteadof` chooses one trait's version and discards the conflicting one entirely for that method name. |
+| 5 | **A** | `as` creates an alias so both versions are accessible, and/or changes the method's visibility in the using class. |
+| 6 | **A** | An abstract method in a trait behaves like an abstract method in a class — the host class must implement it, or it must be declared `abstract` itself. |
 | 7 | **C** | The interface gives the type system a contract to enforce; the trait gives the class a free default implementation. Together they produce type-safe, DRY code. |
-| 8 | **C** | PHP throws a fatal error if the same property is declared in both the class and the used trait with a different default value or visibility. |
+| 8 | **B** | PHP throws a fatal error if the same property is declared in both the class and the used trait with a different default value or visibility. |
 
 ## Section B
 | # | Answer | Explanation |

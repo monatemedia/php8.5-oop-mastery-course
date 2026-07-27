@@ -63,17 +63,17 @@ Which of the following is **true**?
 **Q6.** Two different `new class {}` expressions in the same file — are they the same class?
 
 - A) Yes — PHP reuses the same internal class for identical anonymous class definitions.
-- B) No — each `new class` expression generates a distinct internal class name.
+- B) It depends on whether they implement the same interface.
 - C) Yes — as long as the class bodies are identical.
-- D) It depends on whether they implement the same interface.
+- D) No — each `new class` expression generates a distinct internal class name.
 
 ---
 
 **Q7.** You have a function typed `function process(PaymentGateway $gw): void`. Which can be passed?
 
 - A) Only named classes that implement `PaymentGateway`.
-- B) Only named classes — anonymous classes cannot be used as type arguments.
-- C) Any object that implements `PaymentGateway`, including anonymous class instances.
+- B) Any object that implements `PaymentGateway`, including anonymous class instances.
+- C) Only named classes — anonymous classes cannot be used as type arguments.
 - D) Any object — PHP ignores the type hint for anonymous class instances.
 
 ---
@@ -81,9 +81,9 @@ Which of the following is **true**?
 **Q8.** Which statement about anonymous classes and serialisation is **true**?
 
 - A) Anonymous class instances serialise identically to named class instances.
-- B) Anonymous class instances cannot be reliably serialised with `serialize()`.
+- B) PHP automatically converts anonymous class instances to `stdClass` before serialising.
 - C) Anonymous class instances must implement `Serializable` before they can be serialised.
-- D) PHP automatically converts anonymous class instances to `stdClass` before serialising.
+- D) Anonymous class instances cannot be reliably serialised with `serialize()`.
 
 ---
 
@@ -254,9 +254,9 @@ echo var_export($active instanceof StatusProvider, true) . "\n";
 | 3 | **B** | `instanceof` works normally against interfaces for anonymous class instances — the class implements `Notifier`, so `$n instanceof Notifier` is `true`. `get_class()` returns the internal generated name, not `"Notifier"`. |
 | 4 | **B** | Syntax B is correct. Constructor args are passed in `new class('Alice')`, and the anonymous class body declares its own constructor that calls `parent::__construct()`. Option A does not auto-forward args. Option C is invalid syntax. |
 | 5 | **C** | Anonymous classes are the right choice when you need multiple methods or state across calls. Closures are for single callables. Option D (reuse) calls for a named class. |
-| 6 | **B** | Each `new class {}` expression generates a distinct internal class name — even if the bodies are identical. They are never the same class. |
-| 7 | **C** | Type hints check the interface — any object implementing `PaymentGateway` qualifies, whether it is a named class or an anonymous class instance. |
-| 8 | **B** | PHP does not let you try. `serialize()` on an anonymous class instance throws immediately: *"Exception: Serialization of 'class@anonymous' is not allowed"* — the failure is at serialise time, not later at `unserialize()`. The reason is the one you would guess: the generated class name embeds the file path and a line number, so the string could never be resolved back to a class in another process. PHP simply refuses at the point where it can still give you a comprehensible message. |
+| 6 | **D** | Each `new class {}` expression generates a distinct internal class name — even if the bodies are identical. They are never the same class. |
+| 7 | **B** | Type hints check the interface — any object implementing `PaymentGateway` qualifies, whether it is a named class or an anonymous class instance. |
+| 8 | **D** | PHP does not let you try. `serialize()` on an anonymous class instance throws immediately: *"Exception: Serialization of 'class@anonymous' is not allowed"* — the failure is at serialise time, not later at `unserialize()`. The reason is the one you would guess: the generated class name embeds the file path and a line number, so the string could never be resolved back to a class in another process. PHP simply refuses at the point where it can still give you a comprehensible message. |
 
 ## Section B
 | # | Answer | Explanation |

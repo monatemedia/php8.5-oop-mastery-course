@@ -9,8 +9,8 @@
 
 **Q1.** What is the core principle behind Dependency Injection?
 
-- A) A class should inherit its dependencies from a parent class.
-- B) A class should receive its dependencies from the outside rather than creating them internally.
+- A) A class should receive its dependencies from the outside rather than creating them internally.
+- B) A class should inherit its dependencies from a parent class.
 - C) Dependencies should be stored in global variables so any class can access them.
 - D) Each class should create one instance of each dependency it needs.
 
@@ -20,8 +20,8 @@
 
 - A) It is the only form supported by PHP.
 - B) It makes the class lighter by lazy-loading dependencies.
-- C) Required dependencies are declared at construction time — the class is always in a valid state and its dependencies are immediately visible.
-- D) It is faster than setter injection at runtime.
+- C) It is faster than setter injection at runtime.
+- D) Required dependencies are declared at construction time — the class is always in a valid state and its dependencies are immediately visible.
 
 ---
 
@@ -40,8 +40,8 @@ The object is passed in from outside. Which problem still exists?
 
 **Q4.** What is the **composition root**?
 
-- A) The abstract base class from which all services inherit.
-- B) The single entry point (e.g. `index.php`) where all dependencies are wired together with `new` calls.
+- A) The single entry point (e.g. `index.php`) where all dependencies are wired together with `new` calls.
+- B) The abstract base class from which all services inherit.
 - C) The service container that automatically resolves dependencies.
 - D) A trait that provides shared constructor logic to all classes.
 
@@ -49,8 +49,8 @@ The object is passed in from outside. Which problem still exists?
 
 **Q5.** A service has six injected dependencies. What does this most likely signal?
 
-- A) The service is well-architected because it separates all its concerns.
-- B) The service may be violating the Single Responsibility Principle — it might need to be split.
+- A) The service may be violating the Single Responsibility Principle — it might need to be split.
+- B) The service is well-architected because it separates all its concerns.
 - C) PHP will throw an error — constructors cannot have more than five parameters.
 - D) The service should store its dependencies in a config file instead.
 
@@ -59,8 +59,8 @@ The object is passed in from outside. Which problem still exists?
 **Q6.** What does PHP 8.0 constructor property promotion do?
 
 - A) Automatically generates getter methods for all constructor parameters.
-- B) Allows declaring, type-hinting, and assigning a property in a single constructor parameter declaration.
-- C) Makes constructor parameters available globally throughout the application.
+- B) Makes constructor parameters available globally throughout the application.
+- C) Allows declaring, type-hinting, and assigning a property in a single constructor parameter declaration.
 - D) Caches constructor parameters so they do not need to be passed again on subsequent calls.
 
 ---
@@ -86,9 +86,9 @@ Which of the following can be passed to `UserService`'s constructor?
 
 **Q8.** Which of the following is the **correct order** for building a multi-layer system with constructor injection?
 
-- A) Services → Repositories → Infrastructure → Entry point
+- A) Infrastructure → Repositories → Services → Entry point (composition root)
 - B) Entry point → Services → Repositories → Infrastructure
-- C) Infrastructure → Repositories → Services → Entry point (composition root)
+- C) Services → Repositories → Infrastructure → Entry point
 - D) Any order — DI containers handle the ordering automatically.
 
 ---
@@ -226,14 +226,14 @@ class PaymentProcessor {
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | DI's core principle: receive dependencies from outside, do not create them internally. |
-| 2 | **C** | Constructor injection makes dependencies mandatory and visible — the class cannot be constructed without them, so it is always in a valid state. |
+| 1 | **A** | DI's core principle: receive dependencies from outside, do not create them internally. |
+| 2 | **D** | Constructor injection makes dependencies mandatory and visible — the class cannot be constructed without them, so it is always in a valid state. |
 | 3 | **B** | Even though the object is passed in, the concrete type `MySQLDatabase` means only that one class is accepted. An interface type would allow fakes, test doubles, or alternative implementations. |
-| 4 | **B** | The composition root is the application entry point — the one place where all `new` calls on services live, and where dependencies are wired together. |
-| 5 | **B** | Six or more injected dependencies often indicates the class is handling too many responsibilities (SRP violation). Consider splitting it. |
-| 6 | **B** | Property promotion: `private DatabaseInterface $db` in the parameter list declares the property, type-hints it, and assigns the value — all in one line. |
+| 4 | **A** | The composition root is the application entry point — the one place where all `new` calls on services live, and where dependencies are wired together. |
+| 5 | **A** | Six or more injected dependencies often indicates the class is handling too many responsibilities (SRP violation). Consider splitting it. |
+| 6 | **C** | Property promotion: `private DatabaseInterface $db` in the parameter list declares the property, type-hints it, and assigns the value — all in one line. |
 | 7 | **C** | Any class implementing `LoggerInterface` can be passed — including named classes, anonymous classes, and any future logger implementation. |
-| 8 | **C** | Infrastructure is built first (it has no dependencies), then repositories (depend on infrastructure), then services (depend on repositories), and finally the entry point wires all of them together. |
+| 8 | **A** | Infrastructure is built first (it has no dependencies), then repositories (depend on infrastructure), then services (depend on repositories), and finally the entry point wires all of them together. |
 
 ## Section B
 | # | Answer | Explanation |

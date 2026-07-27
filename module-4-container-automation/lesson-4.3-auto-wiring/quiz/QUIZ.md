@@ -9,8 +9,8 @@
 
 **Q1.** What is auto-wiring in the context of a DI container?
 
-- A) Automatically generating interface implementations using PHP's Reflection API.
-- B) The container resolves a class's constructor dependencies by reading type hints via Reflection, without requiring a manual factory for every service class.
+- A) The container resolves a class's constructor dependencies by reading type hints via Reflection, without requiring a manual factory for every service class.
+- B) Automatically generating interface implementations using PHP's Reflection API.
 - C) A PHP 8.5 feature that injects dependencies at the language level.
 - D) Automatically detecting which classes implement which interfaces.
 
@@ -20,8 +20,8 @@
 
 - A) Throws a `RuntimeException` because no binding exists.
 - B) Returns `null`.
-- C) Reflects on `OrderService::__construct()`, resolves each typed parameter recursively, instantiates the class, and caches the result.
-- D) Calls `new OrderService()` without resolving any dependencies.
+- C) Calls `new OrderService()` without resolving any dependencies.
+- D) Reflects on `OrderService::__construct()`, resolves each typed parameter recursively, instantiates the class, and caches the result.
 
 ---
 
@@ -29,16 +29,16 @@
 
 - A) All parameters, regardless of type.
 - B) Only parameters with `mixed` type hints.
-- C) Only parameters typed as non-builtin classes or interfaces (where `isBuiltin() = false`).
-- D) Only parameters that are optional (have default values).
+- C) Only parameters that are optional (have default values).
+- D) Only parameters typed as non-builtin classes or interfaces (where `isBuiltin() = false`).
 
 ---
 
 **Q4.** A class has constructor `__construct(private string $dsn, private LoggerInterface $logger)`. An auto-wiring container tries to resolve it with a binding for `LoggerInterface`. What happens?
 
 - A) Both parameters are auto-wired — the container injects an empty string for `$dsn`.
-- B) The container resolves `$logger` but throws a `RuntimeException` for `$dsn` because `string` is a builtin type that cannot be auto-wired.
-- C) The container skips `$dsn` and only injects `$logger`.
+- B) The container skips `$dsn` and only injects `$logger`.
+- C) The container resolves `$logger` but throws a `RuntimeException` for `$dsn` because `string` is a builtin type that cannot be auto-wired.
 - D) The container resolves `$dsn` as an empty string singleton.
 
 ---
@@ -46,9 +46,9 @@
 **Q5.** What data structure is used to detect circular dependencies during recursive resolution?
 
 - A) A stack of resolved class names.
-- B) A set (associative array) of class names currently being resolved.
+- B) A reference counter for each class name.
 - C) A queue of pending resolutions.
-- D) A reference counter for each class name.
+- D) A set (associative array) of class names currently being resolved.
 
 ---
 
@@ -64,8 +64,8 @@
 **Q7.** `OrderService` has three interface-typed constructor parameters. Its container has bindings for all three interfaces. How many explicit `bind()` calls are needed to resolve `OrderService`?
 
 - A) 4 (one per parameter + one for OrderService itself).
-- B) 3 (one per interface — OrderService itself needs no binding).
-- C) 0 (auto-wiring requires no explicit bindings for any class).
+- B) 0 (auto-wiring requires no explicit bindings for any class).
+- C) 3 (one per interface — OrderService itself needs no binding).
 - D) 1 (only the first parameter needs a binding).
 
 ---
@@ -73,9 +73,9 @@
 **Q8.** Auto-wired results are cached as singletons. Why is this the right default for service classes?
 
 - A) Services must be singletons for PHP to function correctly.
-- B) Services are typically stateless (they perform work, hold no mutable per-request state), so sharing one instance is safe and avoids unnecessary re-construction. (Course Philosophy Rule 5)
+- B) Caching is required to prevent circular dependencies.
 - C) Singletons are faster because PHP can optimise them at compile time.
-- D) Caching is required to prevent circular dependencies.
+- D) Services are typically stateless (they perform work, hold no mutable per-request state), so sharing one instance is safe and avoids unnecessary re-construction. (Course Philosophy Rule 5)
 
 ---
 
@@ -246,14 +246,14 @@ echo "Done\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | Auto-wiring reads constructor type hints via Reflection and resolves dependencies recursively, without a manual factory for each service class. |
-| 2 | **C** | No explicit binding → container reflects `OrderService`, resolves each param recursively, instantiates, caches as singleton. |
-| 3 | **C** | Only non-builtin named types (`isBuiltin() = false`) can be resolved from the container. Scalars cannot. |
-| 4 | **B** | `string` is builtin — `isBuiltin() = true`. The container cannot resolve it. Unless `$dsn` has a default value, a `RuntimeException` is thrown. |
-| 5 | **B** | An associative array (`$resolving`) keyed by class name. Before resolving a class, check if it is already in the array — if so, circular. |
+| 1 | **A** | Auto-wiring reads constructor type hints via Reflection and resolves dependencies recursively, without a manual factory for each service class. |
+| 2 | **D** | No explicit binding → container reflects `OrderService`, resolves each param recursively, instantiates, caches as singleton. |
+| 3 | **D** | Only non-builtin named types (`isBuiltin() = false`) can be resolved from the container. Scalars cannot. |
+| 4 | **C** | `string` is builtin — `isBuiltin() = true`. The container cannot resolve it. Unless `$dsn` has a default value, a `RuntimeException` is thrown. |
+| 5 | **D** | An associative array (`$resolving`) keyed by class name. Before resolving a class, check if it is already in the array — if so, circular. |
 | 6 | **B** | If any step throws (e.g. an unresolvable parameter), the `finally` block guarantees the class is removed from `$resolving`, leaving the container in a usable state. |
-| 7 | **B** | 3 bindings — one per interface. `OrderService` itself requires no `bind()` call; the container auto-wires it. |
-| 8 | **B** | Stateless services perform work with no mutable per-request state. Sharing one instance is safe and avoids wasteful re-construction. Course Philosophy Rule 5. |
+| 7 | **C** | 3 bindings — one per interface. `OrderService` itself requires no `bind()` call; the container auto-wires it. |
+| 8 | **D** | Stateless services perform work with no mutable per-request state. Sharing one instance is safe and avoids wasteful re-construction. Course Philosophy Rule 5. |
 
 ## Section B
 | # | Answer | Explanation |

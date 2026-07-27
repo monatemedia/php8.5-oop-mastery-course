@@ -10,16 +10,16 @@
 **Q1.** What does `AppFactory::setContainer($container)` do in a Slim application?
 
 - A) It replaces Slim's router with PHP-DI's dependency graph.
-- B) It tells Slim to use the provided PSR-11 container when resolving route handler classes — so `$container->get(ProductController::class)` is called automatically.
-- C) It registers all container bindings as Slim routes.
+- B) It registers all container bindings as Slim routes.
+- C) It tells Slim to use the provided PSR-11 container when resolving route handler classes — so `$container->get(ProductController::class)` is called automatically.
 - D) It prevents Slim from creating its own internal container.
 
 ---
 
 **Q2.** A route is defined as `$app->get('/products', [ProductController::class, 'index'])`. When `GET /products` is received, what does Slim do with `ProductController::class`?
 
-- A) Slim calls `new ProductController()` directly.
-- B) Slim calls `$container->get(ProductController::class)`, which PHP-DI auto-wires with all constructor dependencies.
+- A) Slim calls `$container->get(ProductController::class)`, which PHP-DI auto-wires with all constructor dependencies.
+- B) Slim calls `new ProductController()` directly.
 - C) Slim searches all registered services for a class named `ProductController`.
 - D) Slim calls `ProductController::index()` statically.
 
@@ -28,8 +28,8 @@
 **Q3.** Which two files together form the composition root in a Slim + PHP-DI application?
 
 - A) `src/Http/ProductController.php` and `src/Domain/Order/OrderService.php`
-- B) `public/index.php` and `config/services.php`
-- C) `config/routes.php` and `src/Http/OrderController.php`
+- B) `config/routes.php` and `src/Http/OrderController.php`
+- C) `public/index.php` and `config/services.php`
 - D) `composer.json` and `config/services.php`
 
 ---
@@ -37,25 +37,25 @@
 **Q4.** A `ProductController` action method signature is `public function index(Request $request, Response $response): Response`. Where do `$request` and `$response` come from?
 
 - A) They are injected by PHP-DI via the constructor.
-- B) They are provided by Slim for every route handler call — not injected via constructor.
+- B) They are global variables provided by the PSR-7 layer.
 - C) They must be declared as constructor parameters alongside other dependencies.
-- D) They are global variables provided by the PSR-7 layer.
+- D) They are provided by Slim for every route handler call — not injected via constructor.
 
 ---
 
 **Q5.** According to Course Philosophy Rule 1, which file should be the ONLY file in the application that calls `getenv()`?
 
-- A) `public/index.php`
+- A) `config/services.php`
 - B) `src/Infrastructure/ConsoleLogger.php`
-- C) `config/services.php`
+- C) `public/index.php`
 - D) `src/Http/ProductController.php`
 
 ---
 
 **Q6.** How does Slim's request simulation (using `$app->handle($request)`) differ from a real HTTP request in terms of testing value?
 
-- A) It only tests the routing layer — controllers are not invoked.
-- B) It runs the full Slim middleware pipeline, routing, and controller logic without a web server — providing accurate HTTP behaviour testing with no network I/O.
+- A) It runs the full Slim middleware pipeline, routing, and controller logic without a web server — providing accurate HTTP behaviour testing with no network I/O.
+- B) It only tests the routing layer — controllers are not invoked.
 - C) It skips middleware and calls controllers directly.
 - D) It requires a running web server — Slim cannot handle requests programmatically.
 
@@ -64,17 +64,17 @@
 **Q7.** A controller reads `$args['id']` where `$args` is the third parameter. What is `$args` and where does it come from?
 
 - A) It is the PHP-DI container — injected automatically.
-- B) It is an array of route placeholder values (e.g. `['id' => '42']` for `/orders/42`) — provided by Slim for routes with `{id}` placeholders.
+- B) It is a query parameter array — the same as `$request->getQueryParams()`.
 - C) It is the JSON body of the request.
-- D) It is a query parameter array — the same as `$request->getQueryParams()`.
+- D) It is an array of route placeholder values (e.g. `['id' => '42']` for `/orders/42`) — provided by Slim for routes with `{id}` placeholders.
 
 ---
 
 **Q8.** What is the correct way to add a second set of definitions to override existing ones (e.g. for testing)?
 
-- A) Call `$builder->addDefinitions()` twice — the second call's definitions take precedence for overlapping keys.
+- A) Call `$container->override()` after building.
 - B) Modify `config/services.php` before building the container.
-- C) Call `$container->override()` after building.
+- C) Call `$builder->addDefinitions()` twice — the second call's definitions take precedence for overlapping keys.
 - D) PHP-DI does not support multiple definition sets in one container.
 
 ---
@@ -187,14 +187,14 @@ Write the resolution chain from routing through to the JSON response.
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | `setContainer()` tells Slim to use the provided PSR-11 container for resolving class-string route handlers. |
-| 2 | **B** | Slim calls `$container->get(ProductController::class)` — PHP-DI auto-wires it with its constructor dependencies. |
-| 3 | **B** | `public/index.php` boots the container and app. `config/services.php` declares all bindings. Together they are the composition root. |
-| 4 | **B** | `$request` and `$response` are provided by Slim for every route invocation — they are not constructor dependencies. |
-| 5 | **C** | `config/services.php` is the definitions file — the only place `getenv()` should appear (Rule 1). |
-| 6 | **B** | `$app->handle($request)` runs the full Slim pipeline — middleware, routing, controller — without a web server. This is the most accurate testing approach short of an actual HTTP call. |
-| 7 | **B** | `$args` is an associative array of route placeholder values — `['id' => '42']` for a route defined with `{id}`. |
-| 8 | **A** | `addDefinitions()` can be called multiple times. Later calls override earlier ones for duplicate keys — the standard approach for test definitions. |
+| 1 | **C** | `setContainer()` tells Slim to use the provided PSR-11 container for resolving class-string route handlers. |
+| 2 | **A** | Slim calls `$container->get(ProductController::class)` — PHP-DI auto-wires it with its constructor dependencies. |
+| 3 | **C** | `public/index.php` boots the container and app. `config/services.php` declares all bindings. Together they are the composition root. |
+| 4 | **D** | `$request` and `$response` are provided by Slim for every route invocation — they are not constructor dependencies. |
+| 5 | **A** | `config/services.php` is the definitions file — the only place `getenv()` should appear (Rule 1). |
+| 6 | **A** | `$app->handle($request)` runs the full Slim pipeline — middleware, routing, controller — without a web server. This is the most accurate testing approach short of an actual HTTP call. |
+| 7 | **D** | `$args` is an associative array of route placeholder values — `['id' => '42']` for a route defined with `{id}`. |
+| 8 | **C** | `addDefinitions()` can be called multiple times. Later calls override earlier ones for duplicate keys — the standard approach for test definitions. |
 
 ## Section B
 | # | Answer | Explanation |

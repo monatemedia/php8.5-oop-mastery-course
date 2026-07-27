@@ -8,8 +8,8 @@
 
 **Q1.** What makes a test "brittle"?
 
-- A) It runs slowly.
-- B) It tests the internal structure of a class — property names, constructor parameter counts, exact log message strings — rather than observable behaviour. It breaks when the internals are refactored even though no external behaviour changed.
+- A) It tests the internal structure of a class — property names, constructor parameter counts, exact log message strings — rather than observable behaviour. It breaks when the internals are refactored even though no external behaviour changed.
+- B) It runs slowly.
 - C) It uses anonymous classes instead of PHPUnit mocks.
 - D) It has more than one assertion.
 
@@ -17,8 +17,8 @@
 
 **Q2.** A developer refactors `OrderService` by renaming a private property `$gateway` → `$paymentProcessor`. No public method signatures change. A test that used `ReflectionProperty` to read `$gateway` now fails. This is an example of:
 
-- A) A test correctly catching a breaking change.
-- B) A brittle test that tests layout rather than behaviour — private names are not observable by callers and should not be asserted on.
+- A) A brittle test that tests layout rather than behaviour — private names are not observable by callers and should not be asserted on.
+- B) A test correctly catching a breaking change.
 - C) A test that should have used `assertSame` instead of `ReflectionProperty`.
 - D) An integration test that should have been a unit test.
 
@@ -44,10 +44,10 @@
 
 **Q5.** You have a test that asserts `$this->assertMatchesRegularExpression('/^[A-F0-9]{16}$/', $result['transaction_id'])`. The team decides to switch from 16-char hex IDs to UUID format. The behaviour is unchanged — a non-null ID is returned. What should the test have asserted instead?
 
-- A) `$this->assertIsString($result['transaction_id'])` and `$this->assertNotEmpty($result['transaction_id'])`
+- A) The test should have been deleted entirely.
 - B) `$this->assertSame(16, strlen($result['transaction_id']))`
 - C) `$this->assertMatchesRegularExpression('/^[a-zA-Z0-9-]+$/', $result['transaction_id'])`
-- D) The test should have been deleted entirely.
+- D) `$this->assertIsString($result['transaction_id'])` and `$this->assertNotEmpty($result['transaction_id'])`
 
 ---
 
@@ -74,9 +74,9 @@
 **Q8.** After a complete internal refactor of `InvoiceService` — extracting private helpers, renaming properties, adding a caching layer — all tests in a suite still pass. This is a sign that:
 
 - A) The refactor introduced no bugs.
-- B) The test suite tests behaviour rather than layout — it is resilient to internal changes.
+- B) The caching layer was not actually used.
 - C) The test suite is too permissive and probably doesn't cover edge cases.
-- D) The caching layer was not actually used.
+- D) The test suite tests behaviour rather than layout — it is resilient to internal changes.
 
 ---
 
@@ -203,14 +203,14 @@ public function testCacheGetCallsFetchOnCacheMiss(): void
 
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | Brittle tests test the internal structure. They break on valid refactors that change nothing observable — private names, constructor shapes, log wording — producing noise that masks real failures. |
-| 2 | **B** | Renaming a private property is a valid refactor. Private names are not part of the public contract. A test that fails after this rename was testing layout. |
+| 1 | **A** | Brittle tests test the internal structure. They break on valid refactors that change nothing observable — private names, constructor shapes, log wording — producing noise that masks real failures. |
+| 2 | **A** | Renaming a private property is a valid refactor. Private names are not part of the public contract. A test that fails after this rename was testing layout. |
 | 3 | **B** | A return value of a public method is observable by callers — it IS the contract. The other options all look inside the class boundary. |
 | 4 | **B** | The three-question test: Is it contractual (YES — callers care)? Is it verifiable (YES — via spy)? Would absence be a bug (YES — undelivered order = bug)? All three YES → legitimate. |
-| 5 | **A** | The CONTRACT is: "a non-empty string ID is returned." The FORMAT (hex, UUID, etc.) is an implementation detail. `assertIsString` + `assertNotEmpty` tests the contract without caring about format. |
+| 5 | **D** | The CONTRACT is: "a non-empty string ID is returned." The FORMAT (hex, UUID, etc.) is an implementation detail. `assertIsString` + `assertNotEmpty` tests the contract without caring about format. |
 | 6 | **B** | Log calls are internal mechanics. Their count and exact wording are not observed by callers. This test was asserting on internal structure dressed up as behaviour. |
 | 7 | **D** | Three internal log calls is an implementation detail — it changes whenever a debug statement is added. A → C are all legitimate contract assertions. |
-| 8 | **B** | If internal refactoring leaves all tests green, the tests are behaviour-focused. This is the correct outcome: refactor with confidence, tests signal only when the contract breaks. |
+| 8 | **D** | If internal refactoring leaves all tests green, the tests are behaviour-focused. This is the correct outcome: refactor with confidence, tests signal only when the contract breaks. |
 
 ## Section B
 

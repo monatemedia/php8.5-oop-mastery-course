@@ -31,6 +31,7 @@ $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php85course_quizaudit';
 @mkdir($tmp, 0777, true);
 
 $report  = [];
+$letters = [];
 $checked = 0;
 $matched = 0;
 $issues  = [];
@@ -122,6 +123,20 @@ foreach ($quizzes as $quizPath) {
         continue;
     }
     [$body, $key] = $split;
+
+    // ── Answer-position balance ────────────────────────────────────────────
+    // Not a correctness check, but it belongs in the same sweep. B was once the
+    // answer to 62% of the course's multiple-choice questions and A or D to 5%
+    // between them, which meant a student who never read a question could score
+    // 62% by answering B — above the "re-read the README" threshold on most of
+    // these quizzes. A quiz that can be passed by pattern-matching measures
+    // nothing.
+    $sectionA = preg_split('/## Section B/', $key)[0];
+    if (preg_match_all('/^\|\s*\d+\s*\|\s*\*\*([A-E])\*\*/m', $sectionA, $lm)) {
+        foreach ($lm[1] as $L) {
+            $letters[$L] = ($letters[$L] ?? 0) + 1;
+        }
+    }
 
     // ── Which question does each code block belong to? ──────────────────────
     preg_match_all('/\*\*Q(\d+)\./', $body, $qm, PREG_OFFSET_CAPTURE);
@@ -378,6 +393,41 @@ if ($wrong === []) {
         foreach (explode("\n", $r['claimed']) as $l) { $lines[] = '    ' . $l; }
         $lines[] = '  ACTUALLY PRINTS:';
         foreach (explode("\n", $r['actual']) as $l) { $lines[] = '    ' . $l; }
+        $lines[] = '';
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Answer-position balance
+// ─────────────────────────────────────────────────────────────────────────────
+
+if ($letters !== []) {
+    ksort($letters);
+    $totalMcq = array_sum($letters);
+    $topCount = max($letters);
+    $topShare = $topCount / $totalMcq * 100;
+
+    $lines[] = str_repeat('=', 72);
+    $lines[] = '  ANSWER-POSITION BALANCE';
+    $lines[] = str_repeat('=', 72);
+    $lines[] = '';
+    foreach ($letters as $L => $n) {
+        $bar = str_repeat('#', (int) round($n / $totalMcq * 40));
+        $lines[] = sprintf('  %s  %4d  %5.1f%%  %s', $L, $n, $n / $totalMcq * 100, $bar);
+    }
+    $lines[] = '';
+    $lines[] = sprintf(
+        '  Best "always answer the same letter" score: %d/%d = %.0f%%   (chance = 25%%)',
+        $topCount,
+        $totalMcq,
+        $topShare
+    );
+    $lines[] = '';
+    if ($topShare > 35.0) {
+        $lines[] = '  ** One letter is over-represented. A student can score that much without';
+        $lines[] = '     reading the questions, so the quiz is measuring recall of a pattern';
+        $lines[] = '     rather than of the material. Move some correct answers to other';
+        $lines[] = '     positions — and swap the option TEXT, not just the key letter. **';
         $lines[] = '';
     }
 }

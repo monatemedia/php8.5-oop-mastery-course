@@ -9,8 +9,8 @@
 
 **Q1.** What is the role of `ContainerBuilder` in PHP-DI?
 
-- A) It validates that all interface bindings are correct before the container starts.
-- B) It assembles the container from configuration (definitions files, compilation settings) and produces a ready-to-use PSR-11 container.
+- A) It assembles the container from configuration (definitions files, compilation settings) and produces a ready-to-use PSR-11 container.
+- B) It validates that all interface bindings are correct before the container starts.
 - C) It generates PHP class stubs for every registered interface.
 - D) It replaces Composer's autoloader for dependency loading.
 
@@ -18,9 +18,9 @@
 
 **Q2.** Which PHP-DI function maps an interface to a concrete class whose constructor will be auto-wired?
 
-- A) `factory(ConcreteClass::class)`
+- A) `autowire(ConcreteClass::class)`
 - B) `create(ConcreteClass::class)`
-- C) `autowire(ConcreteClass::class)`
+- C) `factory(ConcreteClass::class)`
 - D) `bind(ConcreteClass::class)`
 
 ---
@@ -36,9 +36,9 @@
 
 **Q4.** What PSR does PHP-DI implement, and why does this matter?
 
-- A) PSR-4 (autoloading) — required for Composer compatibility.
+- A) PSR-11 (container interface) — any framework that accepts a `ContainerInterface` works with PHP-DI without an adapter.
 - B) PSR-12 (coding style) — required for framework integration.
-- C) PSR-11 (container interface) — any framework that accepts a `ContainerInterface` works with PHP-DI without an adapter.
+- C) PSR-4 (autoloading) — required for Composer compatibility.
 - D) PSR-7 (HTTP messages) — required for routing.
 
 ---
@@ -55,16 +55,16 @@
 **Q6.** A factory definition receives the container as its first argument. What is this useful for?
 
 - A) It allows the factory to register new bindings at runtime.
-- B) It allows the factory to resolve other services from the container while constructing the class — useful for decorators and conditional wiring.
-- C) It provides access to the container's singleton cache for manual invalidation.
+- B) It provides access to the container's singleton cache for manual invalidation.
+- C) It allows the factory to resolve other services from the container while constructing the class — useful for decorators and conditional wiring.
 - D) It is required for all factory definitions — the container always passes itself.
 
 ---
 
 **Q7.** You register `LoggerInterface::class => autowire(FileLogger::class)`. `FileLogger` has constructor `__construct(private string $path = '/tmp/app.log')`. What does PHP-DI do?
 
-- A) Throws an exception — `string` cannot be auto-wired.
-- B) Uses the default value `'/tmp/app.log'` for `$path`, since the parameter is optional.
+- A) Uses the default value `'/tmp/app.log'` for `$path`, since the parameter is optional.
+- B) Throws an exception — `string` cannot be auto-wired.
 - C) Injects an empty string for `$path`.
 - D) Ignores the parameter entirely.
 
@@ -73,9 +73,9 @@
 **Q8.** What is the difference between `autowire()` and `create()` in PHP-DI?
 
 - A) `autowire()` is for interfaces; `create()` is for concrete classes.
-- B) `autowire()` uses Reflection to resolve constructor params automatically; `create()` does **not** auto-wire — you supply the arguments yourself.
+- B) They are identical — one is just an alias for the other.
 - C) `create()` creates a new instance every resolution; `autowire()` creates a singleton.
-- D) They are identical — one is just an alias for the other.
+- D) `autowire()` uses Reflection to resolve constructor params automatically; `create()` does **not** auto-wire — you supply the arguments yourself.
 
 ---
 
@@ -221,14 +221,14 @@ return [
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | `ContainerBuilder` assembles the container from configuration and produces a PSR-11 compliant container. |
-| 2 | **C** | `autowire(ConcreteClass::class)` maps an interface to a concrete class and auto-wires its constructor. |
+| 1 | **A** | `ContainerBuilder` assembles the container from configuration and produces a PSR-11 compliant container. |
+| 2 | **A** | `autowire(ConcreteClass::class)` maps an interface to a concrete class and auto-wires its constructor. |
 | 3 | **B** | `string` is a primitive — `autowire()` cannot resolve it. A `factory()` that reads `getenv()` is the correct approach. |
-| 4 | **C** | PSR-11 (`ContainerInterface`). Slim, Symfony, Mezzio all accept any PSR-11 container — no adapter needed for PHP-DI. |
+| 4 | **A** | PSR-11 (`ContainerInterface`). Slim, Symfony, Mezzio all accept any PSR-11 container — no adapter needed for PHP-DI. |
 | 5 | **C** | The definitions file is the composition root — the only place where config, env vars, and implementation decisions belong (Rule 1). |
-| 6 | **B** | The container argument lets the factory resolve other services — needed for decorators (`new LoggingGateway($c->get(GatewayInterface::class), $c->get(LoggerInterface::class))`). |
-| 7 | **B** | `$path` has a default value — PHP-DI calls `getDefaultValue()` and uses `'/tmp/app.log'`. No exception is thrown. |
-| 8 | **B** | This is the pair most people get backwards, because the names suggest `create()` is the simpler, more automatic one. It is the opposite. `autowire()` reads the constructor's type hints and resolves them; `create()` builds the object from **only** what you hand it, and a dependency you do not supply is simply missing — PHP-DI reports *"Parameter $d of __construct() has no value defined or guessable"*.<br><br>Both take overrides, with different APIs: `create(X::class)->constructor($a, $b)` passes positional arguments, while `autowire(X::class)->constructorParameter('dsn', $value)` overrides one named parameter and auto-wires the rest. Reach for `autowire()` by default and `create()` when you want to state every argument explicitly. |
+| 6 | **C** | The container argument lets the factory resolve other services — needed for decorators (`new LoggingGateway($c->get(GatewayInterface::class), $c->get(LoggerInterface::class))`). |
+| 7 | **A** | `$path` has a default value — PHP-DI calls `getDefaultValue()` and uses `'/tmp/app.log'`. No exception is thrown. |
+| 8 | **D** | This is the pair most people get backwards, because the names suggest `create()` is the simpler, more automatic one. It is the opposite. `autowire()` reads the constructor's type hints and resolves them; `create()` builds the object from **only** what you hand it, and a dependency you do not supply is simply missing — PHP-DI reports *"Parameter $d of __construct() has no value defined or guessable"*.<br><br>Both take overrides, with different APIs: `create(X::class)->constructor($a, $b)` passes positional arguments, while `autowire(X::class)->constructorParameter('dsn', $value)` overrides one named parameter and auto-wires the rest. Reach for `autowire()` by default and `create()` when you want to state every argument explicitly. |
 
 ## Section B
 | # | Answer | Explanation |

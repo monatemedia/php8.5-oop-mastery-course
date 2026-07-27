@@ -28,8 +28,8 @@
 
 - A) PHP throws a fatal error — a `get` hook is required if a `set` hook exists.
 - B) PHP returns `null` because no `get` hook was defined.
-- C) PHP returns the raw stored value directly, as if no hook existed.
-- D) PHP calls the `set` hook again to compute the value.
+- C) PHP calls the `set` hook again to compute the value.
+- D) PHP returns the raw stored value directly, as if no hook existed.
 
 ---
 
@@ -75,16 +75,16 @@ public ?\DateTimeImmutable $publishedAt = null {
 **Q7.** Which statement about hooks in abstract classes is **true**?
 
 - A) Abstract classes cannot have property hooks.
-- B) An abstract class can declare a property with a concrete hook, which subclasses inherit.
+- B) All property hooks in abstract classes must be abstract.
 - C) Only `get` hooks are allowed in abstract classes — not `set` hooks.
-- D) All property hooks in abstract classes must be abstract.
+- D) An abstract class can declare a property with a concrete hook, which subclasses inherit.
 
 ---
 
 **Q8.** A property is declared: `public float $area { get => $this->width * $this->height; }`. Which statement is correct?
 
-- A) `$area` is a backed property — the computed value is cached after the first read.
-- B) `$area` is a virtual property — it is recomputed every time it is read.
+- A) `$area` is a virtual property — it is recomputed every time it is read.
+- B) `$area` is a backed property — the computed value is cached after the first read.
 - C) `$area` can be assigned externally because it has no `set` hook.
 - D) This declaration is invalid — a property with only a `get` hook must also have a default value.
 
@@ -260,12 +260,12 @@ echo $c->csv   . "\n";
 |---|--------|-------------|
 | 1 | **B** | A property is **virtual** when *neither* of its hooks references the property itself (`$this->name`). B's `get` hook reads `$this->firstName`/`$this->lastName`, never `$this->name` — so nothing is stored and the value is derived on every read. A has a default value (only backed properties may have one). C and D use a short-form `set`, which implies a backing store to write into. |
 | 2 | **B** | The `get` hook runs every time the property is read — `$obj->prop` triggers it. It is not cached unless you implement caching explicitly inside the hook. |
-| 3 | **C** | If only a `set` hook is defined, PHP provides a default `get` behaviour that returns the raw stored value. No error occurs. |
+| 3 | **D** | If only a `set` hook is defined, PHP provides a default `get` behaviour that returns the raw stored value. No error occurs. |
 | 4 | **C** | A virtual property with only a `get` hook has no `set` operation at all, so assigning to it throws an `Error` at runtime. (A is fine — a backed property with only a `set` hook keeps the default read behaviour. B is fine for the same reason in reverse. D is ordinary and valid.) |
 | 5 | **B** | A plain `public string $title = '';` is naturally readable — it satisfies `{ get; }`. Option A uses a private property (not readable by callers). Option C uses protected (not readable from outside). Option D provides only a `set` hook — not readable. |
 | 6 | **B** | The property's declared type is `?\DateTimeImmutable` (i.e. `DateTimeImmutable\|null`). The `set` hook's parameter type must be the same or **wider**, so it must still accept `null` — hence `string\|\DateTimeImmutable\|null`. The hook converts strings before storing; the stored value is always `?\DateTimeImmutable`. **D is the trap:** dropping `\|null` *narrows* the type and is a fatal error — *"Type of parameter $value of hook ...::set must be compatible with property type"*. Nullable property, nullable hook parameter. |
-| 7 | **B** | An abstract class can have concrete property hooks, which subclasses inherit just like concrete methods. Abstract hook declarations are also possible, forcing subclasses to provide them. |
-| 8 | **B** | The `get` hook references `$this->width` and `$this->height` but never `$this->area`, so `$area` is virtual — no storage, recomputed on every read, never cached. With no `set` hook there is no write operation, so assigning to it throws an `Error`. |
+| 7 | **D** | An abstract class can have concrete property hooks, which subclasses inherit just like concrete methods. Abstract hook declarations are also possible, forcing subclasses to provide them. |
+| 8 | **A** | The `get` hook references `$this->width` and `$this->height` but never `$this->area`, so `$area` is virtual — no storage, recomputed on every read, never cached. With no `set` hook there is no write operation, so assigning to it throws an `Error`. |
 
 ## Section B
 | # | Answer | Explanation |

@@ -10,24 +10,24 @@
 
 - A) Green → Red → Refactor
 - B) Refactor → Red → Green
-- C) Red → Green → Refactor
-- D) Red → Refactor → Green
+- C) Red → Refactor → Green
+- D) Red → Green → Refactor
 
 ---
 
 **Q2.** Robert Martin's first rule of TDD states:
 
 - A) You must write one test per class.
-- B) You are not allowed to write any production code unless it is to make a failing test pass.
-- C) You must refactor after every test.
+- B) You must refactor after every test.
+- C) You are not allowed to write any production code unless it is to make a failing test pass.
 - D) Tests must be written before interfaces.
 
 ---
 
 **Q3.** You write a test for `generateToken()`. The test calls `$this->service->generateToken('alice@example.com')`. The class `PasswordResetService` does not exist yet. PHPUnit reports a fatal error. What phase is this?
 
-- A) Green — the test passes because there are no assertions yet.
-- B) Red — a compilation error IS a failing test.
+- A) Red — a compilation error IS a failing test.
+- B) Green — the test passes because there are no assertions yet.
 - C) Refactor — you need to clean up the class first.
 - D) Skip — you cannot run a test for a non-existent class.
 
@@ -36,18 +36,18 @@
 **Q4.** The "fake it till you make it" technique means:
 
 - A) Mock the database and pretend the real one works the same.
-- B) Return a hardcoded value to make the current test pass, knowing the NEXT test will break the hardcode and force a real implementation.
+- B) Skip tests for complex methods and implement them directly.
 - C) Write fake tests that always pass until you have time to write real ones.
-- D) Skip tests for complex methods and implement them directly.
+- D) Return a hardcoded value to make the current test pass, knowing the NEXT test will break the hardcode and force a real implementation.
 
 ---
 
 **Q5.** What does "outside-in TDD" mean?
 
 - A) Starting from the innermost utility functions and building outward.
-- B) Starting from the outermost behaviour the caller wants and letting the tests pull the design inward, with interfaces emerging from what the anonymous class doubles need.
+- B) Starting from the database schema and building the domain model around it.
 - C) Writing integration tests before unit tests.
-- D) Starting from the database schema and building the domain model around it.
+- D) Starting from the outermost behaviour the caller wants and letting the tests pull the design inward, with interfaces emerging from what the anonymous class doubles need.
 
 ---
 
@@ -92,8 +92,8 @@ Their colleague says: "This is wrong — it always returns the same token." The 
 **Q8.** Which of the following is a sign that a TDD step was too large?
 
 - A) The test method has more than one assertion.
-- B) The test passes on the first try without any implementation.
-- C) You have to write 30+ lines of implementation to make one test pass.
+- B) You have to write 30+ lines of implementation to make one test pass.
+- C) The test passes on the first try without any implementation.
 - D) The test uses a data provider.
 
 ---
@@ -243,14 +243,14 @@ Identify three problems with this approach compared to injecting `ClockInterface
 
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **C** | Red → Green → Refactor. Always in this order. You cannot refactor without green tests, and you cannot go green without first going red. |
-| 2 | **B** | Rule 1: no production code without a failing test. This rule ensures every line of production code has test coverage. |
-| 3 | **B** | A PHP fatal error (class not found, method not found) IS a failing test in TDD. It is the expected red state when the class does not exist yet. |
-| 4 | **B** | Fake it: return a hardcode to pass the current test quickly. The NEXT test breaks that hardcode and forces the real implementation. This is valid TDD practice — it keeps steps small. |
-| 5 | **B** | Outside-in: start at the outermost behaviour, use doubles for dependencies that do not exist yet, let the interfaces emerge from what the doubles need. |
+| 1 | **D** | Red → Green → Refactor. Always in this order. You cannot refactor without green tests, and you cannot go green without first going red. |
+| 2 | **C** | Rule 1: no production code without a failing test. This rule ensures every line of production code has test coverage. |
+| 3 | **A** | A PHP fatal error (class not found, method not found) IS a failing test in TDD. It is the expected red state when the class does not exist yet. |
+| 4 | **D** | Fake it: return a hardcode to pass the current test quickly. The NEXT test breaks that hardcode and forces the real implementation. This is valid TDD practice — it keeps steps small. |
+| 5 | **D** | Outside-in: start at the outermost behaviour, use doubles for dependencies that do not exist yet, let the interfaces emerge from what the doubles need. |
 | 6 | **B** | The test is brittle because `new \DateTimeImmutable()` always returns the current moment — which changes every second. TDD exposes this problem immediately. The fix: inject `ClockInterface` so the test controls "now". |
 | 7 | **B** | The TDD practitioner is correct. Hardcoded values are valid in TDD to get to green quickly. The technique is called "Fake It Till You Make It". The next test (`assertNotSame`) will break the hardcode and demand a real implementation. |
-| 8 | **C** | Writing 30+ lines to pass one test means the test step was too large. Split the behaviour into smaller pieces — each test should require 1–5 lines of implementation. |
+| 8 | **B** | Writing 30+ lines to pass one test means the test step was too large. Split the behaviour into smaller pieces — each test should require 1–5 lines of implementation. |
 
 ## Section B
 

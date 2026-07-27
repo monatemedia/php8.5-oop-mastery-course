@@ -10,17 +10,17 @@
 
 - A) The constructor takes a `string $dsn` parameter.
 - B) The class needs transient scope.
-- C) The class takes a single `LoggerInterface` typed dependency.
-- D) The constructor result must be wrapped in a decorator.
+- C) The constructor result must be wrapped in a decorator.
+- D) The class takes a single `LoggerInterface` typed dependency.
 
 ---
 
 **Q2.** Which of these gives you a **new instance on every resolution** in PHP-DI?
 
-- A) `autowire(ShoppingCart::class)`
+- A) None of them — `$container->make()` is the only built-in way to get a fresh instance.
 - B) `create(ShoppingCart::class)`
 - C) `factory(fn() => new ShoppingCart())`
-- D) None of them — `$container->make()` is the only built-in way to get a fresh instance.
+- D) `autowire(ShoppingCart::class)`
 
 ---
 
@@ -28,15 +28,15 @@
 
 - A) PHP-DI automatically chooses `StripeGateway` as the inner implementation.
 - B) PHP-DI throws a "duplicate binding" exception.
-- C) The factory for `LoggingGateway` tries to resolve `PaymentGatewayInterface` to inject as `$inner`, which triggers itself again — an infinite recursion or circular reference error.
-- D) The last binding wins — `LoggingGateway` overrides `StripeGateway`.
+- C) The last binding wins — `LoggingGateway` overrides `StripeGateway`.
+- D) The factory for `LoggingGateway` tries to resolve `PaymentGatewayInterface` to inject as `$inner`, which triggers itself again — an infinite recursion or circular reference error.
 
 ---
 
 **Q4.** How do you correctly wire a decorator to avoid the circular reference in Q3?
 
-- A) Use `DI\lazyLoad()` on the `$inner` parameter.
-- B) Register `StripeGateway` under its own concrete class name, then inject `StripeGateway` (not the interface) in the decorator's factory.
+- A) Register `StripeGateway` under its own concrete class name, then inject `StripeGateway` (not the interface) in the decorator's factory.
+- B) Use `DI\lazyLoad()` on the `$inner` parameter.
 - C) Register both under the interface and use `DI\tagged()` to select the inner one.
 - D) Implement `DecoratorInterface` on `LoggingGateway` and resolve that instead.
 
@@ -45,8 +45,8 @@
 **Q5.** A `factory()` callable declares `function(LoggerInterface $logger, ClockInterface $clock): SomeService`. What does PHP-DI do with `$logger` and `$clock`?
 
 - A) Ignores them — factory callables cannot receive injected dependencies.
-- B) Resolves them from the container (as singletons by default) and passes them as arguments.
-- C) Creates new instances of `LoggerInterface` and `ClockInterface` for each factory invocation.
+- B) Creates new instances of `LoggerInterface` and `ClockInterface` for each factory invocation.
+- C) Resolves them from the container (as singletons by default) and passes them as arguments.
 - D) Throws a `CannotInjectIntoFactoryException` because factories are not injectable.
 
 ---
@@ -63,16 +63,16 @@
 **Q7.** An `APP_ENV` check inside a `factory()` definition selects between `SmtpMailer` and `NullMailer`. A developer proposes moving this check inside `SmtpMailer`'s constructor: "if we're in test env, skip the SMTP connection." Which course rule does this violate?
 
 - A) Rule 3 (Type system as security) — `APP_ENV` is not typed.
-- B) Rule 1 (Config at entry point) — business logic classes should receive dependencies; they should never reach for `getenv()` or config directly.
-- C) Rule 5 (State vs behaviour) — `SmtpMailer` would mix state and behaviour.
+- B) Rule 5 (State vs behaviour) — `SmtpMailer` would mix state and behaviour.
+- C) Rule 1 (Config at entry point) — business logic classes should receive dependencies; they should never reach for `getenv()` or config directly.
 - D) Rule 4 (Composition over inheritance) — the check should be in a parent class.
 
 ---
 
 **Q8.** You register a `factory()` with a type-hinted `LoggerInterface` parameter. The `LoggerInterface` binding in the same container is itself a `factory()`. How many times is the `LoggerInterface` factory invoked if you resolve a service that depends on it five times?
 
-- A) 5 — the factory is called once per resolution.
-- B) 1 — the result is cached as a singleton after the first invocation (PHP-DI's default for `factory()`).
+- A) 1 — the result is cached as a singleton after the first invocation (PHP-DI's default for `factory()`).
+- B) 5 — the factory is called once per resolution.
 - C) 0 — PHP-DI uses a shared prototype for factory dependencies.
 - D) 10 — each resolution creates both the service and a new logger.
 
@@ -217,14 +217,14 @@ Describe, step by step, what PHP-DI resolves and in what order. Which classes ar
 
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **C** | A single `LoggerInterface` typed dependency is exactly what auto-wiring handles — it resolves the type from the container and injects it. No factory needed. All other options (scalar string, transient scope, decorator wrapping) require a factory definition. |
-| 2 | **D** | Every definition style is resolved once and shared: PHP-DI dropped scopes in v6, and `factory()` is a build recipe, not a lifetime instruction. Compare Q8, which asks how many times a `factory()` callable fires across five resolutions — the answer there is *once*, and it has to be the same answer here. Use `$container->make()` when you need a fresh object. |
-| 3 | **C** | If both `StripeGateway` and `LoggingGateway` are bound to `PaymentGatewayInterface`, and `LoggingGateway`'s factory requests `PaymentGatewayInterface` as `$inner`, the container tries to resolve `PaymentGatewayInterface` — which triggers the `LoggingGateway` factory again — creating infinite recursion. PHP-DI detects this as a circular dependency and throws. |
-| 4 | **B** | Register `StripeGateway` under its own concrete class name (`StripeGateway::class`), then declare the factory for `PaymentGatewayInterface` as `function(StripeGateway $stripe, ...)`. PHP-DI resolves `StripeGateway::class` (the concrete), not `PaymentGatewayInterface` — no circularity. |
-| 5 | **B** | PHP-DI inspects the factory callable's parameter types and resolves each type-hinted parameter from the container before invoking the factory. The resolved instances are passed as arguments. This is the same parameter injection mechanism used for class constructors. |
+| 1 | **D** | A single `LoggerInterface` typed dependency is exactly what auto-wiring handles — it resolves the type from the container and injects it. No factory needed. All other options (scalar string, transient scope, decorator wrapping) require a factory definition. |
+| 2 | **A** | Every definition style is resolved once and shared: PHP-DI dropped scopes in v6, and `factory()` is a build recipe, not a lifetime instruction. Compare Q8, which asks how many times a `factory()` callable fires across five resolutions — the answer there is *once*, and it has to be the same answer here. Use `$container->make()` when you need a fresh object. |
+| 3 | **D** | If both `StripeGateway` and `LoggingGateway` are bound to `PaymentGatewayInterface`, and `LoggingGateway`'s factory requests `PaymentGatewayInterface` as `$inner`, the container tries to resolve `PaymentGatewayInterface` — which triggers the `LoggingGateway` factory again — creating infinite recursion. PHP-DI detects this as a circular dependency and throws. |
+| 4 | **A** | Register `StripeGateway` under its own concrete class name (`StripeGateway::class`), then declare the factory for `PaymentGatewayInterface` as `function(StripeGateway $stripe, ...)`. PHP-DI resolves `StripeGateway::class` (the concrete), not `PaymentGatewayInterface` — no circularity. |
+| 5 | **C** | PHP-DI inspects the factory callable's parameter types and resolves each type-hinted parameter from the container before invoking the factory. The resolved instances are passed as arguments. This is the same parameter injection mechanism used for class constructors. |
 | 6 | **D** | Both A and C are correct for a singleton. A uses `factory()` with inline `getenv()` — works, gives full validation capability. C uses `create()->constructor()` with `DI\env()` helper — cleaner for simple cases. B is wrong: `autowire()` does not have a `->constructor()` method; that is specific to `create()`. |
-| 7 | **B** | Rule 1: "Config belongs at the entry point, not in core logic." `SmtpMailer` is a business/infrastructure class. It should receive what it needs via its constructor — not reach out to `getenv()` or branch on `APP_ENV` internally. The environment check belongs in the container factory, not inside the implementation. |
-| 8 | **B** | PHP-DI's default for `factory()` is singleton — the factory is called once and the result is cached. The `LoggerInterface` factory is invoked once; the same logger instance is injected into every service that depends on it. If you want a new logger per consumer, you would need to explicitly register `LoggerInterface` as a transient factory. |
+| 7 | **C** | Rule 1: "Config belongs at the entry point, not in core logic." `SmtpMailer` is a business/infrastructure class. It should receive what it needs via its constructor — not reach out to `getenv()` or branch on `APP_ENV` internally. The environment check belongs in the container factory, not inside the implementation. |
+| 8 | **A** | PHP-DI's default for `factory()` is singleton — the factory is called once and the result is cached. The `LoggerInterface` factory is invoked once; the same logger instance is injected into every service that depends on it. If you want a new logger per consumer, you would need to explicitly register `LoggerInterface` as a transient factory. |
 
 ## Section B
 

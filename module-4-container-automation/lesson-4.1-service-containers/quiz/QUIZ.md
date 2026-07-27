@@ -10,17 +10,17 @@
 **Q1.** What are the two core responsibilities of a service container?
 
 - A) Automate unit tests and manage database connections.
-- B) Store bindings (instructions for how to build a service) and resolve requests (build the service when asked).
+- B) Manage HTTP routing and handle service lifecycle events.
 - C) Replace the composition root and eliminate the need for interfaces.
-- D) Manage HTTP routing and handle service lifecycle events.
+- D) Store bindings (instructions for how to build a service) and resolve requests (build the service when asked).
 
 ---
 
 **Q2.** What is the difference between `bind()` (factory) and `singleton()` in a container?
 
 - A) `bind()` registers interfaces; `singleton()` registers concrete classes.
-- B) `bind()` calls the factory on every `get()` call (fresh instance); `singleton()` calls the factory once and returns the cached instance for all subsequent `get()` calls.
-- C) `bind()` is for stateless services; `singleton()` is for stateful services.
+- B) `bind()` is for stateless services; `singleton()` is for stateful services.
+- C) `bind()` calls the factory on every `get()` call (fresh instance); `singleton()` calls the factory once and returns the cached instance for all subsequent `get()` calls.
 - D) They are identical — `singleton()` is just an alias for `bind()`.
 
 ---
@@ -28,17 +28,17 @@
 **Q3.** You register a `ShoppingCart` as a singleton. During one request, both `CheckoutController` and `CartSummaryWidget` are resolved from the container, and each declares a `ShoppingCart` in its constructor. What happens?
 
 - A) Each receives its own fresh cart — that is what singleton scope means.
-- B) Both receive the same cart object — an item added through the controller is visible to the widget.
+- B) An exception is thrown because singletons cannot hold state.
 - C) PHP clones the singleton for each class that asks for it.
-- D) An exception is thrown because singletons cannot hold state.
+- D) Both receive the same cart object — an item added through the controller is visible to the widget.
 
 ---
 
 **Q4.** What is the key difference between a **container** and a **Service Locator**?
 
-- A) A container uses interfaces; a Service Locator uses concrete classes.
+- A) Both use the same technology. The difference is where `get()` is called: a container calls `get()` only at the entry point; a Service Locator has business classes calling `get()` internally.
 - B) A container uses Reflection; a Service Locator uses manual bindings.
-- C) Both use the same technology. The difference is where `get()` is called: a container calls `get()` only at the entry point; a Service Locator has business classes calling `get()` internally.
+- C) A container uses interfaces; a Service Locator uses concrete classes.
 - D) A container can only manage singletons; a Service Locator supports factory mode.
 
 ---
@@ -46,8 +46,8 @@
 **Q5.** What does PSR-11 define?
 
 - A) How service containers should implement auto-wiring.
-- B) A standard `ContainerInterface` with `get()` and `has()` methods that any PSR-11 compliant container must implement.
-- C) The format of the definitions file for PHP-DI.
+- B) The format of the definitions file for PHP-DI.
+- C) A standard `ContainerInterface` with `get()` and `has()` methods that any PSR-11 compliant container must implement.
 - D) How constructors must be declared for a class to be auto-wired.
 
 ---
@@ -79,9 +79,9 @@ What is `$log1 === $log2`?
 **Q8.** Why should infrastructure services (database, logger, mailer) almost always be registered as singletons?
 
 - A) They are faster when shared.
-- B) They are stateless or manage their own internal state safely, and creating multiple instances is wasteful (opening multiple DB connections, multiple file handles).
+- B) Framework conventions require it.
 - C) PHP-DI only supports singleton mode for infrastructure.
-- D) Framework conventions require it.
+- D) They are stateless or manage their own internal state safely, and creating multiple instances is wasteful (opening multiple DB connections, multiple file handles).
 
 ---
 
@@ -230,14 +230,14 @@ echo $r1 === $r2 ? "same\n" : "different\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | A container stores bindings (how to build) and resolves requests (builds when asked). |
-| 2 | **B** | `bind()` = factory (fresh every time). `singleton()` = built once, cached. |
-| 3 | **B** | Singleton scope means one instance per container, so every class that asks for a `ShoppingCart` is handed the *same* object. A mutation made through one is visible through the other — which is fine for a stateless logger and a data-corruption bug for a cart.<br><br>Note the question is about two collaborators inside **one** request, because that is true no matter how your application is deployed. Whether a singleton also leaks between two *different users* depends on how long the container lives — under PHP-FPM it is rebuilt every request and does not, under a persistent worker it does. Module 6 is entirely about that distinction; for now, the rule that always holds is: shared instance, shared state. |
-| 4 | **C** | Same technology; different calling context. Container: `get()` only at entry point. Service Locator: business classes call `get()` directly. |
-| 5 | **B** | PSR-11 defines `ContainerInterface` with `get()` and `has()`. PHP-DI, Symfony, and Laravel all implement it. |
+| 1 | **D** | A container stores bindings (how to build) and resolves requests (builds when asked). |
+| 2 | **C** | `bind()` = factory (fresh every time). `singleton()` = built once, cached. |
+| 3 | **D** | Singleton scope means one instance per container, so every class that asks for a `ShoppingCart` is handed the *same* object. A mutation made through one is visible through the other — which is fine for a stateless logger and a data-corruption bug for a cart.<br><br>Note the question is about two collaborators inside **one** request, because that is true no matter how your application is deployed. Whether a singleton also leaks between two *different users* depends on how long the container lives — under PHP-FPM it is rebuilt every request and does not, under a persistent worker it does. Module 6 is entirely about that distinction; for now, the rule that always holds is: shared instance, shared state. |
+| 4 | **A** | Same technology; different calling context. Container: `get()` only at entry point. Service Locator: business classes call `get()` directly. |
+| 5 | **C** | PSR-11 defines `ContainerInterface` with `get()` and `has()`. PHP-DI, Symfony, and Laravel all implement it. |
 | 6 | **B** | Only option B calls `get()` at the entry point (index.php). Options A and C are Service Locators inside business classes. D uses a static singleton anti-pattern. |
 | 7 | **B** | Singleton: factory called once, cached. Both calls return the same object. `===` checks identity — same object → `true`. |
-| 8 | **B** | Infrastructure is stateless or safely manages its own state. Multiple instances waste resources (DB connections, file handles). |
+| 8 | **D** | Infrastructure is stateless or safely manages its own state. Multiple instances waste resources (DB connections, file handles). |
 
 ## Section B
 | # | Answer | Explanation |

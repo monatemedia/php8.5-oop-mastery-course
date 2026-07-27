@@ -10,9 +10,9 @@
 **Q1.** Which of the following is the most accurate one-sentence definition of LSP?
 
 - A) A subclass must override every method of its parent class.
-- B) A subtype must be safely replaceable anywhere its supertype is expected, without breaking the program.
+- B) Interfaces must be small and focused so implementing classes are not forced to stub methods.
 - C) Subclasses should not call methods on their parent class.
-- D) Interfaces must be small and focused so implementing classes are not forced to stub methods.
+- D) A subtype must be safely replaceable anywhere its supertype is expected, without breaking the program.
 
 ---
 
@@ -20,8 +20,8 @@
 
 - A) `mixed` — because mixed is always compatible.
 - B) `object` — a supertype of string, which is always safe.
-- C) `string` or any subclass of `string`.
-- D) Exactly `string` — PHP does not allow return type changes in overrides.
+- C) Exactly `string` — PHP does not allow return type changes in overrides.
+- D) `string` or any subclass of `string`.
 
 ---
 
@@ -46,9 +46,9 @@ Is `VerboseLogger` valid under LSP and PHP's type rules?
 
 **Q4.** Which of the following is a guaranteed red flag for an LSP violation?
 
-- A) A subclass adds a new public method.
+- A) Calling code must use `instanceof` to decide which code path to take.
 - B) An overriding method has a narrower return type than the parent.
-- C) Calling code must use `instanceof` to decide which code path to take.
+- C) A subclass adds a new public method.
 - D) A class implements two interfaces simultaneously.
 
 ---
@@ -73,9 +73,9 @@ function stretchRectangle(Rectangle $r): void {
 **Q6.** Which of the following is a correct application of the LSP behavioural rule about preconditions?
 
 - A) A subtype's method can require a minimum parameter value that the parent does not require.
-- B) A subtype's method must accept anything the parent's method accepted, and may accept more.
+- B) Preconditions only apply to abstract classes, not interfaces.
 - C) A subtype's method must accept exactly the same parameter values as the parent — no more, no less.
-- D) Preconditions only apply to abstract classes, not interfaces.
+- D) A subtype's method must accept anything the parent's method accepted, and may accept more.
 
 ---
 
@@ -204,12 +204,12 @@ printCacheTtl(new EternalCache()); // What happens here?
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | LSP is about safe substitutability — any code expecting T must work when given S (a subtype of T). |
-| 2 | **C** | PHP supports covariant return types — overriding return types can be the same or a subtype (more specific). `string` has no subclasses in PHP, so only `string` itself works here. |
+| 1 | **D** | LSP is about safe substitutability — any code expecting T must work when given S (a subtype of T). |
+| 2 | **D** | PHP supports covariant return types — overriding return types can be the same or a subtype (more specific). `string` has no subclasses in PHP, so only `string` itself works here. |
 | 3 | **B** | `Exception` is a subtype of `Throwable`. Narrowing a parameter type (accepting less) violates contravariance. PHP throws a fatal error. |
-| 4 | **C** | `instanceof` guards in calling code are the canonical symptom that the hierarchy is broken — the caller is compensating for unsafe substitution. |
+| 4 | **A** | `instanceof` guards in calling code are the canonical symptom that the hierarchy is broken — the caller is compensating for unsafe substitution. |
 | 5 | **B** | `setWidth(10)` on a Square also sets height to 10. Then `setHeight(5)` sets both to 5. Area = 5×5 = 25, not 50. The assertion fails. |
-| 6 | **B** | Preconditions cannot be strengthened — the subtype must accept everything the parent accepted (and may be more permissive, but never stricter). |
+| 6 | **D** | Preconditions cannot be strengthened — the subtype must accept everything the parent accepted (and may be more permissive, but never stricter). |
 | 7 | **B** | Covariant return types — narrowing the return type to a subtype is explicitly allowed in PHP 7.4+. |
 
 ## Section B

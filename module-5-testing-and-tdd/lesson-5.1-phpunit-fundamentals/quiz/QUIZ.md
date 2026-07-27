@@ -54,9 +54,9 @@ $this->assertThrows(\InvalidArgumentException::class, fn() => new Money(-1, 'ZAR
 
 **Q4.** `setUp()` in a PHPUnit test class runs:
 
-- A) Once before the entire test class.
+- A) Before every individual test method.
 - B) Once after the entire test class.
-- C) Before every individual test method.
+- C) Once before the entire test class.
 - D) After every individual test method.
 
 ---
@@ -64,8 +64,8 @@ $this->assertThrows(\InvalidArgumentException::class, fn() => new Money(-1, 'ZAR
 **Q5.** You have three test methods. Test B leaves a static property dirty. Test C then fails because of that dirty state. Test A passes in isolation. What is this called, and what is the fix?
 
 - A) A race condition. Fix: use `$this->markTestSkipped()` on Test C.
-- B) An order-dependent test failure caused by shared state. Fix: create fresh objects in `setUp()` rather than sharing state between tests.
-- C) A fixture error. Fix: use `setUpBeforeClass()` to reset the static property.
+- B) A fixture error. Fix: use `setUpBeforeClass()` to reset the static property.
+- C) An order-dependent test failure caused by shared state. Fix: create fresh objects in `setUp()` rather than sharing state between tests.
 - D) A data provider conflict. Fix: add `#[Test]` to every affected method.
 
 ---
@@ -81,8 +81,8 @@ $this->assertThrows(\InvalidArgumentException::class, fn() => new Money(-1, 'ZAR
 
 **Q7.** A test has no assertions and the tested code does not throw. What does PHPUnit report?
 
-- A) Pass — a test with no assertions is implicitly green.
-- B) Risky — PHPUnit warns that the test did not assert anything (by default).
+- A) Risky — PHPUnit warns that the test did not assert anything (by default).
+- B) Pass — a test with no assertions is implicitly green.
 - C) Error — PHPUnit requires at least one assertion per test.
 - D) Skip — PHPUnit ignores tests without assertions.
 
@@ -266,10 +266,10 @@ class MoneyFormatTest extends TestCase
 | 1 | **B** | PHPUnit discovers public methods named `test*` automatically. The `#[Test]` attribute (PHP 8.0+) allows any public method name. Private or protected test methods are never run. |
 | 2 | **B** | `assertSame()` uses `===` — same type and same value. `assertEquals()` uses `==` — type coercion applies. Prefer `assertSame()` to catch type bugs like `1 !== '1'`. |
 | 3 | **C** | `expectException()` must come BEFORE the throwing call. PHPUnit registers a handler that intercepts the exception; if the exception is thrown first, PHPUnit never sees it. |
-| 4 | **C** | `setUp()` runs before every individual test method. This ensures each test starts with a clean, consistent state. |
-| 5 | **B** | Order-dependent failure caused by shared mutable state. The fix is `setUp()` creating a fresh object before each test method. |
+| 4 | **A** | `setUp()` runs before every individual test method. This ensures each test starts with a clean, consistent state. |
+| 5 | **C** | Order-dependent failure caused by shared mutable state. The fix is `setUp()` creating a fresh object before each test method. |
 | 6 | **A** | `assertCount(N, $collection)` passes when `count($collection) === N`. The collection can be an array or a `Countable` object. |
-| 7 | **B** | PHPUnit marks tests with zero assertions as "Risky" by default. This is configurable in `phpunit.xml` via `beStrictAboutTestsThatDoNotTestAnything`. |
+| 7 | **A** | PHPUnit marks tests with zero assertions as "Risky" by default. This is configurable in `phpunit.xml` via `beStrictAboutTestsThatDoNotTestAnything`. |
 | 8 | **B** | Data providers must be `public static` methods returning an array of arrays. Each inner array is one test invocation's argument list. |
 
 ## Section B

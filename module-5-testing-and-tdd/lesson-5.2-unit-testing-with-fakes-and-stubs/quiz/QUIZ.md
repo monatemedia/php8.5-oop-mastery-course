@@ -10,16 +10,16 @@
 
 - A) It runs in under 100ms.
 - B) It tests exactly one method.
-- C) It tests one class in isolation, with all dependencies replaced by test doubles.
-- D) It uses PHPUnit's built-in mocking framework.
+- C) It uses PHPUnit's built-in mocking framework.
+- D) It tests one class in isolation, with all dependencies replaced by test doubles.
 
 ---
 
 **Q2.** Which double type is best described as "records calls made to it so the test can assert on them afterwards"?
 
-- A) Fake
+- A) Spy
 - B) Stub
-- C) Spy
+- C) Fake
 - D) Null Object
 
 ---
@@ -27,8 +27,8 @@
 **Q3.** You are testing `OrderService::placeOrder()`. The payment gateway is irrelevant to the behaviour you are testing (product lookup). Which double should you use for the gateway?
 
 - A) Spy — to record if `charge()` was called
-- B) Stub — to return `true`
-- C) Null Object — silent, satisfies the interface, returns the zero value
+- B) Null Object — silent, satisfies the interface, returns the zero value
+- C) Stub — to return `true`
 - D) Fake — to implement a real in-memory payment processor
 
 ---
@@ -36,8 +36,8 @@
 **Q4.** What is the PRIMARY advantage of using anonymous class test doubles over PHPUnit's `createMock()`?
 
 - A) Anonymous classes are faster to run.
-- B) Anonymous classes implement the full interface contract enforced by PHP, are defined where they are used, have no magic, and require no framework.
-- C) Anonymous classes automatically verify that methods were called.
+- B) Anonymous classes automatically verify that methods were called.
+- C) Anonymous classes implement the full interface contract enforced by PHP, are defined where they are used, have no magic, and require no framework.
 - D) Anonymous classes allow you to use `assertSame()` on the double itself.
 
 ---
@@ -60,17 +60,17 @@ This assertion fails. Which of the following is the most likely cause?
 **Q6.** A stub returns `false` from `charge()`. A throwing stub throws `\RuntimeException` from `charge()`. What is the difference in how `OrderService` should handle each?
 
 - A) Both should cause `placeOrder()` to return `['success' => false]`.
-- B) `false` means "declined" — a recoverable business outcome; the exception means "gateway is down" — an unrecoverable infrastructure failure.
+- B) The throwing stub should be caught inside `placeOrder()` and returned as `['error' => 'gateway error']`.
 - C) There is no difference; `false` and an exception are equivalent failure modes.
-- D) The throwing stub should be caught inside `placeOrder()` and returned as `['error' => 'gateway error']`.
+- D) `false` means "declined" — a recoverable business outcome; the exception means "gateway is down" — an unrecoverable infrastructure failure.
 
 ---
 
 **Q7.** Which of the following should NOT be replaced with a test double?
 
 - A) A database repository that makes real SQL queries
-- B) An email service that sends real SMTP messages
-- C) A `Money` value object that contains no I/O
+- B) A `Money` value object that contains no I/O
+- C) An email service that sends real SMTP messages
 - D) A third-party payment gateway that makes HTTP calls
 
 ---
@@ -78,9 +78,9 @@ This assertion fails. Which of the following is the most likely cause?
 **Q8.** You define a fake `ProductRepositoryInterface` that stores an array of products in memory. What makes this a **fake** rather than a **stub**?
 
 - A) It returns a non-null value.
-- B) It has real internal logic — it actually stores and retrieves data — rather than just returning a fixed predetermined value.
+- B) It records every call made to it.
 - C) It is defined as a named class rather than an anonymous class.
-- D) It records every call made to it.
+- D) It has real internal logic — it actually stores and retrieves data — rather than just returning a fixed predetermined value.
 
 ---
 
@@ -253,14 +253,14 @@ public function testPlaceOrderSendsEmailToCustomer(): void
 
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **C** | A unit test tests one class in isolation with all dependencies replaced. Speed is a consequence, not the definition. Testing "one method" is too narrow — a single method may have many tests. |
-| 2 | **C** | A spy records calls. A stub returns fixed values. A fake has real logic. A Null Object does nothing. |
-| 3 | **C** | If the gateway is irrelevant to the behaviour under test, a Null Object is the right choice — it satisfies the interface silently. A stub returning `true` would also work, but a Null Object communicates intent more clearly ("I don't care about this"). |
-| 4 | **B** | PHP enforces the interface on anonymous classes at compile time. The behaviour is explicit and readable. No framework is required. |
+| 1 | **D** | A unit test tests one class in isolation with all dependencies replaced. Speed is a consequence, not the definition. Testing "one method" is too narrow — a single method may have many tests. |
+| 2 | **A** | A spy records calls. A stub returns fixed values. A fake has real logic. A Null Object does nothing. |
+| 3 | **B** | If the gateway is irrelevant to the behaviour under test, a Null Object is the right choice — it satisfies the interface silently. A stub returning `true` would also work, but a Null Object communicates intent more clearly ("I don't care about this"). |
+| 4 | **C** | PHP enforces the interface on anonymous classes at compile time. The behaviour is explicit and readable. No framework is required. |
 | 5 | **C** | `placeOrder()` never reached the email step — it returned early or threw — so `$sent` is empty and `$sent[0]` does not exist. The failure you actually see is an undefined-key warning rather than a value mismatch, which is the clue.<br><br>On the distractors: `assertSame` works on array elements perfectly well (A). And B is exactly backwards — anonymous classes obey the same visibility rules as named ones, so making `$sent` private would *stop* the test reading it, not enable it. That is precisely why a spy exposes its recording as a public property. |
-| 6 | **B** | `false` = the card was declined — a normal, handled business outcome. An exception = the gateway itself failed — an unrecoverable infrastructure problem. `OrderService` returns a failure result for `false` and lets the exception propagate. |
-| 7 | **C** | A `Money` value object is pure in-memory computation with no I/O, no network, no disk. It is lightweight and deterministic — use the real thing. |
-| 8 | **B** | A fake has real internal logic — the in-memory store actually stores and retrieves data. A stub just returns a hardcoded value regardless of input. |
+| 6 | **D** | `false` = the card was declined — a normal, handled business outcome. An exception = the gateway itself failed — an unrecoverable infrastructure problem. `OrderService` returns a failure result for `false` and lets the exception propagate. |
+| 7 | **B** | A `Money` value object is pure in-memory computation with no I/O, no network, no disk. It is lightweight and deterministic — use the real thing. |
+| 8 | **D** | A fake has real internal logic — the in-memory store actually stores and retrieves data. A stub just returns a hardcoded value regardless of input. |
 
 ## Section B
 

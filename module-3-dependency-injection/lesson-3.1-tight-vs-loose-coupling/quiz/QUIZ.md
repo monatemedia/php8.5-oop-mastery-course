@@ -9,8 +9,8 @@
 
 **Q1.** Which of the following is the clearest sign of tight coupling?
 
-- A) A class that has more than five methods.
-- B) A class whose constructor calls `new ConcreteService()` on its dependencies.
+- A) A class whose constructor calls `new ConcreteService()` on its dependencies.
+- B) A class that has more than five methods.
 - C) A class that implements two interfaces.
 - D) A class that uses a trait for shared behaviour.
 
@@ -18,9 +18,9 @@
 
 **Q2.** A class `ReportService` has the property `private MySQLDatabase $db`. What type of coupling is this?
 
-- A) Message coupling — it communicates only via a contract.
+- A) Concrete-property coupling — it depends on the implementation, not an abstraction.
 - B) Data coupling — it passes only the data it needs.
-- C) Concrete-property coupling — it depends on the implementation, not an abstraction.
+- C) Message coupling — it communicates only via a contract.
 - D) Content coupling — it accesses private internals.
 
 ---
@@ -28,16 +28,16 @@
 **Q3.** Which of the following uses of `new` is **acceptable** and does NOT represent a coupling smell?
 
 - A) `$this->logger = new FileLogger('/var/log/app.log');` inside a service constructor.
-- B) `$this->db = new MySQLDatabase('localhost', 'app');` inside a repository constructor.
-- C) `return new Money(4999, 'ZAR');` inside a method that calculates a price.
+- B) `return new Money(4999, 'ZAR');` inside a method that calculates a price.
+- C) `$this->db = new MySQLDatabase('localhost', 'app');` inside a repository constructor.
 - D) `$this->mailer = new SmtpMailer('smtp.example.com', 587);` inside a service constructor.
 
 ---
 
 **Q4.** You have a tightly coupled `OrderService` that creates its own `StripeGateway`. The business needs to add a PayFast gateway option. What does this require?
 
-- A) Nothing — you can add PayFast without touching `OrderService`.
-- B) Editing `OrderService` directly — the gateway is hardwired inside it.
+- A) Editing `OrderService` directly — the gateway is hardwired inside it.
+- B) Nothing — you can add PayFast without touching `OrderService`.
 - C) Only adding a new `PayFastGateway` class — `OrderService` detects it automatically.
 - D) Deleting `OrderService` and rewriting it from scratch.
 
@@ -46,18 +46,18 @@
 **Q5.** Which statement about `SomeClass::getInstance()` (the Singleton pattern) and coupling is **true**?
 
 - A) Singletons are the preferred way to share dependencies — they are always available.
-- B) Singletons create hidden dependencies — callers depend on global state they cannot swap or test with.
+- B) Singletons are equivalent to constructor injection — both provide a shared instance.
 - C) Singletons are fine as long as only one class uses them.
-- D) Singletons are equivalent to constructor injection — both provide a shared instance.
+- D) Singletons create hidden dependencies — callers depend on global state they cannot swap or test with.
 
 ---
 
 **Q6.** A tightly coupled class is described as "untestable." What does this mean specifically?
 
 - A) The class has too many methods to write tests for.
-- B) The class cannot be instantiated or its logic exercised in a test without requiring real infrastructure (database, network, filesystem).
+- B) The class uses magic numbers that make assertions hard to write.
 - C) The class has private methods that cannot be accessed from a test.
-- D) The class uses magic numbers that make assertions hard to write.
+- D) The class cannot be instantiated or its logic exercised in a test without requiring real infrastructure (database, network, filesystem).
 
 ---
 
@@ -216,12 +216,12 @@ class CheckoutService {
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | `new ConcreteService()` inside a constructor is the canonical coupling smell — the class takes responsibility for creating its own dependencies. |
-| 2 | **C** | A concrete class as a property type means the class depends on the implementation, not an abstraction. This is a concrete-property coupling violation. |
-| 3 | **C** | `new Money(...)` creates a value object — a pure data structure with no external dependencies. This is always acceptable. The other three all create service-level objects that connect to infrastructure. |
-| 4 | **B** | With `new StripeGateway()` hardwired inside `OrderService`, adding PayFast requires editing `OrderService` directly — a violation of OCP. |
-| 5 | **B** | Singletons create hidden global state. The class depends on a specific concrete instance that exists in global scope, which cannot be swapped or replaced for testing. |
-| 6 | **B** | Untestability means the class cannot be exercised in a test without real infrastructure — database must be running, network must be available, etc. |
+| 1 | **A** | `new ConcreteService()` inside a constructor is the canonical coupling smell — the class takes responsibility for creating its own dependencies. |
+| 2 | **A** | A concrete class as a property type means the class depends on the implementation, not an abstraction. This is a concrete-property coupling violation. |
+| 3 | **B** | `new Money(...)` creates a value object — a pure data structure with no external dependencies. This is always acceptable. The other three all create service-level objects that connect to infrastructure. |
+| 4 | **A** | With `new StripeGateway()` hardwired inside `OrderService`, adding PayFast requires editing `OrderService` directly — a violation of OCP. |
+| 5 | **D** | Singletons create hidden global state. The class depends on a specific concrete instance that exists in global scope, which cannot be swapped or replaced for testing. |
+| 6 | **D** | Untestability means the class cannot be exercised in a test without real infrastructure — database must be running, network must be available, etc. |
 | 7 | **B** | `new` inside a constructor forces the class to decide which class, know how to build it, and manage its lifetime — three responsibilities it should not have. |
 | 8 | **B** | The composition root is the single place (typically the application bootstrap) where all dependencies are wired together. Business classes should be free of `new`. |
 

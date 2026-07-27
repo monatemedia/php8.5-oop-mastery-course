@@ -11,33 +11,33 @@
 
 - A) An abstract class cannot be instantiated directly.
 - B) An abstract class can contain both abstract and concrete methods.
-- C) An abstract class can implement one or more interfaces.
-- D) An abstract class can extend more than one parent class.
+- C) An abstract class can extend more than one parent class.
+- D) An abstract class can implement one or more interfaces.
 
 ---
 
 **Q2.** What is the correct visibility for an abstract method that subclasses must override?
 
 - A) `private abstract`
-- B) `public abstract` or `protected abstract`
+- B) Visibility is not required on abstract methods.
 - C) `static abstract`
-- D) Visibility is not required on abstract methods.
+- D) `public abstract` or `protected abstract`
 
 ---
 
 **Q3.** A concrete class extends an abstract class but does not implement one of its abstract methods. What does PHP do?
 
 - A) PHP silently ignores the missing method.
-- B) PHP throws a warning at runtime when the method is first called.
-- C) PHP throws a fatal error when the class is loaded.
+- B) PHP throws a fatal error when the class is loaded.
+- C) PHP throws a warning at runtime when the method is first called.
 - D) The class automatically inherits a no-op implementation.
 
 ---
 
 **Q4.** You mark a concrete method `final` in an abstract class. What does this enforce?
 
-- A) Subclasses must override the method.
-- B) Subclasses cannot override the method — the implementation is locked.
+- A) Subclasses cannot override the method — the implementation is locked.
+- B) Subclasses must override the method.
 - C) The method becomes static.
 - D) The method becomes abstract.
 
@@ -45,8 +45,8 @@
 
 **Q5.** Which of the following best describes the **Template Method Pattern**?
 
-- A) A method that creates objects without specifying their concrete class.
-- B) An abstract class defines the skeleton of an algorithm; subclasses fill in specific steps.
+- A) An abstract class defines the skeleton of an algorithm; subclasses fill in specific steps.
+- B) A method that creates objects without specifying their concrete class.
 - C) A method that delegates all work to a composed object.
 - D) A pattern that allows multiple classes to share methods without inheritance.
 
@@ -81,17 +81,17 @@ What is the output of `new Child('Alice', 30)`?
 **Q7.** When should you choose an **interface** over an **abstract class**?
 
 - A) When you have shared property values to provide to all implementors.
-- B) When you need a constructor that subclasses build on.
-- C) When defining a capability that unrelated classes can opt into, with no shared implementation.
+- B) When defining a capability that unrelated classes can opt into, with no shared implementation.
+- C) When you need a constructor that subclasses build on.
 - D) When you need to prevent a class from being instantiated.
 
 ---
 
 **Q8.** A function is declared as `function process(Base $item): void`. `Base` is an abstract class. Which objects can be passed to `process()`?
 
-- A) Only objects instantiated directly from `Base`.
+- A) Objects from any concrete class that extends `Base` (directly or indirectly).
 - B) Only objects from classes that are declared `abstract`.
-- C) Objects from any concrete class that extends `Base` (directly or indirectly).
+- C) Only objects instantiated directly from `Base`.
 - D) No objects — you cannot type-hint an abstract class.
 
 ---
@@ -262,14 +262,14 @@ echo (new Cat('Tiger', false))->introduce() . "\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **D** | PHP supports only single inheritance. A class (abstract or not) can extend exactly one parent. |
-| 2 | **B** | Abstract methods must be `public` or `protected`. `private abstract` is illegal — private methods cannot be overridden. |
-| 3 | **C** | Fatal error at class load time — not when the missing method is first called: *"Class X contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Base::doWork)"*. The engine names the method, and the count is pluralised to match how many are outstanding. |
-| 4 | **B** | `final` locks the method — no subclass can override it. Useful in the Template Method Pattern to protect the pipeline skeleton. |
-| 5 | **B** | The Template Method Pattern defines an algorithm skeleton in the abstract class; abstract "step" methods let subclasses customise each step without changing the order. |
+| 1 | **C** | PHP supports only single inheritance. A class (abstract or not) can extend exactly one parent. |
+| 2 | **D** | Abstract methods must be `public` or `protected`. `private abstract` is illegal — private methods cannot be overridden. |
+| 3 | **B** | Fatal error at class load time — not when the missing method is first called: *"Class X contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Base::doWork)"*. The engine names the method, and the count is pluralised to match how many are outstanding. |
+| 4 | **A** | `final` locks the method — no subclass can override it. Useful in the Template Method Pattern to protect the pipeline skeleton. |
+| 5 | **A** | The Template Method Pattern defines an algorithm skeleton in the abstract class; abstract "step" methods let subclasses customise each step without changing the order. |
 | 6 | **B** | `parent::__construct($name)` is called first → "Base: Alice". Then the rest of `Child::__construct()` runs → "Child: age=30". |
-| 7 | **C** | Interfaces model capabilities ("can-do"). Abstract classes model identity with shared code ("is-a" + shared implementation). |
-| 8 | **C** | Concrete subclasses of an abstract class can be type-hinted against the abstract class — just like an interface. Abstract class itself cannot be instantiated. |
+| 7 | **B** | Interfaces model capabilities ("can-do"). Abstract classes model identity with shared code ("is-a" + shared implementation). |
+| 8 | **A** | Concrete subclasses of an abstract class can be type-hinted against the abstract class — just like an interface. Abstract class itself cannot be instantiated. |
 
 ## Section B
 | # | Answer | Explanation |

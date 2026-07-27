@@ -18,8 +18,8 @@
 **Q2.** A `CartService` singleton has `private array $items = []`. Request 1 adds 3 items; request 2 adds 2 items. What does `count($cartService->getItems())` return at the end of request 2?
 
 - A) 2 — only request 2's items
-- B) 3 — only request 1's items (request 2 overwrote them)
-- C) 5 — both requests' items accumulated
+- B) 5 — both requests' items accumulated
+- C) 3 — only request 1's items (request 2 overwrote them)
 - D) 0 — PHP resets array properties between method calls
 
 ---
@@ -27,8 +27,8 @@
 **Q3.** An `AuthService` has `private ?User $currentUser = null` set by `login()`. Request 1 authenticates Alice (admin). Request 2 is unauthenticated — `login()` is never called. What does `$authService->getUser()` return during request 2?
 
 - A) `null` — PHP-DI resets nullable properties between requests
-- B) `null` — the singleton's `logout()` is called automatically at request end
-- C) Alice's `User` object — the property persists from request 1
+- B) Alice's `User` object — the property persists from request 1
+- C) `null` — the singleton's `logout()` is called automatically at request end
 - D) A new, anonymous `User` object — PHP creates a default instance
 
 ---
@@ -53,8 +53,8 @@
 
 **Q6.** A `PageViewCounter` singleton has `private int $count = 0` incremented by `recordView()`. It was intended to enforce a per-request limit of 10 page views per API consumer. After the third API request (each making 4 page views), what is `getCount()`, and what problem does this cause?
 
-- A) 4 — resets per request; no problem
-- B) 12 — accumulated across all three requests; the limit was hit after the third call on request 1 and every subsequent request is immediately over-limit
+- A) 12 — accumulated across all three requests; the limit was hit after the third call on request 1 and every subsequent request is immediately over-limit
+- B) 4 — resets per request; no problem
 - C) 10 — the counter caps at the limit automatically
 - D) 0 — the counter is reset by the garbage collector between requests
 
@@ -62,8 +62,8 @@
 
 **Q7.** A `CacheWarmer` singleton has `private bool $warmed = false`. Its `warm()` method begins with `if ($this->warmed) return;`. The cache is warmed at worker startup. Three hours later, a deployment updates the underlying data. What happens when `warm()` is called again?
 
-- A) It re-warms the cache — the `if` check has a time-based expiry
-- B) It returns immediately without re-warming — `$this->warmed` is still `true`
+- A) It returns immediately without re-warming — `$this->warmed` is still `true`
+- B) It re-warms the cache — the `if` check has a time-based expiry
 - C) It throws a `CacheAlreadyWarmException`
 - D) It triggers a garbage collection cycle that resets all boolean properties
 
@@ -73,8 +73,8 @@
 
 - A) Anti-pattern 1 only — only the array matters
 - B) Anti-pattern 5 only — only the boolean matters
-- C) Anti-pattern 4 and Anti-pattern 2
-- D) Anti-pattern 1 and Anti-pattern 5 — the array accumulates and the boolean is a one-way latch
+- C) Anti-pattern 1 and Anti-pattern 5 — the array accumulates and the boolean is a one-way latch
+- D) Anti-pattern 4 and Anti-pattern 2
 
 ---
 
@@ -212,13 +212,13 @@ Answer: (a) What is in `$sent1`? (b) What is in `$sent3`? (c) What notification 
 | Q | Answer | Explanation |
 |---|--------|-------------|
 | 1 | **B** | `private array $results = []` with a public append method is the canonical marker for Anti-pattern 1. A is Anti-pattern 5 (boolean latch). C is Anti-pattern 2 (auth state). D is Anti-pattern 4 (counter) — though `decrement()` is unusual. |
-| 2 | **C** | The singleton's `$items` array is never reset between requests. Request 1 appends 3; request 2 appends 2 to the same array — total 5. PHP does not reset array properties between method calls; the array persists on the object for its entire lifetime. |
-| 3 | **C** | `$currentUser` is a property on the singleton object. It was set to Alice during request 1. Nothing resets it before request 2. `login()` was never called for request 2, so the property remains pointing at Alice. PHP-DI does not reset singleton properties between requests. |
+| 2 | **B** | The singleton's `$items` array is never reset between requests. Request 1 appends 3; request 2 appends 2 to the same array — total 5. PHP does not reset array properties between method calls; the array persists on the object for its entire lifetime. |
+| 3 | **B** | `$currentUser` is a property on the singleton object. It was set to Alice during request 1. Nothing resets it before request 2. `login()` was never called for request 2, so the property remains pointing at Alice. PHP-DI does not reset singleton properties between requests. |
 | 4 | **C** | In a multi-tenant SaaS, Auth-state leakage means tenant A's identity (and therefore their `tenantId`) is present when tenant B's request reads `getUser()`. Any code that uses the tenant ID to scope database queries will return tenant A's data to tenant B — a data breach, a GDPR incident, and a loss of data isolation guarantees. |
 | 5 | **B** | In Swoole coroutines, all coroutines share the same PHP process and the same object heap. `setRequestId()` writes to `$this->requestId` on the singleton. Coroutine B's write overwrites coroutine A's value. When coroutine A resumes and calls `log()`, it reads the current value — `req-002`. There is no "local copy" per coroutine for shared object properties. |
-| 6 | **B** | After three requests of 4 views each: `getCount()` = 12. The per-request limit of 10 was hit mid-request-1 (at the 10th view). Every call after the 10th is over-limit. Requests 2 and 3 start at counts 4 and 8 respectively — request 2 hits the limit on its 3rd view, request 3 is over-limit before it makes a single view. |
-| 7 | **B** | `$this->warmed` is `true` — the guard clause executes `return` immediately. The three-hours-later deployment has no way to reset `$this->warmed` on the singleton object. From the singleton's perspective, it is still "warm" — it has no awareness that the underlying data changed. |
-| 8 | **D** | `private array $errors = []` with an `addError()` or similar append method is Anti-pattern 1. `private bool $validated = false` that is set to `true` by a `validate()` method and never reset is Anti-pattern 5 (one-way latch — once validated, always validated). Both can be present in the same class. |
+| 6 | **A** | After three requests of 4 views each: `getCount()` = 12. The per-request limit of 10 was hit mid-request-1 (at the 10th view). Every call after the 10th is over-limit. Requests 2 and 3 start at counts 4 and 8 respectively — request 2 hits the limit on its 3rd view, request 3 is over-limit before it makes a single view. |
+| 7 | **A** | `$this->warmed` is `true` — the guard clause executes `return` immediately. The three-hours-later deployment has no way to reset `$this->warmed` on the singleton object. From the singleton's perspective, it is still "warm" — it has no awareness that the underlying data changed. |
+| 8 | **C** | `private array $errors = []` with an `addError()` or similar append method is Anti-pattern 1. `private bool $validated = false` that is set to `true` by a `validate()` method and never reset is Anti-pattern 5 (one-way latch — once validated, always validated). Both can be present in the same class. |
 
 ## Section B
 

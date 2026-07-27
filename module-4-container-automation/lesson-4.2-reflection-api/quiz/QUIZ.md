@@ -10,16 +10,16 @@
 **Q1.** What does `ReflectionClass` do?
 
 - A) It creates a new instance of a class with all dependencies injected.
-- B) It lets you inspect class metadata (constructor, methods, properties, interfaces) at runtime without instantiating the class.
-- C) It validates that a class correctly implements all its declared interfaces.
+- B) It validates that a class correctly implements all its declared interfaces.
+- C) It lets you inspect class metadata (constructor, methods, properties, interfaces) at runtime without instantiating the class.
 - D) It generates documentation from PHPDoc comments.
 
 ---
 
 **Q2.** What does `ReflectionNamedType::isBuiltin()` return for `LoggerInterface`?
 
-- A) `true` — interfaces are built into PHP.
-- B) `false` — `LoggerInterface` is a user-defined class/interface, not a PHP scalar.
+- A) `false` — `LoggerInterface` is a user-defined class/interface, not a PHP scalar.
+- B) `true` — interfaces are built into PHP.
 - C) It throws an exception — `isBuiltin()` only works on concrete classes.
 - D) `null` — the return type is nullable.
 
@@ -27,9 +27,9 @@
 
 **Q3.** You are writing an auto-wiring container. A constructor parameter has type `string`. `$type->isBuiltin()` returns `true`. What should the container do?
 
-- A) Resolve it as an empty string.
+- A) Throw an exception or fall back to a default value — primitive types cannot be auto-wired from the container.
 - B) Look it up in the container bindings like any other type.
-- C) Throw an exception or fall back to a default value — primitive types cannot be auto-wired from the container.
+- C) Resolve it as an empty string.
 - D) Skip the parameter and instantiate the class without it.
 
 ---
@@ -46,9 +46,9 @@
 **Q5.** You call `new ReflectionClass(OrderService::class)` and then inspect its constructor parameters. Does this instantiate `OrderService`?
 
 - A) Yes — Reflection must create an instance to read the constructor signature.
-- B) No — Reflection reads class metadata without running the constructor.
+- B) It depends on whether `OrderService` has side effects in its constructor.
 - C) Yes, but only if `OrderService` has a zero-argument constructor.
-- D) It depends on whether `OrderService` has side effects in its constructor.
+- D) No — Reflection reads class metadata without running the constructor.
 
 ---
 
@@ -73,8 +73,8 @@
 **Q8.** What does `ReflectionParameter::isOptional()` return `true` for?
 
 - A) Parameters typed as `?Type` (nullable).
-- B) Parameters that have a default value (including `null` default).
-- C) Parameters typed as `mixed`.
+- B) Parameters typed as `mixed`.
+- C) Parameters that have a default value (including `null` default).
 - D) Parameters that are not the first parameter in the constructor.
 
 ---
@@ -239,14 +239,14 @@ echo implode(', ', array_column(array_values($deps1), 'type')) . "\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | Reflection reads class metadata at runtime without instantiating. It does not create instances, validate, or generate docs. |
-| 2 | **B** | `LoggerInterface` is user-defined — `isBuiltin()` returns `false`. `isBuiltin()` is `true` only for PHP's built-in scalar types. |
-| 3 | **C** | Built-in scalar types cannot be resolved from a container. The container should throw a `RuntimeException` (if required) or use the default value (if optional). |
+| 1 | **C** | Reflection reads class metadata at runtime without instantiating. It does not create instances, validate, or generate docs. |
+| 2 | **A** | `LoggerInterface` is user-defined — `isBuiltin()` returns `false`. `isBuiltin()` is `true` only for PHP's built-in scalar types. |
+| 3 | **A** | Built-in scalar types cannot be resolved from a container. The container should throw a `RuntimeException` (if required) or use the default value (if optional). |
 | 4 | **B** | `getConstructor()` returns `null` when no constructor is declared — PHP uses a default no-argument constructor. The container can call `new ClassName()` directly. |
-| 5 | **B** | Reflection reads metadata — it never runs the constructor. `OrderService` is not instantiated. This is why Reflection is safe for planning the wiring graph. |
+| 5 | **D** | Reflection reads metadata — it never runs the constructor. `OrderService` is not instantiated. This is why Reflection is safe for planning the wiring graph. |
 | 6 | **B** | Union types (`int|string`) produce a `ReflectionUnionType` instance. Check `$type instanceof ReflectionUnionType`. |
 | 7 | **C** | Creating `ReflectionClass` objects has a cost. Caching ensures each class is reflected once per container lifetime — significant at scale. |
-| 8 | **B** | `isOptional()` is `true` when the parameter has a default value (including `null`). It is NOT about nullability — `?Type` with no default is NOT optional. |
+| 8 | **C** | `isOptional()` is `true` when the parameter has a default value (including `null`). It is NOT about nullability — `?Type` with no default is NOT optional. |
 
 ## Section B
 | # | Answer | Explanation |

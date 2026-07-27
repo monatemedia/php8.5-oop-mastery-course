@@ -9,18 +9,18 @@
 **Q1.** What is the default scope when you register a service using `autowire(ClassName::class)` in PHP-DI?
 
 - A) Transient — a new instance is created every time the container resolves the binding.
-- B) Singleton — one instance is created per container lifetime and reused.
+- B) Request — a new instance is created per HTTP request.
 - C) Prototype — a new instance is created per dependency tree.
-- D) Request — a new instance is created per HTTP request.
+- D) Singleton — one instance is created per container lifetime and reused.
 
 ---
 
 **Q2.** Which of these gives you a **new instance on every resolution** in PHP-DI?
 
-- A) `autowire(ShoppingCart::class)`
+- A) None of them — every definition is shared when resolved with `get()`; `$container->make()` is what returns a fresh instance.
 - B) `create(ShoppingCart::class)`
 - C) `factory(fn() => new ShoppingCart())`
-- D) None of them — every definition is shared when resolved with `get()`; `$container->make()` is what returns a fresh instance.
+- D) `autowire(ShoppingCart::class)`
 
 ---
 
@@ -46,8 +46,8 @@
 
 - A) Transient — the `calculate()` method modifies the input amount.
 - B) Transient — `readonly` properties can cause unexpected behaviour when shared.
-- C) Singleton — `$rate` is immutable after construction and `calculate()` writes nothing to `$this`.
-- D) Singleton — only if the rate is the same for all consumers.
+- C) Singleton — only if the rate is the same for all consumers.
+- D) Singleton — `$rate` is immutable after construction and `calculate()` writes nothing to `$this`.
 
 ---
 
@@ -213,11 +213,11 @@ Identify two problems with this approach compared to simply using transient scop
 
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | PHP-DI's default scope is singleton — the first resolution creates the instance; all subsequent resolutions return the same object. This applies to auto-wiring, `autowire()`, and `create()`. |
-| 2 | **D** | PHP-DI has no scopes — they were removed in version 6. Every definition style produces one shared instance: `autowire()`, `create()` and `factory()` alike. `factory()` describes *how to build* the object, never *how many*, and the callable runs exactly once no matter how many times you call `get()`.<br><br>Verify it in one line — `$container->get(C::class) === $container->get(C::class)` is `true` for a `factory()` binding. Freshness comes from `$container->make($id)`, which resolves the same definition while bypassing the shared cache in both directions: you get a new object, and it is not stored for anyone else.<br><br>This catches experienced PHP-DI users. Writing a `factory()` to "fix" a leaking singleton is a very common non-fix. |
+| 1 | **D** | PHP-DI's default scope is singleton — the first resolution creates the instance; all subsequent resolutions return the same object. This applies to auto-wiring, `autowire()`, and `create()`. |
+| 2 | **A** | PHP-DI has no scopes — they were removed in version 6. Every definition style produces one shared instance: `autowire()`, `create()` and `factory()` alike. `factory()` describes *how to build* the object, never *how many*, and the callable runs exactly once no matter how many times you call `get()`.<br><br>Verify it in one line — `$container->get(C::class) === $container->get(C::class)` is `true` for a `factory()` binding. Freshness comes from `$container->make($id)`, which resolves the same definition while bypassing the shared cache in both directions: you get a new object, and it is not stored for anyone else.<br><br>This catches experienced PHP-DI users. Writing a `factory()` to "fix" a leaking singleton is a very common non-fix. |
 | 3 | **C** | `assertSame($a, $b)` checks strict object identity (`===`). Two variables pointing to the same singleton instance pass this check. `assertEquals` (B) checks equality, not identity — two different objects with the same data would pass it. |
 | 4 | **C** | `log()` writes to `$this->entries`, a private property. When the instance is shared as a singleton, entries from consumer A's log calls are present when consumer B reads `getEntries()`. Transient scope ensures each consumer gets a fresh `$entries = []`. |
-| 5 | **C** | `$rate` is `readonly` — it cannot be changed after construction. `calculate()` takes an amount and returns a computed value; it writes nothing to `$this`. Every call to `calculate(100.0)` returns the same result regardless of previous calls. This is the definition of a safe singleton. |
+| 5 | **D** | `$rate` is `readonly` — it cannot be changed after construction. `calculate()` takes an amount and returns a computed value; it writes nothing to `$this`. Every call to `calculate(100.0)` returns the same result regardless of previous calls. This is the definition of a safe singleton. |
 | 6 | **C** | `$listeners` is assigned in the constructor and no public method ever modifies it. `dispatch()` iterates over `$listeners` but never appends, removes, or replaces it. The dispatcher is effectively immutable after construction — safe singleton. Answer B might seem appealing but misunderstands the pattern: if different consumers need different listeners, they should receive different dispatcher instances constructed with different listeners — that is a constructor argument question, not a scope question. |
 | 7 | **B** | The class code is untouched — that much is the point of the question, and it holds. But be careful about *what* changed: switching `autowire()` to `factory()` changes how PHP-DI **builds** the cart, not how many it keeps. Both are resolved once and shared by `get()`. To get a fresh cart per resolution, call `$container->make()`; to stop needing one, make the cart stateless (Lesson 6.4). The class still has no knowledge of any of this, which is the durable lesson. |
 | 8 | **C** | `create(PasswordHasher::class)->constructor(12)` states the argument explicitly and gives you a singleton, which is right for a class whose `$cost` is fixed at construction and whose methods write nothing to `$this`.<br><br>D is the tempting answer, because B and C really do both produce singletons. It fails on A: *"must be transient because of the constructor argument"* is a wrong reason, and a constructor argument has nothing to do with scope. The definition A gives would work — a stateless class is safe at any scope — but it would rebuild the hasher on every resolution for no benefit, and it would teach you that arguments force transience. |

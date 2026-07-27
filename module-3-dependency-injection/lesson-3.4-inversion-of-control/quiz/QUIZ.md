@@ -9,8 +9,8 @@
 
 **Q1.** What does the Hollywood Principle mean in the context of OOP and IoC?
 
-- A) Business logic classes should call the framework to get the dependencies they need.
-- B) Classes should declare what they need; something at the entry point provides it — classes do not reach out to create or find their own dependencies.
+- A) Classes should declare what they need; something at the entry point provides it — classes do not reach out to create or find their own dependencies.
+- B) Business logic classes should call the framework to get the dependencies they need.
 - C) All dependencies should be retrieved from a global service registry.
 - D) The framework should call business logic classes only when an HTTP request arrives.
 
@@ -20,24 +20,24 @@
 
 - A) High-level modules should depend directly on low-level modules for efficiency.
 - B) All classes should use constructor injection.
-- C) High-level modules and low-level modules should both depend on abstractions; details should depend on abstractions, not the other way around.
-- D) Dependencies should be inverted by passing them in reverse order.
+- C) Dependencies should be inverted by passing them in reverse order.
+- D) High-level modules and low-level modules should both depend on abstractions; details should depend on abstractions, not the other way around.
 
 ---
 
 **Q3.** What is the key difference between **DIP** and **DI**?
 
 - A) DIP is for interfaces; DI is for abstract classes.
-- B) DIP is a design principle (depend on abstractions); DI is a technique (receive dependencies from outside). Both are needed; neither alone is sufficient.
+- B) They are synonyms — DIP and DI describe the same thing.
 - C) DI is the broader concept; DIP is just the PHP-specific implementation.
-- D) They are synonyms — DIP and DI describe the same thing.
+- D) DIP is a design principle (depend on abstractions); DI is a technique (receive dependencies from outside). Both are needed; neither alone is sufficient.
 
 ---
 
 **Q4.** You have `class OrderService` with constructor parameter `private StripeGateway $gateway`. DI is present because the gateway is injected. Is DIP satisfied?
 
-- A) Yes — DI implies DIP.
-- B) No — the type hint is a concrete class (`StripeGateway`), not an interface. DIP requires the parameter to be typed as `PaymentGatewayInterface`.
+- A) No — the type hint is a concrete class (`StripeGateway`), not an interface. DIP requires the parameter to be typed as `PaymentGatewayInterface`.
+- B) Yes — DI implies DIP.
 - C) Yes — DIP only requires that the dependency is created outside the class.
 - D) No — DIP requires using setter injection, not constructor injection.
 
@@ -54,8 +54,8 @@
 
 **Q6.** A class calls `$this->container->get(DatabaseInterface::class)` inside one of its methods. Which anti-pattern is this?
 
-- A) Tight coupling — the class creates its own dependency.
-- B) Service Locator — the class reaches into a global registry to fetch its dependency.
+- A) Service Locator — the class reaches into a global registry to fetch its dependency.
+- B) Tight coupling — the class creates its own dependency.
 - C) Circular dependency — the class depends on the container which depends on the class.
 - D) Null Object — the container returns null when the binding is not found.
 
@@ -64,9 +64,9 @@
 **Q7.** Why does manual IoC wiring become problematic at 50+ services?
 
 - A) PHP cannot handle more than 50 constructor parameters in a single file.
-- B) The wiring function grows into hundreds of lines, the ordering of `new` calls must be managed manually, and every parameter change in any class requires an update to the wiring file.
+- B) Interfaces cannot be used as type hints when there are more than 50 of them.
 - C) PHP-DI stops working correctly when there are more than 50 services.
-- D) Interfaces cannot be used as type hints when there are more than 50 of them.
+- D) The wiring function grows into hundreds of lines, the ordering of `new` calls must be managed manually, and every parameter change in any class requires an update to the wiring file.
 
 ---
 
@@ -229,13 +229,13 @@ class OrderService {
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | The Hollywood Principle: classes declare what they need; the entry point provides it. They do not reach out. |
-| 2 | **C** | DIP: high-level modules depend on abstractions, low-level modules implement abstractions, abstractions do not depend on details. |
-| 3 | **B** | DIP is the design principle (what to type-hint); DI is the technique (how to receive it). You need both: DIP tells you to use interfaces, DI tells you to inject them via constructor. |
-| 4 | **B** | DI is present (injected from outside) but DIP is not (type hint is concrete). The type should be `PaymentGatewayInterface`, not `StripeGateway`. |
+| 1 | **A** | The Hollywood Principle: classes declare what they need; the entry point provides it. They do not reach out. |
+| 2 | **D** | DIP: high-level modules depend on abstractions, low-level modules implement abstractions, abstractions do not depend on details. |
+| 3 | **D** | DIP is the design principle (what to type-hint); DI is the technique (how to receive it). You need both: DIP tells you to use interfaces, DI tells you to inject them via constructor. |
+| 4 | **A** | DI is present (injected from outside) but DIP is not (type hint is concrete). The type should be `PaymentGatewayInterface`, not `StripeGateway`. |
 | 5 | **B** | The composition root is the single entry point where all `new` calls on services live. |
-| 6 | **B** | Service Locator anti-pattern: the class reaches into a global container to fetch its dependencies, hiding them from the constructor signature. |
-| 7 | **B** | At scale, the wiring file becomes a maintenance burden: ordering, duplication, and fragility when constructor signatures change. |
+| 6 | **A** | Service Locator anti-pattern: the class reaches into a global container to fetch its dependencies, hiding them from the constructor signature. |
+| 7 | **D** | At scale, the wiring file becomes a maintenance burden: ordering, duplication, and fragility when constructor signatures change. |
 | 8 | **B** | A Reflection-based container reads constructor type hints automatically and resolves the graph from a small set of interface→concrete bindings. |
 
 ## Section B

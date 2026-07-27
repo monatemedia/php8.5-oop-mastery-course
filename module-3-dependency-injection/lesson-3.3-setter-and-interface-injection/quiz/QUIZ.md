@@ -10,9 +10,9 @@
 **Q1.** When should you use setter injection instead of constructor injection?
 
 - A) When the dependency is required for the class to function at all.
-- B) When the dependency is optional — the class has a sensible default and works without it.
+- B) When the class needs to be serialised.
 - C) When you want to improve application performance by deferring creation.
-- D) When the class needs to be serialised.
+- D) When the dependency is optional — the class has a sensible default and works without it.
 
 ---
 
@@ -27,8 +27,8 @@
 
 **Q3.** A class has `private ?LoggerInterface $logger = null`. A method calls `$this->logger?->log(...)`. What problem does the Null Object pattern solve here?
 
-- A) The `?->` syntax does not work with interfaces.
-- B) The `?->` is unnecessary — if a Null Object is always assigned, `$this->logger->log()` can be called directly without null checks.
+- A) The `?->` is unnecessary — if a Null Object is always assigned, `$this->logger->log()` can be called directly without null checks.
+- B) The `?->` syntax does not work with interfaces.
 - C) The logger is still tightly coupled to the concrete type.
 - D) `null` cannot be stored as a private property type.
 
@@ -45,8 +45,8 @@
 
 **Q5.** Interface injection uses an "Aware" interface. What does this interface declare?
 
-- A) The list of dependencies the class requires via its constructor.
-- B) A `set*()` method that the framework or container will call after construction.
+- A) A `set*()` method that the framework or container will call after construction.
+- B) The list of dependencies the class requires via its constructor.
 - C) The public methods the class exposes to its callers.
 - D) Which interface the class implements for type safety.
 
@@ -55,16 +55,16 @@
 **Q6.** Which PHP-FIG standard directly uses the interface injection pattern with a corresponding trait?
 
 - A) PSR-7 (HTTP Messages)
-- B) PSR-4 (Autoloading)
-- C) PSR-3 (Logger Interface, LoggerAwareInterface + LoggerAwareTrait)
+- B) PSR-3 (Logger Interface, LoggerAwareInterface + LoggerAwareTrait)
+- C) PSR-4 (Autoloading)
 - D) PSR-12 (Coding Style)
 
 ---
 
 **Q7.** A class needs a payment gateway and a logger. The payment gateway is required; the logger is optional. Which combination is correct?
 
-- A) Both via constructor injection.
-- B) Gateway via constructor; logger via setter with NullLogger default.
+- A) Gateway via constructor; logger via setter with NullLogger default.
+- B) Both via constructor injection.
 - C) Both via setter injection.
 - D) Gateway via setter; logger via constructor.
 
@@ -72,8 +72,8 @@
 
 **Q8.** A framework sees a service implementing `LoggerAwareInterface`. What does it do?
 
-- A) It throws an exception — services should not implement awareness interfaces.
-- B) It automatically calls `setLogger($logger)` on the service after wiring.
+- A) It automatically calls `setLogger($logger)` on the service after wiring.
+- B) It throws an exception — services should not implement awareness interfaces.
 - C) It generates a concrete logger class for the service.
 - D) It injects the logger via the constructor parameter list.
 
@@ -277,14 +277,14 @@ class DataService {
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | Setter injection is for optional dependencies. If the class cannot work without the dependency, it belongs in the constructor. |
+| 1 | **D** | Setter injection is for optional dependencies. If the class cannot work without the dependency, it belongs in the constructor. |
 | 2 | **B** | A Null Object implements the interface but does nothing — it is the "off" or "silent" state. No PHP built-in does this; you write it yourself. |
-| 3 | **B** | With a Null Object always assigned, `$this->logger` is never `null` — direct calls `$this->logger->log()` are safe everywhere, eliminating the `?->` operator. |
+| 3 | **A** | With a Null Object always assigned, `$this->logger` is never `null` — direct calls `$this->logger->log()` are safe everywhere, eliminating the `?->` operator. |
 | 4 | **C** | The *value* returned is `$this`; the *type* that describes it is `static`, which resolves to the runtime class, so a subclass chaining setters gets its own type back rather than the parent's. (`$this` is in fact a legal return type in PHPDoc and in some static analysers, but not in PHP itself — option B is there because the distinction between the value and the type is exactly what this question is about.) `self` would pin the type to the class where the method is written, breaking the chain for subclasses. |
-| 5 | **B** | The "Aware" interface declares a `set*()` method (e.g. `setLogger()`). A container that sees the service implementing it will call that method automatically. |
-| 6 | **C** | PSR-3 defines `LoggerInterface`, `LoggerAwareInterface`, and `LoggerAwareTrait`. The pattern is used by Symfony, Laravel, and many other frameworks. |
-| 7 | **B** | Gateway is required → constructor. Logger is optional → setter with NullLogger default. This is the exact scenario from Section 7 of the README. |
-| 8 | **B** | A container that recognises `LoggerAwareInterface` calls `setLogger($logger)` automatically on any service that implements it — this is the value of interface injection. |
+| 5 | **A** | The "Aware" interface declares a `set*()` method (e.g. `setLogger()`). A container that sees the service implementing it will call that method automatically. |
+| 6 | **B** | PSR-3 defines `LoggerInterface`, `LoggerAwareInterface`, and `LoggerAwareTrait`. The pattern is used by Symfony, Laravel, and many other frameworks. |
+| 7 | **A** | Gateway is required → constructor. Logger is optional → setter with NullLogger default. This is the exact scenario from Section 7 of the README. |
+| 8 | **A** | A container that recognises `LoggerAwareInterface` calls `setLogger($logger)` automatically on any service that implements it — this is the value of interface injection. |
 
 ## Section B
 | # | Answer | Explanation |

@@ -10,8 +10,8 @@
 **Q1.** What does "favour composition over inheritance" mean in practice?
 
 - A) Never use the `extends` keyword under any circumstances.
-- B) When you need to share behaviour between classes, prefer holding a reference to a collaborator over inheriting from a parent class.
-- C) Always use traits instead of abstract classes.
+- B) Always use traits instead of abstract classes.
+- C) When you need to share behaviour between classes, prefer holding a reference to a collaborator over inheriting from a parent class.
 - D) Use interfaces for everything and avoid all concrete classes.
 
 ---
@@ -19,9 +19,9 @@
 **Q2.** You are writing `class NotificationService extends DatabaseService`. You apply the practical test: "Can I replace `extends DatabaseService` with `private DatabaseService $db` injected via constructor?" The answer is YES. What should you do?
 
 - A) Keep the inheritance — both approaches are equally valid.
-- B) Refactor to composition: remove `extends`, inject `DatabaseService` (or better, `DatabaseInterface`) via the constructor.
+- B) Make `DatabaseService` abstract so the relationship is more explicit.
 - C) Use a trait instead of either approach.
-- D) Make `DatabaseService` abstract so the relationship is more explicit.
+- D) Refactor to composition: remove `extends`, inject `DatabaseService` (or better, `DatabaseInterface`) via the constructor.
 
 ---
 
@@ -37,18 +37,18 @@
 **Q4.** A `LoggingGateway` class wraps a `PaymentGatewayInterface` to add logging before and after every `charge()` call. It implements `PaymentGatewayInterface` itself. What composition pattern is this?
 
 - A) Constructor injection
-- B) Setter injection
+- B) Delegating decorator
 - C) Method parameter
-- D) Delegating decorator
+- D) Setter injection
 
 ---
 
 **Q5.** What is the "fragile base class problem"?
 
 - A) Abstract classes are fragile and should never be used.
-- B) A change to a parent class in a deep inheritance chain can break all subclasses, including ones several levels down that were never meant to be affected.
+- B) The `parent::` keyword causes unexpected behaviour in PHP.
 - C) Base classes compile slower than concrete classes.
-- D) The `parent::` keyword causes unexpected behaviour in PHP.
+- D) A change to a parent class in a deep inheritance chain can break all subclasses, including ones several levels down that were never meant to be affected.
 
 ---
 
@@ -56,15 +56,15 @@
 
 - A) Containers only work with interfaces, not classes.
 - B) Deep chains require circular dependencies that containers cannot resolve.
-- C) Dependencies are created with `new` inside parent constructors — they have no constructor parameters, so there is nothing for the container to read and resolve.
-- D) PHP-DI does not support more than two levels of inheritance.
+- C) PHP-DI does not support more than two levels of inheritance.
+- D) Dependencies are created with `new` inside parent constructors — they have no constructor parameters, so there is nothing for the container to read and resolve.
 
 ---
 
 **Q7.** You have `BlogPost` and `VideoPost`. You want both to be accepted by a function `function process(??? $content)`. You do NOT need shared implementation — just a shared type. What is the correct approach?
 
-- A) `class ContentBase` with `BlogPost extends ContentBase` and `VideoPost extends ContentBase`
-- B) Define a `ContentInterface` that both implement — no shared parent class needed
+- A) Define a `ContentInterface` that both implement — no shared parent class needed
+- B) `class ContentBase` with `BlogPost extends ContentBase` and `VideoPost extends ContentBase`
 - C) Use a trait to give both classes the same methods
 - D) Use `mixed` as the type hint and check `instanceof` inside `process()`
 
@@ -72,9 +72,9 @@
 
 **Q8.** The Null Object pattern is described in this lesson as an optional dependency default. Which statement about Null Objects is correct?
 
-- A) A Null Object must extend the class it replaces.
+- A) A Null Object implements the interface but does nothing — it is the "off" state, eliminating null checks.
 - B) A Null Object is `null` stored in a nullable property — `?LoggerInterface`.
-- C) A Null Object implements the interface but does nothing — it is the "off" state, eliminating null checks.
+- C) A Null Object must extend the class it replaces.
 - D) Null Objects are only useful in testing and should never appear in production code.
 
 ---
@@ -247,14 +247,14 @@ echo "Total calls: " . count($spy->calls) . "\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | Composition over inheritance means preferring to hold a reference to a collaborator (via injection) over inheriting implementation from a parent. It does not mean never using `extends`. |
-| 2 | **B** | The practical test said YES — you can replace inheritance with a field. That means you should. Type the parameter against `DatabaseInterface`, not the concrete class, for full decoupling. |
+| 1 | **C** | Composition over inheritance means preferring to hold a reference to a collaborator (via injection) over inheriting implementation from a parent. It does not mean never using `extends`. |
+| 2 | **D** | The practical test said YES — you can replace inheritance with a field. That means you should. Type the parameter against `DatabaseInterface`, not the concrete class, for full decoupling. |
 | 3 | **C** | The Template Method Pattern in an abstract class is a correct use of inheritance — the class is explicitly designed for extension and subclasses fill in specific steps. Options A, B, D all describe code-reuse or override scenarios that are better handled by composition. |
-| 4 | **D** | `LoggingGateway` wraps a `PaymentGatewayInterface` and delegates the real work to it while adding behaviour — this is the delegating decorator pattern. |
-| 5 | **B** | The fragile base class problem: a change to a base class can break subclasses several levels down that you never intended to affect. |
-| 6 | **C** | When dependencies are created with `new` inside parent constructors, the outer class has no constructor parameters. A container reads constructor parameters to resolve dependencies — if there are none, it has nothing to work with. |
-| 7 | **B** | An interface provides the type contract without shared implementation. `ContentInterface` is all that is needed. No abstract base class, no traits, no `mixed`. |
-| 8 | **C** | A Null Object implements the interface with no-op methods. It is the "off" state that eliminates null checks throughout the class. It is never `null` — it is always a valid, callable object. |
+| 4 | **B** | `LoggingGateway` wraps a `PaymentGatewayInterface` and delegates the real work to it while adding behaviour — this is the delegating decorator pattern. |
+| 5 | **D** | The fragile base class problem: a change to a base class can break subclasses several levels down that you never intended to affect. |
+| 6 | **D** | When dependencies are created with `new` inside parent constructors, the outer class has no constructor parameters. A container reads constructor parameters to resolve dependencies — if there are none, it has nothing to work with. |
+| 7 | **A** | An interface provides the type contract without shared implementation. `ContentInterface` is all that is needed. No abstract base class, no traits, no `mixed`. |
+| 8 | **A** | A Null Object implements the interface with no-op methods. It is the "off" state that eliminates null checks throughout the class. It is never `null` — it is always a valid, callable object. |
 
 ## Section B
 | # | Answer | Explanation |

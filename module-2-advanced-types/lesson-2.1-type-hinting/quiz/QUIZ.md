@@ -10,8 +10,8 @@
 **Q1.** `declare(strict_types=1)` is placed at the top of a file. What does it affect?
 
 - A) All files in the same directory.
-- B) All calls made from this file to any function or method.
-- C) All function definitions anywhere in the codebase.
+- B) All function definitions anywhere in the codebase.
+- C) All calls made from this file to any function or method.
 - D) Only functions defined inside this file.
 
 ---
@@ -19,8 +19,8 @@
 **Q2.** Without `strict_types=1`, what does PHP do when a function typed `int` receives the string `"42"`?
 
 - A) Throws a `TypeError`.
-- B) Silently coerces `"42"` to the integer `42`.
-- C) Returns `null`.
+- B) Returns `null`.
+- C) Silently coerces `"42"` to the integer `42`.
 - D) Throws a warning but continues.
 
 ---
@@ -29,8 +29,8 @@
 
 - A) `?string` only works in PHP 7, `string|null` requires PHP 8.
 - B) `?string` accepts `null` but `string|null` does not.
-- C) They are completely equivalent — `?string` is shorthand for `string|null`.
-- D) `string|null` allows empty strings; `?string` does not.
+- C) `string|null` allows empty strings; `?string` does not.
+- D) They are completely equivalent — `?string` is shorthand for `string|null`.
 
 ---
 
@@ -46,8 +46,8 @@
 **Q5.** What is the `never` return type?
 
 - A) A function that returns `null` by default.
-- B) A function that always throws an exception or calls `exit()` — it never returns normally.
-- C) A function whose return value must never be used.
+- B) A function whose return value must never be used.
+- C) A function that always throws an exception or calls `exit()` — it never returns normally.
 - D) An alias for `void` — both mean the function returns nothing.
 
 ---
@@ -63,9 +63,9 @@
 
 **Q7.** Which of the following is a valid intersection type declaration in PHP 8.1+?
 
-- A) `int&string`
+- A) `Countable&Traversable`
 - B) `?Countable&Traversable`
-- C) `Countable&Traversable`
+- C) `int&string`
 - D) `array&Countable`
 
 ---
@@ -73,8 +73,8 @@
 **Q8.** A function is declared `function process(Loggable&Serialisable $entity): void`. Which objects can be passed?
 
 - A) Objects that implement `Loggable` only.
-- B) Objects that implement `Serialisable` only.
-- C) Objects that implement both `Loggable` and `Serialisable`.
+- B) Objects that implement both `Loggable` and `Serialisable`.
+- C) Objects that implement `Serialisable` only.
 - D) Any object — the intersection is checked at runtime only.
 
 ---
@@ -220,14 +220,14 @@ var_dump(orNull(3.14));
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | `strict_types=1` governs calls made *from* this file to any function — it is per-calling-file, not per-definition-file. |
-| 2 | **B** | In coercive mode (default), PHP silently converts `"42"` to `42`. No error, no warning. |
-| 3 | **C** | `?string` is exact shorthand for `string|null`. They are fully equivalent in PHP 8+. |
+| 1 | **C** | `strict_types=1` governs calls made *from* this file to any function — it is per-calling-file, not per-definition-file. |
+| 2 | **C** | In coercive mode (default), PHP silently converts `"42"` to `42`. No error, no warning. |
+| 3 | **D** | `?string` is exact shorthand for `string|null`. They are fully equivalent in PHP 8+. |
 | 4 | **C** | `return null;` returns a value from a `void` function. PHP rejects it **at compile time**, which is worth being exact about — this is not a runtime `TypeError`, it is a fatal that stops the file being run at all: *"A void function must not return a value (did you mean \"return;\" instead of \"return null;\"?)"*. A bare `return;` and falling off the end of the function are both fine. |
-| 5 | **B** | `never` means the function never returns normally — it always throws or calls `exit()`. Useful for static analysis to mark subsequent code as unreachable. |
+| 5 | **C** | `never` means the function never returns normally — it always throws or calls `exit()`. Useful for static analysis to mark subsequent code as unreachable. |
 | 6 | **B** | `self` is resolved at compile time to the class where the method is *defined* — `QueryBuilder`. Static analysers see `where()` as returning `QueryBuilder`, not `UserQueryBuilder`. |
-| 7 | **C** | Only `Countable&Traversable` is valid. `int&string` fails (scalars cannot be intersected), `?Countable&Traversable` is a parse error (use `(Countable&Traversable)|null`), and `array` is not a named type. |
-| 8 | **C** | Intersection requires ALL listed types — the object must implement both `Loggable` and `Serialisable`. |
+| 7 | **A** | Only `Countable&Traversable` is valid. `int&string` fails (scalars cannot be intersected), `?Countable&Traversable` is a parse error (use `(Countable&Traversable)|null`), and `array` is not a named type. |
+| 8 | **B** | Intersection requires ALL listed types — the object must implement both `Loggable` and `Serialisable`. |
 
 ## Section B
 | # | Answer | Explanation |

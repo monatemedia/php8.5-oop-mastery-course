@@ -13,8 +13,8 @@
 **Q1.** Which of the following statements about PHP interfaces is **false**?
 
 - A) An interface can declare constants.
-- B) An interface can contain a concrete method with a body.
-- C) A class can implement multiple interfaces at once.
+- B) A class can implement multiple interfaces at once.
+- C) An interface can contain a concrete method with a body.
 - D) An interface method is implicitly abstract.
 
 ---
@@ -83,8 +83,8 @@ Which of the following lines is **valid**?
 **Q6.** What is the primary purpose of type-hinting a function parameter against an **interface** rather than a **concrete class**?
 
 - A) It makes the code run faster.
-- B) It allows any class implementing that interface to be passed, making the function reusable and decoupled.
-- C) It prevents subclasses from overriding the method.
+- B) It prevents subclasses from overriding the method.
+- C) It allows any class implementing that interface to be passed, making the function reusable and decoupled.
 - D) It automatically generates the method implementation.
 
 ---
@@ -236,12 +236,12 @@ echo $g->greet() . "\n";
 ## Section A
 | Q | Answer | Explanation |
 |---|--------|-------------|
-| 1 | **B** | Interfaces cannot contain concrete method bodies. Only method signatures (and constants) are allowed. Default implementations belong in abstract classes or traits. |
+| 1 | **C** | Interfaces cannot contain concrete method bodies. Only method signatures (and constants) are allowed. Default implementations belong in abstract classes or traits. |
 | 2 | **C** | Type-hint against the interface name. Option A over-specifies (only `Dog`). Option B is a union type that adds nothing. Option D is not valid PHP syntax. |
 | 3 | **C** | `Duck` must implement all three: `fly()` and `swim()` from the parent interfaces, plus `land()` from `Amphibious` itself. |
 | 4 | **B** | PHP throws a **fatal error** at class load time, before a single line of the class runs: *"Class X contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Countable::count)"*. Note that the engine names the method it is missing — the message tells you exactly what to write. |
 | 5 | **D** | Constants declared in an interface are accessible via the interface name, the implementing class name, or an instance of the implementing class. All three are valid. |
-| 6 | **B** | Polymorphism: any class implementing the interface can be passed. The function is decoupled from concrete implementations. |
+| 6 | **C** | Polymorphism: any class implementing the interface can be passed. The function is decoupled from concrete implementations. |
 | 7 | **B** | `ReadWritable extends Readable`, so any class implementing `ReadWritable` also satisfies `Readable`. Both are accepted. |
 
 ## Section B

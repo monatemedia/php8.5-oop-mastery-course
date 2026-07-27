@@ -17,8 +17,8 @@
 
 **Q2.** You are refactoring an accumulating service. The original has `private array $results = []` appended by `addResult()`. After the stateless refactor, where does the `$results` array live?
 
-- A) In a Redis cache, keyed by the caller's ID.
-- B) In the caller's own local variable; the service transforms individual rows and returns them.
+- A) In the caller's own local variable; the service transforms individual rows and returns them.
+- B) In a Redis cache, keyed by the caller's ID.
 - C) In a `static` property on the service class.
 - D) In PHP-DI's container, stored as a singleton binding.
 
@@ -27,8 +27,8 @@
 **Q3.** The stateless refactor of `recordCall(): void` (Anti-pattern 4) produces which signature?
 
 - A) `recordCall(): void` — unchanged, but now thread-safe.
-- B) `recordCall(): int` — returns the new count without accepting the old one.
-- C) `recordCall(int $currentCount): int` — accepts the current count and returns the incremented value.
+- B) `recordCall(int $currentCount): int` — accepts the current count and returns the incremented value.
+- C) `recordCall(): int` — returns the new count without accepting the old one.
 - D) `static recordCall(int &$count): void` — modifies a reference.
 
 ---
@@ -36,9 +36,9 @@
 **Q4.** An `AuthService` singleton currently stores the current user via `login(User $user)`. After the stateless refactor, how is the current user conveyed to services that need it?
 
 - A) Via a global variable `$_CURRENT_USER` set at request start.
-- B) Via an immutable `RequestContext` value object created at the start of each request and injected as a method parameter.
+- B) Via PHP's session — `$_SESSION['user']`.
 - C) Via a `static ?User $current` property on the `User` class.
-- D) Via PHP's session — `$_SESSION['user']`.
+- D) Via an immutable `RequestContext` value object created at the start of each request and injected as a method parameter.
 
 ---
 
@@ -54,17 +54,17 @@
 **Q6.** A `Money` value object has `public readonly int $cents` and `public readonly string $currency`. Its `add(Money $other): self` method creates a new `Money` with the sum. Which statement is correct?
 
 - A) `Money` is dangerous as a singleton because `$cents` is mutable.
-- B) `Money` is a value object: its properties are set once at construction, never changed after; `add()` returns a new object rather than mutating `$this`.
+- B) `Money` needs transient scope in PHP-DI to avoid contamination.
 - C) `Money` should be refactored to be stateless by making `$cents` a method parameter.
-- D) `Money` needs transient scope in PHP-DI to avoid contamination.
+- D) `Money` is a value object: its properties are set once at construction, never changed after; `add()` returns a new object rather than mutating `$this`.
 
 ---
 
 **Q7.** A `FeatureFlagService` had `private bool $booted = false` and a `boot()` method with a guard clause. After the stateless refactor, what is the correct mechanism ensuring flags are loaded exactly once (for a singleton)?
 
-- A) The guard clause is kept but moved to `isEnabled()`.
+- A) The flags are loaded eagerly in the constructor — PHP-DI calls the constructor once for a singleton, so loading happens exactly once without any flag.
 - B) A `static bool $booted` property replaces the instance property.
-- C) The flags are loaded eagerly in the constructor — PHP-DI calls the constructor once for a singleton, so loading happens exactly once without any flag.
+- C) The guard clause is kept but moved to `isEnabled()`.
 - D) The flags are loaded in a `__destruct()` method that fires before each request.
 
 ---
@@ -72,8 +72,8 @@
 **Q8.** A `BoundLogger` wraps a stateless `OperationLogger` singleton, binding a `$correlationId` at construction time. Which statement correctly describes this pattern?
 
 - A) `BoundLogger` is a stateful singleton — it accumulates log entries.
-- B) `BoundLogger` is a transient: created fresh per request with the current `correlationId`, it delegates to the stateless singleton; the singleton never stores the ID.
-- C) `BoundLogger` replaces the `OperationLogger` singleton — only one of them should exist in the container.
+- B) `BoundLogger` replaces the `OperationLogger` singleton — only one of them should exist in the container.
+- C) `BoundLogger` is a transient: created fresh per request with the current `correlationId`, it delegates to the stateless singleton; the singleton never stores the ID.
 - D) `BoundLogger` is unnecessary — the `correlationId` should be stored in a PHP session.
 
 ---
@@ -230,13 +230,13 @@ class InvoiceBuilder
 | Q | Answer | Explanation |
 |---|--------|-------------|
 | 1 | **B** | The stateless service rule (README Section 1): output depends only on inputs, never on accumulated instance state. A is wrong — stateless services have constructors. D is wrong — scope is a container decision, not a class property. |
-| 2 | **B** | The key move for Anti-pattern 1: the caller accumulates in their own variable. `$rows = []; $rows[] = $service->processRow($raw);`. The service transforms one item and returns it; accumulation is the caller's concern. |
-| 3 | **C** | `recordCall(int $currentCount): int` — pass in the current count, get back the new count. The caller passes their local `$count` and stores the return value. This is the "pass-and-return" pattern that eliminates the `$count` property from the class. |
-| 4 | **B** | An immutable `RequestContext` value object is constructed at the start of each request (by a factory at the composition root) and injected into services as a method parameter. The `AuthService` becomes a stateless factory that produces the context; services that need identity receive the context object directly. |
+| 2 | **A** | The key move for Anti-pattern 1: the caller accumulates in their own variable. `$rows = []; $rows[] = $service->processRow($raw);`. The service transforms one item and returns it; accumulation is the caller's concern. |
+| 3 | **B** | `recordCall(int $currentCount): int` — pass in the current count, get back the new count. The caller passes their local `$count` and stores the return value. This is the "pass-and-return" pattern that eliminates the `$count` property from the class. |
+| 4 | **D** | An immutable `RequestContext` value object is constructed at the start of each request (by a factory at the composition root) and injected into services as a method parameter. The `AuthService` becomes a stateless factory that produces the context; services that need identity receive the context object directly. |
 | 5 | **C** | PHP 8.5 "clone with" is spelled as a call: `clone($original, ['propertyName' => $newValue])`. It produces a new object with every property copied from `$original` except the keys listed in the array — and `readonly` properties may be replaced this way, which is the whole point of the feature. A is invalid (a readonly property cannot be reassigned after construction). B and D are not PHP syntax. |
-| 6 | **B** | `Money` is a value object: `$cents` and `$currency` are set in the constructor (`readonly`) and never changed. `add()` returns `new self(...)` — it never calls `$this->cents = ...`. Value objects hold state correctly — they are not "stateful" in the dangerous sense, because their state is immutable. |
-| 7 | **C** | The constructor loads flags eagerly — `$this->flags = $configSource;` — with no guard clause. For a PHP-DI singleton, the constructor is called exactly once. No flag is needed because "runs only once" is enforced structurally (by the object lifecycle) rather than by a runtime check. |
-| 8 | **B** | `BoundLogger` is transient: created fresh per request, it holds the current `correlationId` as a readonly constructor argument and delegates to the singleton `OperationLogger`. The singleton never stores the ID — it is passed as a parameter. This is the correct pattern: transient wrapper + stateless singleton. |
+| 6 | **D** | `Money` is a value object: `$cents` and `$currency` are set in the constructor (`readonly`) and never changed. `add()` returns `new self(...)` — it never calls `$this->cents = ...`. Value objects hold state correctly — they are not "stateful" in the dangerous sense, because their state is immutable. |
+| 7 | **A** | The constructor loads flags eagerly — `$this->flags = $configSource;` — with no guard clause. For a PHP-DI singleton, the constructor is called exactly once. No flag is needed because "runs only once" is enforced structurally (by the object lifecycle) rather than by a runtime check. |
+| 8 | **C** | `BoundLogger` is transient: created fresh per request, it holds the current `correlationId` as a readonly constructor argument and delegates to the singleton `OperationLogger`. The singleton never stores the ID — it is passed as a parameter. This is the correct pattern: transient wrapper + stateless singleton. |
 
 ## Section B
 
