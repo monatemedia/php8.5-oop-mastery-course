@@ -34,10 +34,10 @@
 
 ---
 
-**Q4.** What does a fluent setter return?
+**Q4.** A fluent setter ends with `return $this;`. What should its declared **return type** be?
 
 - A) `void`
-- B) `$this`
+- B) `$this` — the return type should name the variable being returned
 - C) `static`
 - D) `self`
 
@@ -280,7 +280,7 @@ class DataService {
 | 1 | **B** | Setter injection is for optional dependencies. If the class cannot work without the dependency, it belongs in the constructor. |
 | 2 | **B** | A Null Object implements the interface but does nothing — it is the "off" or "silent" state. No PHP built-in does this; you write it yourself. |
 | 3 | **B** | With a Null Object always assigned, `$this->logger` is never `null` — direct calls `$this->logger->log()` are safe everywhere, eliminating the `?->` operator. |
-| 4 | **C** | Fluent setters return `static` — the runtime class — so subclasses that chain setters get back the correct subtype, not the parent class. |
+| 4 | **C** | The *value* returned is `$this`; the *type* that describes it is `static`, which resolves to the runtime class, so a subclass chaining setters gets its own type back rather than the parent's. (`$this` is in fact a legal return type in PHPDoc and in some static analysers, but not in PHP itself — option B is there because the distinction between the value and the type is exactly what this question is about.) `self` would pin the type to the class where the method is written, breaking the chain for subclasses. |
 | 5 | **B** | The "Aware" interface declares a `set*()` method (e.g. `setLogger()`). A container that sees the service implementing it will call that method automatically. |
 | 6 | **C** | PSR-3 defines `LoggerInterface`, `LoggerAwareInterface`, and `LoggerAwareTrait`. The pattern is used by Symfony, Laravel, and many other frameworks. |
 | 7 | **B** | Gateway is required → constructor. Logger is optional → setter with NullLogger default. This is the exact scenario from Section 7 of the README. |

@@ -256,7 +256,7 @@ echo var_export($active instanceof StatusProvider, true) . "\n";
 | 5 | **C** | Anonymous classes are the right choice when you need multiple methods or state across calls. Closures are for single callables. Option D (reuse) calls for a named class. |
 | 6 | **B** | Each `new class {}` expression generates a distinct internal class name — even if the bodies are identical. They are never the same class. |
 | 7 | **C** | Type hints check the interface — any object implementing `PaymentGateway` qualifies, whether it is a named class or an anonymous class instance. |
-| 8 | **B** | Anonymous class instances cannot be reliably serialised. The internal class name contains the file path and line number — deserialising in a different context will fail because the class cannot be found. |
+| 8 | **B** | PHP does not let you try. `serialize()` on an anonymous class instance throws immediately: *"Exception: Serialization of 'class@anonymous' is not allowed"* — the failure is at serialise time, not later at `unserialize()`. The reason is the one you would guess: the generated class name embeds the file path and a line number, so the string could never be resolved back to a class in another process. PHP simply refuses at the point where it can still give you a comprehensible message. |
 
 ## Section B
 | # | Answer | Explanation |
@@ -286,19 +286,21 @@ The Null Object pattern is an anonymous (or named) class that implements an inte
 Good day, Alice!
 Hey, Bob!
 true
-different class
-```
-`makeGreeter` returns an anonymous class instance typed against `Greeter`. Both calls are `instanceof Greeter` (true). `get_class($formal) === get_class($casual)` is **false** because each `new class` expression in the `makeGreeter` function body produces the same class definition — wait, actually: both instances come from the **same** `new class(...)` expression inside `makeGreeter`. Since it is the same expression, PHP reuses the same internal class name. So `get_class($formal) === get_class($casual)` is **true**, and the output is `"same class"`.
-
-**Corrected final line: `same class`**
-
-Full output:
-```
-Good day, Alice!
-Hey, Bob!
-true
 same class
 ```
+Both objects come from the **same** `new class(...)` expression — the one inside
+`makeGreeter()`. An anonymous class expression is compiled once, so every call to
+`makeGreeter()` instantiates that same internal class with a different `$prefix`.
+`get_class()` therefore returns the identical (mangled) name for both, and the
+comparison is `true`.
+
+The instinct to answer `different class` is worth examining, because it is the
+common misconception: an anonymous class is anonymous to *you*, not to the
+engine. What creates a distinct class is a distinct `new class` expression in the
+source, not a distinct call to the function containing it.
+
+If `makeGreeter()` had contained two separate `new class` expressions and chosen
+between them, the two objects would genuinely be different classes.
 
 **Q19 — Answer:**
 ```

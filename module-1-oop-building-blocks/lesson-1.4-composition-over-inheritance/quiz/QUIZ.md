@@ -263,7 +263,7 @@ echo "Total calls: " . count($spy->calls) . "\n";
 | 10 | **T** | Three or more levels almost always indicates code reuse, type grouping, or behaviour override that is better solved with traits, interfaces, or composition. |
 | 11 | **T** | The decorator pattern wraps any implementation of an interface and adds behaviour. It achieves exactly what "extend and override one method" achieves, without any inheritance. |
 | 12 | **F** | Containers read the constructor of the class they are resolving. If that constructor calls `parent::__construct()` with hardwired dependencies, the container sees no resolvable parameters. |
-| 13 | **F** | Framework extension points (`extends TestCase`, `extends Migration`) are legitimate uses of inheritance where the framework authors designed the class for extension. |
+| 13 | **F** | Inheritance does not prevent dependency injection. A subclass may declare its own constructor dependencies and pass them up:  `public function __construct(LoggerInterface $log, private Clock $clock) { parent::__construct($log); }` — the container reads the child's constructor, resolves both, and wires them. What actually makes DI impossible is hardwiring collaborators with `new` inside a constructor, and a class can do that with or without a parent. The slogan is a useful heuristic because the two habits so often travel together, but it describes a correlation, not a language rule. |
 | 14 | **T** | Framework extension points are the clearest legitimate use of inheritance — the framework authors explicitly designed these classes for `extends`. |
 
 ## Section C

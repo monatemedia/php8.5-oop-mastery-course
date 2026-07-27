@@ -239,7 +239,7 @@ echo $g->greet() . "\n";
 | 1 | **B** | Interfaces cannot contain concrete method bodies. Only method signatures (and constants) are allowed. Default implementations belong in abstract classes or traits. |
 | 2 | **C** | Type-hint against the interface name. Option A over-specifies (only `Dog`). Option B is a union type that adds nothing. Option D is not valid PHP syntax. |
 | 3 | **C** | `Duck` must implement all three: `fly()` and `swim()` from the parent interfaces, plus `land()` from `Amphibious` itself. |
-| 4 | **B** | PHP throws a **fatal error** at class load time: *"Class X contains 1 abstract method and must therefore be declared abstract or implement the remaining methods."* |
+| 4 | **B** | PHP throws a **fatal error** at class load time, before a single line of the class runs: *"Class X contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Countable::count)"*. Note that the engine names the method it is missing — the message tells you exactly what to write. |
 | 5 | **D** | Constants declared in an interface are accessible via the interface name, the implementing class name, or an instance of the implementing class. All three are valid. |
 | 6 | **B** | Polymorphism: any class implementing the interface can be passed. The function is decoupled from concrete implementations. |
 | 7 | **B** | `ReadWritable extends Readable`, so any class implementing `ReadWritable` also satisfies `Readable`. Both are accepted. |
@@ -251,7 +251,7 @@ echo $g->greet() . "\n";
 | 9  | **F** | Interfaces cannot be instantiated. `new Flyable()` is a fatal error. |
 | 10 | **T** | `class Foo extends Bar implements Baz {}` is perfectly valid. |
 | 11 | **T** | `MyInterface::CONST` is the canonical way to access interface constants. |
-| 12 | **F** | Interface methods are **implicitly** abstract. Writing `abstract` is not merely redundant — PHP rejects it outright with *"Access type for interface method ... must be omitted"*. The same applies to any visibility modifier other than `public`. |
+| 12 | **F** | Interface methods are **implicitly** abstract, and writing `abstract` is not merely redundant — PHP rejects it outright: *"Interface method I::f() must not be abstract"*. A separate rule governs visibility: interface methods must be `public`, and anything else gives a different message, *"Access type for interface method I2::f() must be public"*. Writing `public` explicitly is allowed and is purely a matter of taste. |
 | 13 | **T** | `instanceof` checks the full contract chain, including implemented interfaces. |
 
 ## Section C

@@ -34,7 +34,7 @@
 
 ---
 
-**Q4.** A function is declared `: void`. Which of the following is a `TypeError`?
+**Q4.** A function is declared `: void`. Which of the following does PHP reject?
 
 - A) The function has a `return;` statement with no value.
 - B) The function falls off the end without a `return` statement.
@@ -223,7 +223,7 @@ var_dump(orNull(3.14));
 | 1 | **B** | `strict_types=1` governs calls made *from* this file to any function — it is per-calling-file, not per-definition-file. |
 | 2 | **B** | In coercive mode (default), PHP silently converts `"42"` to `42`. No error, no warning. |
 | 3 | **C** | `?string` is exact shorthand for `string|null`. They are fully equivalent in PHP 8+. |
-| 4 | **C** | `return null;` explicitly returns a value from a `void` function — this is a `TypeError`. A bare `return;` (no value) and falling off the end are both allowed in `void` functions. |
+| 4 | **C** | `return null;` returns a value from a `void` function. PHP rejects it **at compile time**, which is worth being exact about — this is not a runtime `TypeError`, it is a fatal that stops the file being run at all: *"A void function must not return a value (did you mean \"return;\" instead of \"return null;\"?)"*. A bare `return;` and falling off the end of the function are both fine. |
 | 5 | **B** | `never` means the function never returns normally — it always throws or calls `exit()`. Useful for static analysis to mark subsequent code as unreachable. |
 | 6 | **B** | `self` is resolved at compile time to the class where the method is *defined* — `QueryBuilder`. Static analysers see `where()` as returning `QueryBuilder`, not `UserQueryBuilder`. |
 | 7 | **C** | Only `Countable&Traversable` is valid. `int&string` fails (scalars cannot be intersected), `?Countable&Traversable` is a parse error (use `(Countable&Traversable)|null`), and `array` is not a named type. |
@@ -232,10 +232,10 @@ var_dump(orNull(3.14));
 ## Section B
 | # | Answer | Explanation |
 |---|--------|-------------|
-| 9  | **T** | `declare(strict_types=1)` must be literally the first statement — even before `namespace` declarations would cause a parse error in some older PHP versions, though `namespace` can follow it in PHP 8+. The key rule: it must be first. |
+| 9  | **T** | It must be the first *statement* in the file. Comments and the opening `<?php` tag may precede it; `namespace` may not — that ordering is a fatal error, *"strict_types declaration must be the very first statement in the script"*. Note the wording: first **statement**, not first line. |
 | 10 | **F** | A `never`-typed function must NEVER return. If a code path exists that returns normally, PHP throws a compile-time error. |
 | 11 | **T** | `static` uses late static binding — it resolves to the actual runtime class. `self` resolves to the class where the method is written. |
-| 12 | **T** | `mixed` is precisely equivalent to no type declaration — it accepts any type and disables type checking for that parameter or return. |
+| 12 | **F** | At a call site the two behave alike — both accept anything. They are not the same declaration, and inheritance is where the difference shows. `mixed` is a real type and participates in variance checks, so a parent declaring `: mixed` **cannot** be overridden with `: void` (*"Declaration of B::f(): void must be compatible with A::f(): mixed"*), while a parent with no return type at all can be. `void` is not a subtype of `mixed`; it is not a type of value.<br><br>The distinction matters beyond the trivia. Writing `mixed` says "I considered the type and any value is genuinely acceptable here". Writing nothing says "no one has decided yet". Those communicate opposite things to the next reader, which is Golden Rule 3 in miniature. |
 | 13 | **F** | `?A&B` is a parse error. The correct form is `(A&B)|null` — a DNF (Disjunctive Normal Form) type, available from PHP 8.2+. |
 | 14 | **T** | `int` is within the `int|float` union. An integer value satisfies the `int` alternative. |
 

@@ -328,9 +328,9 @@ Note that `readonly` is **not** an alternative here — `readonly` properties ar
 ```
 100
 212
-Error: <engine message — the property cannot be written to>
+Error: Property Temperature::$fahrenheit is read-only
 ```
-`$celsius` is backed (its `set` hook writes `$this->celsius`) and the hook validates on write; `100.0` passes and echoes as `100`. `$fahrenheit` is virtual — its `get` hook reads `$this->celsius`, never `$this->fahrenheit` — so reading it computes `100 * 9/5 + 32 = 212.0`, which echoes as `212`. Assigning to it throws an `Error`, because a virtual property with no `set` hook has no write operation. Mark yourself correct if you predicted the two numbers and an `Error` on the write; the exact wording of the engine's message is not the point.
+`$celsius` is backed (its `set` hook writes `$this->celsius`) and the hook validates on write; `100.0` passes and echoes as `100`. `$fahrenheit` is virtual — its `get` hook reads `$this->celsius`, never `$this->fahrenheit` — so reading it computes `100 * 9/5 + 32 = 212.0`, which echoes as `212`. Assigning to it throws an `Error`, because a virtual property with no `set` hook has no write operation. Mark yourself correct if you predicted the two numbers and an `Error` on the write — the exact wording is PHP's, not something to memorise.
 
 **Q19 — Answer:**
 ```

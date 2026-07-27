@@ -87,7 +87,7 @@
 | 10 | In a correctly IoC-wired system, business logic classes (`OrderService`, `UserRepository`) should have zero `new` calls on other services. | |
 | 11 | A Service Locator satisfies the Dependency Inversion Principle because it uses interfaces as lookup keys. | |
 | 12 | The composition root is the only place in the application where `new` should be called on service-level classes. | |
-| 13 | PHP-DI reads constructor type hints using PHP's Reflection API, which is the same technique used by the `MiniContainer` in Example 04. | |
+| 13 | PHP-DI reads constructor type hints using PHP's Reflection API, which is the same technique used by the `ManualContainer` in Example 04. | |
 | 14 | Injecting a concrete class (`new StripeGateway`) satisfies DIP as long as the injection happens via the constructor. | |
 
 ---
@@ -245,7 +245,7 @@ class OrderService {
 | 10 | **T** | In a correctly IoC-wired system all `new` calls on services live in the composition root. Business logic classes receive, they do not create. |
 | 11 | **F** | A Service Locator uses interfaces as keys but the class still reaches into a global registry — it hides dependencies and couples the class to the locator itself. |
 | 12 | **T** | The composition root is the one place for `new` on services. Anywhere else is a coupling violation. |
-| 13 | **T** | PHP-DI uses `ReflectionClass` and `ReflectionParameter` to read constructor type hints — exactly what the `MiniContainer` in Example 04 does. |
+| 13 | **T** | PHP-DI uses `ReflectionClass` and `ReflectionParameter` to read constructor type hints — exactly what `ManualContainer` in Example 04 does, and what you build again as `MiniContainer` in this lesson's challenge. A production container adds compilation, scopes and error reporting on top; the resolution mechanism is the one you have already written. |
 | 14 | **F** | DIP specifically requires depending on abstractions (interfaces), not concretions. Injecting `new StripeGateway` satisfies DI but not DIP. |
 
 ## Section C

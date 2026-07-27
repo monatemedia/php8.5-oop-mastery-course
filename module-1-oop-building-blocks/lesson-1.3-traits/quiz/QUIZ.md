@@ -283,7 +283,7 @@ echo $api->getCount() . "\n";
 | # | Answer | Explanation |
 |---|--------|-------------|
 | 9  | **F** | Traits cannot extend other traits. A trait can `use` another trait (composition), but `extends` is for classes only. |
-| 10 | **F** | `instanceof` checks against classes and interfaces — not traits. Traits are not part of PHP's type system. Use `in_array(SomeTrait::class, class_uses($obj))` instead. |
+| 10 | **F** | `instanceof` checks against classes and interfaces — not traits. Traits are not part of PHP's type system, which is the whole reason a trait is usually paired with an interface. `class_uses($obj)` is the nearest equivalent, but note what it does *not* do: it reports only the traits used by that exact class, so if a parent uses the trait and the child does not, it returns `false`. Walking the hierarchy is on you:<br><br>`$uses = class_uses($obj);`<br>`foreach (class_parents($obj) as $p) { $uses += class_uses($p); }`<br><br>Traits that use other traits need the same treatment recursively. That this is fiddly is the point — the language is telling you that "uses trait X" was never meant to be a runtime question. |
 | 11 | **T** | Trait methods are injected into the host class and have full access to `$this`, including all of the class's properties and other methods. |
 | 12 | **T** | `use MyTrait { myMethod as protected; }` changes the visibility of `myMethod` to `protected` in the using class only. |
 | 13 | **T** | If the class defines a method with the same name as a trait method, the class's own method takes precedence — it overrides the trait's version silently. |

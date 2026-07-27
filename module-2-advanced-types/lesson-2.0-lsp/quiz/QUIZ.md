@@ -215,7 +215,7 @@ printCacheTtl(new EternalCache()); // What happens here?
 ## Section B
 | # | Answer | Explanation |
 |---|--------|-------------|
-| 8  | **T** | The postcondition of `log()` is that the message is recorded. A NullLogger that drops messages breaks the postcondition. It should store them and just not output them. |
+| 8  | **T** | This looks like it contradicts Lesson 1.4, where a Null Object "implements the interface and does nothing". It does not, and the difference is worth pinning down because it decides whether your null object is safe.<br><br>What a Null Object may skip is the **side effect** — writing to disk, sending the email, hitting the network. What it may not skip is any **query the interface exposes**. This `Logger` declares `getLogs(): array`, so "the message is recorded" is part of the contract, and a version that drops messages returns an empty array to a caller who just logged three things. That is a broken postcondition, and it breaks silently.<br><br>Had the interface been `log(string $m): void` and nothing else, a discarding implementation would honour it completely — there would be no observable promise to break. The rule: a null object may do nothing, but it must not *lie*. |
 | 9  | **T** | Contravariance: parameter types can be widened (supertype). PHP allows this since 7.4. |
 | 10 | **F** | `instanceof` checks are a red flag that substitution is NOT safe — they signal a violation, not good design. |
 | 11 | **T** | Covariance = return types go down (narrower). Contravariance = parameter types go up (wider). |

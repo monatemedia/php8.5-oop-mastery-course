@@ -214,7 +214,7 @@ echo "  ✓ Both ->name and ->value are available on backed cases\n\n";
 echo "Common mistakes:\n";
 echo "  ✗ Forgetting a value for a case → parse error\n";
 echo "  ✗ Duplicate values → fatal error\n";
-echo "  ✗ Using ->value on a pure enum → Error: pure enum cases have no value\n";
+echo "  ✗ Using ->value on a pure enum → Warning: Undefined property, and you get null\n";
 echo "  ✗ Calling from() on untrusted input → use tryFrom() instead\n";
 
 // Case sensitivity note

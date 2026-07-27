@@ -335,7 +335,7 @@ This is useful for building dropdowns, validation lists, or iterating over all v
 | Cannot be instantiated with `new` | Use `EnumName::CaseName` |
 | Cannot have instance properties | Only `name` and `value` (backed) exist |
 | Cannot have a constructor | No `__construct()` |
-| Pure enum cases have no `->value` | Accessing `->value` on a pure enum is a fatal error |
+| Pure enum cases have no `->value` | Reading `->value` on a pure enum warns *"Undefined property"* and evaluates to `null` — it does **not** throw |
 | Cannot implement abstract classes | Enums can implement interfaces, not extend classes |
 | Backed enum values must be unique | Duplicate backing values cause a fatal error |
 

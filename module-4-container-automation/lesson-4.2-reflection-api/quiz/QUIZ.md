@@ -203,7 +203,7 @@ class OrderService {
     ) {}
 }
 
-// Assume ReflectionCache from the challenge solution
+// Assume ReflectionCache from challenge/solution.php
 $cache = new ReflectionCache();
 
 $deps1 = $cache->getResolvableDeps(UserService::class);
@@ -294,7 +294,7 @@ Three bugs:
 classes_cached: 2
 params_cached:  2
 deps1 == deps3? true
-dep types for UserService: App\DbInterface, App\LoggerInterface
+dep types for UserService: DbInterface, LoggerInterface
 ```
 Call 1 (`getResolvableDeps(UserService::class)`): cache miss — creates `ReflectionClass(UserService)`, reads params, caches both. `classes_cached=1, params_cached=1`.
 Call 2 (`getResolvableDeps(OrderService::class)`): cache miss — creates `ReflectionClass(OrderService)`, reads params, caches both. `classes_cached=2, params_cached=2`.

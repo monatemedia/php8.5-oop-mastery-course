@@ -264,6 +264,8 @@ echo "  Alice's cart items: {$cart1->itemCount()} (unaffected by Bob) ✓\n";
 
 echo "\n--- Recap ---\n";
 echo "Factory:   fresh instance every get(). Use for per-request/per-user state.\n";
-echo "Singleton: one instance shared forever. Use for stateless infrastructure.\n";
-echo "The bug:   registering a stateful object as singleton → state bleeds between users.\n";
+echo "Singleton: one instance for the life of the CONTAINER. Use for stateless infrastructure.\n";
+echo "The bug:   registering a stateful object as singleton → state bleeds between everything\n";
+echo "           that shares it. How far it spreads depends on how long the container\n";
+echo "           lives — see Module 6. Here both requests share one container.\n";
 echo "The rule:  if it holds user/request-specific state → factory. Otherwise → singleton.\n";

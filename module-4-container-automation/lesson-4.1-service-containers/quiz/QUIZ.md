@@ -25,12 +25,12 @@
 
 ---
 
-**Q3.** You register a `ShoppingCart` as a singleton in your container. Two different users make requests. What happens?
+**Q3.** You register a `ShoppingCart` as a singleton. During one request, both `CheckoutController` and `CartSummaryWidget` are resolved from the container, and each declares a `ShoppingCart` in its constructor. What happens?
 
-- A) Each user gets their own fresh cart — singleton ensures thread safety.
-- B) Both users share the same cart instance — user A's items appear in user B's cart.
-- C) PHP automatically clones the singleton for each new request.
-- D) An exception is thrown because singletons cannot hold user state.
+- A) Each receives its own fresh cart — that is what singleton scope means.
+- B) Both receive the same cart object — an item added through the controller is visible to the widget.
+- C) PHP clones the singleton for each class that asks for it.
+- D) An exception is thrown because singletons cannot hold state.
 
 ---
 
@@ -194,7 +194,8 @@ class UserRepo {
     }
 }
 
-$c = new SimpleContainer();  // assume SimpleContainer from the challenge
+// Assume SimpleContainer from challenge/solution.php
+$c = new SimpleContainer();
 $c->singleton(Logger::class, fn($c) => new FileLogger());
 $c->singleton(Db::class,     fn($c) => new InMemDb());
 $c->singleton(UserRepo::class, fn($c) => new UserRepo(
@@ -231,7 +232,7 @@ echo $r1 === $r2 ? "same\n" : "different\n";
 |---|--------|-------------|
 | 1 | **B** | A container stores bindings (how to build) and resolves requests (builds when asked). |
 | 2 | **B** | `bind()` = factory (fresh every time). `singleton()` = built once, cached. |
-| 3 | **B** | A singleton is one shared instance. User A's items are in the same cart object that user B receives — a serious state-bleed bug. |
+| 3 | **B** | Singleton scope means one instance per container, so every class that asks for a `ShoppingCart` is handed the *same* object. A mutation made through one is visible through the other — which is fine for a stateless logger and a data-corruption bug for a cart.<br><br>Note the question is about two collaborators inside **one** request, because that is true no matter how your application is deployed. Whether a singleton also leaks between two *different users* depends on how long the container lives — under PHP-FPM it is rebuilt every request and does not, under a persistent worker it does. Module 6 is entirely about that distinction; for now, the rule that always holds is: shared instance, shared state. |
 | 4 | **C** | Same technology; different calling context. Container: `get()` only at entry point. Service Locator: business classes call `get()` directly. |
 | 5 | **B** | PSR-11 defines `ContainerInterface` with `get()` and `has()`. PHP-DI, Symfony, and Laravel all implement it. |
 | 6 | **B** | Only option B calls `get()` at the entry point (index.php). Options A and C are Service Locators inside business classes. D uses a static singleton anti-pattern. |
@@ -251,7 +252,9 @@ echo $r1 === $r2 ? "same\n" : "different\n";
 ## Section C
 
 **Q15 — Model answer:**
-A singleton `ShoppingCart` means every `get()` call returns the same cart object. When user A adds items to their cart, those items persist in the singleton and appear in user B's cart on their next request — a critical data-leakage bug. Registering as factory (`bind()`) ensures each `get()` call creates a new, empty `ShoppingCart` so each user gets an isolated cart with no shared state.
+A singleton `ShoppingCart` means every `get()` call returns the same cart object, so every collaborator resolved from that container shares one cart and one set of items. Registering it with `bind()` instead makes each `get()` call build a new, empty `ShoppingCart`, so nothing is shared and nothing can bleed.
+
+How far the damage reaches depends on how long the container lives. Under PHP-FPM the container is rebuilt on every request, so the sharing is confined to that request — bad enough, since two services can corrupt each other's view of the cart. Under a persistent worker the same container serves thousands of requests, and then user A's items really do appear in user B's cart. Lesson 6.1 covers this; the important part here is that the container decides how many instances exist, and that decision is yours to make correctly.
 
 **Q16 — Model answer:**
 Using interface keys means the *lookup key* is an abstraction — but the *calling class* is still directly coupled to the container. `OrderService` now depends on `Container` itself: change the container's class name, change its `get()` method signature, or swap to a different container library, and every class using the locator must be updated. Furthermore, the dependencies of `OrderService` are completely invisible from its constructor signature — you cannot determine what it needs without reading every line of every method. DIP requires depending on abstractions in the *constructor*, not fetching them from a global registry.

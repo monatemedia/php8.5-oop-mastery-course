@@ -145,7 +145,7 @@ class ServiceB {
     public function run(): void { $this->log->log("Running B"); $this->a->run(); }
 }
 
-// Assume AutowiringContainer from the lesson
+// Assume AutowiringContainer from examples/02-recursive-resolution.php
 $c = new AutowiringContainer();
 $c->bind(Logger::class, ConsoleLogger::class);
 
@@ -217,7 +217,7 @@ class UserService {
     }
 }
 
-// Assume AutowiringContainer from the lesson
+// Assume AutowiringContainer from examples/02-recursive-resolution.php
 $c = new AutowiringContainer();
 $c->bind(DbInterface::class, SqliteDb::class);
 
@@ -260,7 +260,7 @@ echo "Done\n";
 |---|--------|-------------|
 | 9  | **T** | Explicit bindings always take precedence — the container checks bindings first before attempting auto-wiring. |
 | 10 | **T** | `getConstructor()` returns `null` for a class with no constructor. The container instantiates with `new $class()`. |
-| 11 | **T** | Without detection, each `get()` call triggers another `get()` in an infinite recursive chain until PHP stack exhaustion. |
+| 11 | **T** | Each `get()` triggers another, forever. What actually stops it is worth knowing, because it decides how the failure looks in your logs: PHP does not segfault on a blown stack, it hits a limit and reports a fatal — *"Allowed memory size of 67108864 bytes exhausted"* — as each frame holds its own locals. The result is the same (the request dies) but the message names memory, not recursion, so a circular binding tends to be misread as a memory leak. That is exactly why the container should detect the cycle itself and say `A → B → A`. |
 | 12 | **F** | Interface bindings are still required — the container cannot know which concrete class to use for an interface without being told. |
 | 13 | **T** | `$param->isOptional()` returns `true` if a default value exists. The container calls `$param->getDefaultValue()` and uses it. |
 | 14 | **T** | `finally` runs even when an exception is thrown, guaranteeing the resolving flag is cleared and the container remains consistent. |

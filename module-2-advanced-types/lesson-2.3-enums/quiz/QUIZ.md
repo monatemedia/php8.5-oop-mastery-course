@@ -20,7 +20,7 @@
 
 - A) `"Red"`
 - B) `0` — PHP assigns integer indices automatically.
-- C) `null`
+- C) `null` — with an "Undefined property" warning.
 - D) Fatal error — pure enum cases have no `->value` property.
 
 ---
@@ -268,7 +268,7 @@ echo var_export($dir instanceof Labelled, true) . "\n";
 | Q | Answer | Explanation |
 |---|--------|-------------|
 | 1 | **C** | A pure enum case has no backing value — just the name. Options A and B have backing values (making them backed enum cases). Option D is a constant, not a case. |
-| 2 | **D** | Pure enum cases have no `->value` property. Accessing `->value` on a pure enum case is a fatal `Error`. `->name` is available on all cases. |
+| 2 | **C** | This one catches almost everyone, including people who have used enums for years. A pure enum case has no `value` — but reading a property that does not exist on an object is not fatal in PHP. You get *"Warning: Undefined property: Color::$value"* and the expression evaluates to `null`. Option D is the answer most people give, and it is the more *useful* behaviour, which is probably why the misconception is so durable — but PHP does not throw here. The practical lesson is that this mistake fails quietly: `null` flows onward and surfaces somewhere else entirely. `->name` is available on all cases, pure and backed. |
 | 3 | **B** | `from()` throws `\ValueError` on an unknown value — use it for trusted data. `tryFrom()` returns `null` on an unknown value — use it for untrusted external input. |
 | 4 | **B** | `->name` always returns the PHP case identifier as a string — `"High"`. `->value` would return `10`. Both are available on backed enums. |
 | 5 | **C** | Enum cases are `instanceof` both the enum type AND any interface it implements. This is what makes them usable in interface-typed function parameters. |
@@ -313,11 +313,26 @@ same
 Gold: 2
 Bronze: 2
 Silver: 1
-Most frequent level value: 3
 ```
-Wait — `array_key_first` after `arsort` returns the key with the highest count. After sorting descending: Gold=2, Bronze=2 (order of equals depends on original order — Gold appears first here since it was encountered first), Silver=1. `array_key_first` returns `"Gold"`. `Level::from("Gold")` — but `from()` takes an **integer** (the backing type), not a string name. This would throw `TypeError` because `"Gold"` is a string and `Level` is `int`-backed.
+…and then a fatal `TypeError`:
 
-**Corrected answer: Fatal error / TypeError** — `Level::from(array_key_first($counts))` passes the string `"Gold"` to `from()`, but `Level` is integer-backed. PHP 8.1+ throws `TypeError: Level::from(): Argument #1 ($value) must be of type int, string given`. To fix: use `Level::from((int) ...)` or better, store the case itself as the key rather than its name.
+```
+Level::from(): Argument #1 ($value) must be of type int, string given
+```
+
+The counting and sorting work fine. `$counts` is keyed by `$level->name`, so its
+keys are the strings `"Gold"`, `"Bronze"`, `"Silver"`. PHP sorts are stable, so
+after `arsort()` the two entries tied on 2 keep their insertion order and `Gold`
+comes first.
+
+The failure is the last two lines. `array_key_first($counts)` returns the string
+`"Gold"`, but `Level` is an **int-backed** enum, so `Level::from()` requires an
+`int`. Under `declare(strict_types=1)` there is no coercion and it throws.
+
+**The lesson:** an enum case has both a `name` (the identifier) and a `value`
+(the backing value), and they are not interchangeable. `from()` and `tryFrom()`
+work on the *value*. To go the other way — from a name back to a case — you need
+`constant(Level::class . '::' . $name)` or a `match` over the names.
 
 **Q20 — Answer:**
 ```

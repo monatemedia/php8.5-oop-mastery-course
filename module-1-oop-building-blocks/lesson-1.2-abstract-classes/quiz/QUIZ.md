@@ -264,7 +264,7 @@ echo (new Cat('Tiger', false))->introduce() . "\n";
 |---|--------|-------------|
 | 1 | **D** | PHP supports only single inheritance. A class (abstract or not) can extend exactly one parent. |
 | 2 | **B** | Abstract methods must be `public` or `protected`. `private abstract` is illegal — private methods cannot be overridden. |
-| 3 | **C** | Fatal error at class load time: *"Class X contains 1 abstract method and must therefore be declared abstract or implement the remaining methods."* |
+| 3 | **C** | Fatal error at class load time — not when the missing method is first called: *"Class X contains 1 abstract method and must therefore be declared abstract or implement the remaining method (Base::doWork)"*. The engine names the method, and the count is pluralised to match how many are outstanding. |
 | 4 | **B** | `final` locks the method — no subclass can override it. Useful in the Template Method Pattern to protect the pipeline skeleton. |
 | 5 | **B** | The Template Method Pattern defines an algorithm skeleton in the abstract class; abstract "step" methods let subclasses customise each step without changing the order. |
 | 6 | **B** | `parent::__construct($name)` is called first → "Base: Alice". Then the rest of `Child::__construct()` runs → "Child: age=30". |

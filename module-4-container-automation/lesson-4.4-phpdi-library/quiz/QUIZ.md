@@ -73,7 +73,7 @@
 **Q8.** What is the difference between `autowire()` and `create()` in PHP-DI?
 
 - A) `autowire()` is for interfaces; `create()` is for concrete classes.
-- B) `autowire()` uses Reflection to resolve all constructor params automatically; `create()` does the same but also allows explicit `->constructor()` overrides for specific params.
+- B) `autowire()` uses Reflection to resolve constructor params automatically; `create()` does **not** auto-wire — you supply the arguments yourself.
 - C) `create()` creates a new instance every resolution; `autowire()` creates a singleton.
 - D) They are identical — one is just an alias for the other.
 
@@ -228,7 +228,7 @@ return [
 | 5 | **C** | The definitions file is the composition root — the only place where config, env vars, and implementation decisions belong (Rule 1). |
 | 6 | **B** | The container argument lets the factory resolve other services — needed for decorators (`new LoggingGateway($c->get(GatewayInterface::class), $c->get(LoggerInterface::class))`). |
 | 7 | **B** | `$path` has a default value — PHP-DI calls `getDefaultValue()` and uses `'/tmp/app.log'`. No exception is thrown. |
-| 8 | **B** | `autowire()` resolves everything automatically. `create()` does the same but allows explicit constructor argument overrides via `->constructor(arg1, arg2)`. |
+| 8 | **B** | This is the pair most people get backwards, because the names suggest `create()` is the simpler, more automatic one. It is the opposite. `autowire()` reads the constructor's type hints and resolves them; `create()` builds the object from **only** what you hand it, and a dependency you do not supply is simply missing — PHP-DI reports *"Parameter $d of __construct() has no value defined or guessable"*.<br><br>Both take overrides, with different APIs: `create(X::class)->constructor($a, $b)` passes positional arguments, while `autowire(X::class)->constructorParameter('dsn', $value)` overrides one named parameter and auto-wires the rest. Reach for `autowire()` by default and `create()` when you want to state every argument explicitly. |
 
 ## Section B
 | # | Answer | Explanation |
