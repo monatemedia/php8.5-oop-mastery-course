@@ -48,6 +48,67 @@ function normalise(string $blob): array
     return $out;
 }
 
+/**
+ * Lift a single class declaration out of a file that also contains demo code.
+ *
+ * Several quiz snippets are written against a class taught in the lesson —
+ * "Assume AutowiringContainer from examples/02-recursive-resolution.php". The
+ * whole file cannot be included, because it ends by running a demonstration
+ * that prints its own output. So take the class and leave the rest.
+ *
+ * Uses the tokenizer rather than a regex: a brace inside a string literal or a
+ * comment must not be counted, and only the tokenizer knows the difference.
+ */
+function extractClass(string $file, string $class): ?string
+{
+    if (!is_file($file)) {
+        return null;
+    }
+
+    $src    = (string) file_get_contents($file);
+    $tokens = token_get_all($src);
+
+    for ($i = 0, $n = count($tokens); $i < $n; $i++) {
+        if (!is_array($tokens[$i]) || $tokens[$i][0] !== T_CLASS) {
+            continue;
+        }
+
+        // The next meaningful token is the class name.
+        $j = $i + 1;
+        while ($j < $n && is_array($tokens[$j]) && in_array($tokens[$j][0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) {
+            $j++;
+        }
+        if (!is_array($tokens[$j]) || $tokens[$j][0] !== T_STRING || $tokens[$j][1] !== $class) {
+            continue;
+        }
+
+        // Walk forward to the opening brace, then brace-match to the close.
+        $depth = 0;
+        $start = null;
+        for ($k = $j; $k < $n; $k++) {
+            $text = is_array($tokens[$k]) ? $tokens[$k][1] : $tokens[$k];
+            if ($text === '{') {
+                if ($depth === 0) {
+                    $start = $k;
+                }
+                $depth++;
+            } elseif ($text === '}') {
+                $depth--;
+                if ($depth === 0) {
+                    $out = '';
+                    for ($m = $i; $m <= $k; $m++) {
+                        $out .= is_array($tokens[$m]) ? $tokens[$m][1] : $tokens[$m];
+                    }
+                    return $out;
+                }
+            }
+        }
+        return null;   // unbalanced — refuse rather than guess
+    }
+
+    return null;
+}
+
 $quizzes = glob($root . '/module-*/lesson-*/quiz/QUIZ.md') ?: [];
 sort($quizzes);
 
@@ -89,21 +150,28 @@ foreach ($quizzes as $quizPath) {
     }
 
     // ── What does the key claim each one prints? ────────────────────────────
-    // Two shapes are used. Most answers quote a fenced output block; a few
-    // predict a fatal error in prose instead. Both are real answers.
+    // Slice the key into one block per question, then interpret each block.
+    // Two shapes are in use and both are legitimate: a fenced output block
+    // (sometimes followed by prose that qualifies it, e.g. "…then a TypeError"),
+    // or pure prose predicting a fatal. Parsing them with two separate regexes
+    // was a mistake — the prose pattern excluded backticks, so any answer that
+    // mentioned `log()` or `Logger` silently registered as "no answer given".
     $claims = [];
 
-    preg_match_all('/\*\*Q(\d+) — Answer:?\*\*\s*\R+```\R(.*?)```/su', $key, $am);
+    preg_match_all(
+        '/\*\*Q(\d+) — Answer:?\*\*(.*?)(?=\R\*\*Q\d+ — Answer|\R##\s|\z)/su',
+        $key,
+        $am
+    );
     foreach ($am[1] as $i => $num) {
-        $claims[(int) $num] = $am[2][$i];
-    }
-
-    preg_match_all('/\*\*Q(\d+) — Answer:?\*\*\s*\R+([^`]{10,}?)(?=\R\s*\R\*\*Q|\R\s*\R---|$)/su', $key, $pm);
-    foreach ($pm[1] as $i => $num) {
-        $n = (int) $num;
-        if (!isset($claims[$n])) {
-            $claims[$n] = $pm[2][$i];   // prose answer, e.g. "Fatal error. log() is final ..."
+        $block = trim($am[2][$i]);
+        if ($block === '') {
+            continue;
         }
+        // Where a fence is present, the fence is the expected output and any
+        // prose after it qualifies that output. Keep both — 2.1 Q18 prints
+        // "20" and *then* dies, and the death is only stated in the prose.
+        $claims[(int) $num] = $block;
     }
 
     foreach ($programs as $num => $code) {
@@ -117,38 +185,167 @@ foreach ($quizzes as $quizPath) {
         $file = $tmp . DIRECTORY_SEPARATOR . 'q_' . md5($quizPath . $num) . '.php';
         file_put_contents($file, $code);
 
+        // A snippet may name the lesson class it is written against:
+        //     // Assume AutowiringContainer from examples/02-recursive-resolution.php
+        // That line is there for the student's benefit — without it the snippet
+        // cannot be run at all, and lesson 4.3 defines four different classes by
+        // that name. Since it is unambiguous, the audit can honour it too.
+        $extra = '';
+        if (preg_match('/Assume\s+(\w+)\s+from\s+([\w.\/-]+\.php)/', $code, $src)) {
+            $lessonDir = dirname($quizPath, 2);
+            $lifted    = extractClass($lessonDir . '/' . $src[2], $src[1]);
+            if ($lifted === null) {
+                $issues[] = "{$rel} Q{$num}: names '{$src[1]}' in '{$src[2]}', but that class "
+                          . "could not be found there (answer key NOT checked).";
+                $checked--;
+                @unlink($file);
+                continue;
+            }
+            $extra = $lifted;
+        }
+
+        // Load the course autoloader so snippets that use PHP-DI or Slim can
+        // actually run. This MUST be auto_prepend_file rather than a require
+        // pasted above the snippet: nearly every snippet opens with
+        // declare(strict_types=1), which the engine requires to be the first
+        // statement in ITS file. An auto-prepended file is a separate file, so
+        // the declare keeps its position.
+        $autoload = $root . '/vendor/autoload.php';
+
+        $preludeSrc = "<?php\n";
+        if (is_file($autoload)) {
+            $preludeSrc .= 'require ' . var_export($autoload, true) . ";\n";
+        }
+        $preludeSrc .= $extra . "\n";
+
+        $preludeFile = $tmp . DIRECTORY_SEPARATOR . 'prelude_' . md5($quizPath . $num) . '.php';
+        file_put_contents($preludeFile, $preludeSrc);
+
+        $prepend = ' -d ' . escapeshellarg('auto_prepend_file=' . $preludeFile);
+
         $out = [];
         $rc  = 0;
-        exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($file) . ' 2>&1', $out, $rc);
+        exec(
+            escapeshellarg(PHP_BINARY) . $prepend . ' ' . escapeshellarg($file) . ' 2>&1',
+            $out,
+            $rc
+        );
         @unlink($file);
+        @unlink($preludeFile);
 
         $actual   = implode("\n", $out);
         $claimed  = $claims[$num];
 
-        $isFatal  = (bool) preg_match('/(Fatal error|Parse error)/i', $actual);
-        $saysFatal = (bool) preg_match('/(Fatal error|Parse error)/i', $claimed);
+        // Guard against this tool corrupting the file it is testing. If the
+        // engine complains about the shape of the temp file rather than about
+        // the code in it, that is a harness bug and must be shouted about, not
+        // quietly counted as 28 wrong answer keys.
+        if (str_contains($actual, 'strict_types declaration must be the very first statement')) {
+            fwrite(
+                STDERR,
+                "HARNESS FAULT: the temp file for {$rel} Q{$num} has something before its\n"
+                . "declare(strict_types=1). The audit results are meaningless — fix the runner.\n"
+            );
+            exit(2);
+        }
 
-        // The key sometimes writes "Fatal error" plus prose rather than the
-        // engine's exact wording. Agreeing that it dies is the real claim.
-        if ($saysFatal || $isFatal) {
-            $agree = ($saysFatal === $isFatal);
-            $report[] = [
-                'quiz' => $rel, 'q' => $num, 'ok' => $agree, 'kind' => 'fatal',
-                'claimed' => trim($claimed), 'actual' => trim($actual),
-            ];
-            $agree && $matched++;
+        // A snippet that references a class taught in the lesson body cannot
+        // run standalone. That is a limitation of this tool, not a wrong answer.
+        if (preg_match('/Class "([^"]+)" not found/', $actual, $missing)) {
+            $issues[] = "{$rel} Q{$num}: snippet needs class '{$missing[1]}' from the lesson — "
+                      . "cannot be verified standalone (answer key NOT checked).";
+            $checked--;
             continue;
         }
 
-        $a = normalise($actual);
-        $c = normalise($claimed);
-        $ok = ($a === $c);
+        // Separate the block into the output it quotes and the prose around it.
+        // The fence is the claim about what is PRINTED; the prose usually carries
+        // the claim that it then DIES. Conflating them is how 2.3 Q19 stayed
+        // wrong — its fence showed four happy lines while the prose underneath
+        // corrected the answer to a TypeError.
+        preg_match_all('/```(?:[a-z]*)\R(.*?)```/su', $claimed, $fm);
+        $fences = $fm[1];
+        $prose  = trim(preg_replace('/```(?:[a-z]*)\R.*?```/su', '', $claimed) ?? '');
+
+        $isFatal = (bool) preg_match('/(Fatal error|Parse error|Uncaught)/i', $actual);
+
+        // ── The program ran to completion ───────────────────────────────────
+        // Then the only checkable claim is what it printed, and the prose is
+        // irrelevant. Reading the prose here was a mistake: keys legitimately
+        // discuss errors that did NOT occur — "if add() had returned self this
+        // would be a TypeError", "a different default WOULD be a fatal error" —
+        // and matching on the word alone turned three correct keys into
+        // failures. What the program does decides which comparison applies;
+        // what the key says about it is the thing being judged.
+        if (!$isFatal) {
+            if ($fences === []) {
+                $issues[] = "{$rel} Q{$num}: the key answers in prose and the program runs "
+                          . "cleanly — nothing to compare (answer key NOT checked).";
+                $checked--;
+                continue;
+            }
+
+            $ok = (normalise($actual) === normalise(implode("\n", $fences)));
+
+            $report[] = [
+                'quiz' => $rel, 'q' => $num, 'ok' => $ok, 'kind' => 'output',
+                'claimed' => trim($claimed), 'actual' => trim($actual),
+            ];
+            $ok && $matched++;
+            continue;
+        }
+
+        // ── The program died ────────────────────────────────────────────────
+        // Two things must hold: the key must say it dies, and any output it
+        // quotes must match what actually printed before the death.
+        $saysFatal = (bool) preg_match(
+            '/(Fatal error|Parse error|Uncaught|TypeError|ValueError|ArgumentCountError|Error:)/i',
+            $claimed
+        );
+        $agree = $saysFatal;
+
+        if ($agree && $fences !== []) {
+            $beforeFatal = [];
+            foreach (normalise($actual) as $l) {
+                if (preg_match('/(Fatal error|Parse error|Uncaught|Stack trace|thrown in|^#\d)/i', $l)) {
+                    break;
+                }
+                $beforeFatal[] = $l;
+            }
+
+            // Only the FIRST fence quotes the successful output; a second fence
+            // quotes the engine's message, which is not part of what printed.
+            //
+            // The house style ends that first fence by NAMING the error on its
+            // own line — "NULL / string(5) HELLO / TypeError", or just
+            // "Fatal error" where nothing prints at all. So the fence is the
+            // printed lines followed by a label, and both halves must be judged
+            // separately: the printed lines must match exactly, and whatever
+            // trails them must be a label rather than more claimed output.
+            $quoted = normalise($fences[0]);
+            $n      = count($beforeFatal);
+
+            $agree = (array_slice($quoted, 0, $n) === $beforeFatal);
+
+            foreach (array_slice($quoted, $n) as $trailing) {
+                if (!preg_match(
+                    '/^(?:a )?(Fatal error|Parse error|Uncaught|TypeError|ValueError|'
+                    . 'ArgumentCountError|Error|DivisionByZeroError|\\?\w*(?:Error|Exception))\b/i',
+                    $trailing
+                )) {
+                    // A line that is neither printed output nor an error label
+                    // is the key claiming something the program never did.
+                    $agree = false;
+                    break;
+                }
+            }
+        }
 
         $report[] = [
-            'quiz' => $rel, 'q' => $num, 'ok' => $ok, 'kind' => 'output',
+            'quiz' => $rel, 'q' => $num, 'ok' => $agree, 'kind' => 'fatal',
             'claimed' => trim($claimed), 'actual' => trim($actual),
         ];
-        $ok && $matched++;
+        $agree && $matched++;
     }
 }
 @rmdir($tmp);
