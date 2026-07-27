@@ -2,35 +2,73 @@
 declare(strict_types=1);
 
 /**
- * CHALLENGE STARTER — Lesson 3.4: Inversion of Control
- * ──────────────────────────────────────────────────────
- * Read CHALLENGE.md before touching this file.
+ * CHALLENGE SOLUTION — Lesson 3.4: Inversion of Control
+ * ───────────────────────────────────────────────────────
+ * ⚠️  Only open this file after completing starter.php yourself.
  *
- * This blog system has a four-level coupling chain:
- *   BlogController → BlogPostService → BlogPostRepository → InMemoryDatabase
+ * The starter had a four-level coupling chain in which every class built its
+ * own collaborators:
  *
- * Every class creates its own dependencies.
- * Your job: fully invert every dependency using IoC.
+ *     BlogController → BlogPostService → BlogPostRepository → InMemoryDatabase
  *
- * Do NOT look at solution.php until you have made a genuine attempt.
+ * Nothing in that chain could be tested, and swapping the database meant
+ * editing a class three levels down. This solution inverts all of it.
+ *
+ * The three wirings at the bottom are the point of the lesson. Each builds the
+ * SAME object graph a different way, and no class changes between them:
+ *
+ *   Task 6 — a flat wiring function     (explicit, obvious, verbose)
+ *   Task 7 — a MiniContainer            (reflection does the wiring for you)
+ *   Task 8 — a test wiring with stubs   (no database, no mailer, no output)
+ *
+ * That is Inversion of Control in one sentence: the classes stopped deciding
+ * what they depend on, so the composition root can decide instead.
  */
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TODO Task 1: Define four interfaces
-// DatabaseInterface, LoggerInterface, MailerInterface, BlogRepositoryInterface
+// TASK 1 SOLUTION — the four abstractions
+//
+// These are the contracts both sides depend on. High-level classes (service,
+// controller) depend on them; low-level classes (database, mailer) implement
+// them. Neither depends on the other. That is the Dependency Inversion
+// Principle, and these interfaces are where it actually happens.
 // ─────────────────────────────────────────────────────────────────────────────
+
+interface DatabaseInterface {
+    public function query(string $sql, array $params = []): array;
+    public function execute(string $sql, array $params = []): bool;
+}
+
+interface LoggerInterface {
+    public function log(string $level, string $message): void;
+}
+
+interface MailerInterface {
+    public function send(string $to, string $subject, string $body): bool;
+}
+
+interface BlogRepositoryInterface {
+    public function findAll(): array;
+    public function findById(int $id): ?array;
+    public function save(array $post): bool;
+}
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// INFRASTRUCTURE — update these to implement your interfaces (Task 2)
+// TASK 2 SOLUTION — infrastructure implements the contracts
+//
+// Note the direction of the arrow. InMemoryDatabase now points AT
+// DatabaseInterface. Before, BlogPostRepository pointed at InMemoryDatabase.
+// The dependency has been inverted: the concrete class is now the one doing
+// the depending.
 // ─────────────────────────────────────────────────────────────────────────────
 
-class InMemoryDatabase {  // TODO: implement DatabaseInterface
+class InMemoryDatabase implements DatabaseInterface {
     private array $posts = [
-        1 => ['id' => 1, 'title' => 'Hello PHP 8.5',     'status' => 'published', 'author' => 'alice@example.com'],
-        2 => ['id' => 2, 'title' => 'IoC in Practice',   'status' => 'published', 'author' => 'bob@example.com'],
-        3 => ['id' => 3, 'title' => 'DI vs DIP',         'status' => 'draft',     'author' => 'alice@example.com'],
+        1 => ['id' => 1, 'title' => 'Hello PHP 8.5',   'status' => 'published', 'author' => 'alice@example.com'],
+        2 => ['id' => 2, 'title' => 'IoC in Practice', 'status' => 'published', 'author' => 'bob@example.com'],
+        3 => ['id' => 3, 'title' => 'DI vs DIP',       'status' => 'draft',     'author' => 'alice@example.com'],
     ];
 
     public function query(string $sql, array $params = []): array {
@@ -53,13 +91,13 @@ class InMemoryDatabase {  // TODO: implement DatabaseInterface
     }
 }
 
-class ConsoleLogger {  // TODO: implement LoggerInterface
+class ConsoleLogger implements LoggerInterface {
     public function log(string $level, string $message): void {
         echo "  [{$level}] {$message}\n";
     }
 }
 
-class ConsoleMailer {  // TODO: implement MailerInterface
+class ConsoleMailer implements MailerInterface {
     public function send(string $to, string $subject, string $body): bool {
         echo "  [MAIL] To: {$to} | {$subject}\n";
         return true;
@@ -68,19 +106,22 @@ class ConsoleMailer {  // TODO: implement MailerInterface
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CLASSES TO INVERT (Tasks 3, 4, 5)
-// Remove all `new` calls. Accept dependencies via constructor.
+// TASKS 3, 4, 5 SOLUTION — every dependency arrives through the constructor
+//
+// KEY CHANGES vs the starter:
+//   - Zero `new` keywords inside any of these three classes
+//   - Every property is typed against an INTERFACE, never a concrete class
+//   - Constructor property promotion (PHP 8.0) removes the assignment
+//     boilerplate entirely
+//   - The method bodies are UNCHANGED. Inverting dependencies changes how a
+//     class is built, never what it does.
 // ─────────────────────────────────────────────────────────────────────────────
 
-class BlogPostRepository {  // TODO: implement BlogRepositoryInterface
-    private InMemoryDatabase $db;      // TODO: change to DatabaseInterface
-    private ConsoleLogger    $logger;  // TODO: change to LoggerInterface
-
-    public function __construct() {
-        // TODO: Remove these — accept $db and $logger via constructor
-        $this->db     = new InMemoryDatabase();
-        $this->logger = new ConsoleLogger();
-    }
+class BlogPostRepository implements BlogRepositoryInterface {
+    public function __construct(
+        private DatabaseInterface $db,
+        private LoggerInterface   $logger
+    ) {}
 
     public function findAll(): array {
         $this->logger->log('INFO', "Fetching all posts");
@@ -104,16 +145,11 @@ class BlogPostRepository {  // TODO: implement BlogRepositoryInterface
 
 
 class BlogPostService {
-    private BlogPostRepository $repository;  // TODO: change to BlogRepositoryInterface
-    private ConsoleMailer      $mailer;      // TODO: change to MailerInterface
-    private ConsoleLogger      $logger;      // TODO: change to LoggerInterface
-
-    public function __construct() {
-        // TODO: Remove these — accept via constructor
-        $this->repository = new BlogPostRepository();
-        $this->mailer     = new ConsoleMailer();
-        $this->logger     = new ConsoleLogger();
-    }
+    public function __construct(
+        private BlogRepositoryInterface $repository,
+        private MailerInterface         $mailer,
+        private LoggerInterface         $logger
+    ) {}
 
     public function listPosts(): array {
         $posts = $this->repository->findAll();
@@ -145,14 +181,14 @@ class BlogPostService {
 
 
 class BlogController {
-    private BlogPostService $service;  // TODO: keep — it's a concrete class with its own injection
-    private ConsoleLogger   $logger;   // TODO: change to LoggerInterface
-
-    public function __construct() {
-        // TODO: Remove these — accept via constructor
-        $this->service = new BlogPostService();
-        $this->logger  = new ConsoleLogger();
-    }
+    // BlogPostService stays a concrete type deliberately. There will only ever
+    // be one of it, and it holds no infrastructure — its own dependencies are
+    // already inverted. A BlogPostServiceInterface with exactly one
+    // implementation would be indirection for its own sake.
+    public function __construct(
+        private BlogPostService $service,
+        private LoggerInterface $logger
+    ) {}
 
     public function handleRequest(string $action, array $params = []): string {
         $this->logger->log('INFO', "Handling request: {$action}");
@@ -179,59 +215,197 @@ class BlogController {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CURRENT (tightly coupled) usage — replace with Tasks 6 and 7
-// ─────────────────────────────────────────────────────────────────────────────
-
-echo "=== Current (tightly coupled) output ===\n\n";
-
-$controller = new BlogController();
-echo $controller->handleRequest('listPosts') . "\n";
-
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TODO Task 6: Replace above with a flat IoC wiring function
-// ─────────────────────────────────────────────────────────────────────────────
-
-// function buildBlogApp(): BlogController {
-//     $db         = new InMemoryDatabase();
-//     $logger     = new ConsoleLogger();
-//     $mailer     = new ConsoleMailer();
-//     $repository = new BlogPostRepository($db, $logger);
-//     $service    = new BlogPostService($repository, $mailer, $logger);
-//     return new BlogController($service, $logger);
-// }
+// TASK 7 SOLUTION — a minimal auto-wiring container
 //
-// echo "\n=== Flat IoC wiring ===\n\n";
-// $flatController = buildBlogApp();
-// echo $flatController->handleRequest('listPosts') . "\n";
-
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TODO Task 7: Replace wiring function with a MiniContainer
-// ─────────────────────────────────────────────────────────────────────────────
-
-// class MiniContainer { ... }
+// The flat function below works perfectly well without this. It exists to show
+// that a container is not magic: read the constructor with Reflection, resolve
+// each parameter's type, recurse. That is the whole idea.
 //
-// $container = new MiniContainer();
-// $container->bind(DatabaseInterface::class,    InMemoryDatabase::class);
-// $container->bind(LoggerInterface::class,      ConsoleLogger::class);
-// $container->bind(MailerInterface::class,       ConsoleMailer::class);
-// $container->bind(BlogRepositoryInterface::class, BlogPostRepository::class);
+// Module 4 rebuilds this properly, then replaces it with PHP-DI.
+// ─────────────────────────────────────────────────────────────────────────────
+
+final class MiniContainer {
+    /** @var array<string,string> abstract (interface) => concrete class */
+    private array $bindings = [];
+
+    /** @var array<string,object> instances reused within one object graph */
+    private array $instances = [];
+
+    public function bind(string $abstract, string $concrete): void {
+        $this->bindings[$abstract] = $concrete;
+    }
+
+    public function make(string $id): object {
+        if (isset($this->instances[$id])) {
+            return $this->instances[$id];
+        }
+
+        // An interface resolves to whatever was bound to it. A concrete class
+        // resolves to itself — which is why BlogController and BlogPostService
+        // need no binding at all.
+        $concrete = $this->bindings[$id] ?? $id;
+
+        if (!class_exists($concrete)) {
+            throw new \RuntimeException(
+                "Cannot resolve '{$id}': no binding registered and no such class."
+            );
+        }
+
+        $ref = new \ReflectionClass($concrete);
+        if (!$ref->isInstantiable()) {
+            throw new \RuntimeException("'{$concrete}' cannot be instantiated.");
+        }
+
+        $args = [];
+        $ctor = $ref->getConstructor();
+
+        if ($ctor !== null) {
+            foreach ($ctor->getParameters() as $param) {
+                $type = $param->getType();
+
+                // Scalars cannot be auto-wired. Fall back to a default if one
+                // exists; otherwise this genuinely cannot be resolved.
+                if (!$type instanceof \ReflectionNamedType || $type->isBuiltin()) {
+                    if ($param->isDefaultValueAvailable()) {
+                        $args[] = $param->getDefaultValue();
+                        continue;
+                    }
+                    throw new \RuntimeException(
+                        "Cannot auto-wire \${$param->getName()} of {$concrete}: not a class type."
+                    );
+                }
+
+                $args[] = $this->make($type->getName());   // ← the recursion
+            }
+        }
+
+        $object = $ref->newInstanceArgs($args);
+        $this->instances[$id] = $object;
+
+        return $object;
+    }
+}
+
+
+// ═════════════════════════════════════════════════════════════════════════════
+// THE THREE WIRINGS
 //
-// echo "\n=== Container auto-wiring ===\n\n";
-// $containerController = $container->make(BlogController::class);
-// echo $containerController->handleRequest('listPosts') . "\n";
+// Every class above is now finished. Nothing below modifies any of them — each
+// section assembles the same graph a different way. That is the payoff.
+// ═════════════════════════════════════════════════════════════════════════════
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TODO Task 8: Test wiring with anonymous stubs
+// TASK 6 SOLUTION — flat wiring function (the composition root)
 // ─────────────────────────────────────────────────────────────────────────────
 
-// $fakeRepo = new class implements BlogRepositoryInterface { ... };
-// $nullLogger = new class implements LoggerInterface { ... };
-// $nullMailer = new class implements MailerInterface { ... };
-// ...
-// assert response contains "success":true
+function buildBlogApp(): BlogController {
+    $db         = new InMemoryDatabase();
+    $logger     = new ConsoleLogger();
+    $mailer     = new ConsoleMailer();
+    $repository = new BlogPostRepository($db, $logger);
+    $service    = new BlogPostService($repository, $mailer, $logger);
+
+    return new BlogController($service, $logger);
+}
+
+echo "=== Flat IoC wiring ===\n\n";
+$flatController = buildBlogApp();
+echo $flatController->handleRequest('listPosts') . "\n";
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TASK 7 SOLUTION — the same graph, assembled by the container
+// ─────────────────────────────────────────────────────────────────────────────
+
+echo "\n=== Container auto-wiring ===\n\n";
+
+$container = new MiniContainer();
+$container->bind(DatabaseInterface::class,       InMemoryDatabase::class);
+$container->bind(LoggerInterface::class,         ConsoleLogger::class);
+$container->bind(MailerInterface::class,         ConsoleMailer::class);
+$container->bind(BlogRepositoryInterface::class, BlogPostRepository::class);
+
+// One line. The container reads every constructor and works out the rest.
+$containerController = $container->make(BlogController::class);
+echo $containerController->handleRequest('listPosts') . "\n";
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TASK 8 SOLUTION — test wiring with anonymous stubs
+//
+// No database. No mailer. No log output. This is the wiring a unit test would
+// use, and it is only possible because nothing constructs its own
+// collaborators any more.
+// ─────────────────────────────────────────────────────────────────────────────
+
+echo "\n=== Test wiring (anonymous stubs) ===\n\n";
+
+$fakeRepo = new class implements BlogRepositoryInterface {
+    public array $saved = [];
+
+    public function findAll(): array {
+        return [
+            ['id' => 99, 'title' => 'Stubbed Post', 'status' => 'published', 'author' => 'test@example.com'],
+        ];
+    }
+
+    public function findById(int $id): ?array {
+        return $id === 99
+            ? ['id' => 99, 'title' => 'Stubbed Post', 'status' => 'published', 'author' => 'test@example.com']
+            : null;
+    }
+
+    public function save(array $post): bool {
+        $this->saved[] = $post;
+        return true;
+    }
+};
+
+// Spy — records what it was asked to send, so a test can assert on it.
+$spyMailer = new class implements MailerInterface {
+    public array $sent = [];
+
+    public function send(string $to, string $subject, string $body): bool {
+        $this->sent[] = ['to' => $to, 'subject' => $subject, 'body' => $body];
+        return true;
+    }
+};
+
+// Null object — satisfies the contract, does nothing, prints nothing.
+$nullLogger = new class implements LoggerInterface {
+    public function log(string $level, string $message): void {}
+};
+
+$testController = new BlogController(
+    new BlogPostService($fakeRepo, $spyMailer, $nullLogger),
+    $nullLogger
+);
+
+$response = $testController->handleRequest('listPosts');
+echo "Response reports success             — " . (str_contains($response, '"success": true') ? 'PASS' : 'FAIL') . "\n";
+echo "Response contains the stubbed post   — " . (str_contains($response, 'Stubbed Post') ? 'PASS' : 'FAIL') . "\n";
+echo "No database was touched              — PASS (InMemoryDatabase never constructed)\n";
+
+// Publishing should notify the author. Assert on the spy, not on stdout.
+$testController->handleRequest('publishPost', ['id' => 99]);
+echo "Mailer received exactly one message  — " . (count($spyMailer->sent) === 1 ? 'PASS' : 'FAIL') . "\n";
+echo "Message went to the post's author    — "
+   . (($spyMailer->sent[0]['to'] ?? null) === 'test@example.com' ? 'PASS' : 'FAIL') . "\n";
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WHAT TO COMPARE IN YOUR OWN SOLUTION
+// ─────────────────────────────────────────────────────────────────────────────
+
+echo "\n--- Self-review checklist ---\n";
+echo "[ ] Are all four interfaces defined, with the methods the classes actually use?\n";
+echo "[ ] Do InMemoryDatabase, ConsoleLogger, ConsoleMailer and BlogPostRepository implement them?\n";
+echo "[ ] Is there a single 'new' left inside any of the three refactored classes?\n";
+echo "[ ] Are the property types INTERFACES rather than concrete class names?\n";
+echo "[ ] Did any method body change? (It should not have — only construction changed.)\n";
+echo "[ ] Does your container recurse into constructor parameters it cannot resolve directly?\n";
+echo "[ ] Could you swap InMemoryDatabase for PostgresDatabase by editing one line?\n";
 
 // ═══════════════════════════════════════════════════════════════════════
 // ACCEPTANCE CHECKS
@@ -281,7 +455,7 @@ $acceptance = [
 
     'No class creates its own collaborators with new inside the constructor'
         => !preg_match(
-               '/__construct\\([^)]*\\)\\s*\\{[^}]*\\bnew\\s+(?:InMemoryDatabase|ConsoleLogger|ConsoleMailer|BlogPostRepository)\\b/s',
+               '/__construct\([^)]*\)\s*\{[^}]*\bnew\s+(?:InMemoryDatabase|ConsoleLogger|ConsoleMailer|BlogPostRepository)\b/s',
                (string) file_get_contents(__FILE__)
            ),
 ];

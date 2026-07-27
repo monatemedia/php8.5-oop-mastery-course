@@ -88,6 +88,7 @@ Fee: R14.80
 --- RECEIPT ---
 Stripe Payment Receipt
 Transaction: tok_abc123 | R500.00 ZAR
+---
 Fee: R14.80 | Net: R485.20
 ---
 Merchant: MERCH-001234
@@ -102,6 +103,7 @@ Fee: R14.80
 --- RECEIPT ---
 PayFast Payment Confirmation
 Transaction: tok_pf456 | R500.00 ZAR
+---
 Fee: R14.80 | Net: R485.20
 ---
 Merchant: MERCH-001234
@@ -111,6 +113,15 @@ Processed at: [timestamp]
 === Constructor validation ===
 Caught: API key cannot be empty.
 Caught: Invalid merchant ID format. Expected: MERCH-XXXXXX
+
+
+--- Acceptance ---
+  PASS  PaymentProcessor exists and is abstract
+  PASS  StripeProcessor extends PaymentProcessor
+  PASS  PayFastProcessor extends PaymentProcessor
+  PASS  PaymentProcessor declares at least one abstract method
+  PASS  generateReceipt() is concrete and shared (template method)
+ACCEPTANCE: all checks passed
 ```
 
 ---

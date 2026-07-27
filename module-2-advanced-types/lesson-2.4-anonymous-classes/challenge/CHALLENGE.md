@@ -86,7 +86,14 @@ Define a gateway stub that throws `\InvalidArgumentException` when charged with 
 testSuccessfulCharge..... PASS
 testFailedCharge......... PASS
 testRefund............... PASS
-testLoggerCaptures....... FAIL: Logger should have captured a message containing 'charged'
+testLoggerCaptures....... PASS
 testInvalidToken......... PASS
 All 5 tests passed.
+
+
+--- Acceptance ---
+  PASS  Named stub classes (FakeGateway, FakeLogger, FakeAuditStore) are gone
+  PASS  Stubs are declared inline as anonymous classes
+  PASS  Every test still passes
+ACCEPTANCE: all checks passed
 ```
