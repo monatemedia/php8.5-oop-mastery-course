@@ -94,7 +94,7 @@ At the bottom, add a test wiring section that uses anonymous class stubs for all
 ## Expected Output
 
 ```
-=== Current (tightly coupled) output ===
+=== Flat IoC wiring ===
 
   [INFO] Handling request: listPosts
   [INFO] Fetching all posts
@@ -123,4 +123,51 @@ At the bottom, add a test wiring section that uses anonymous class stubs for all
         }
     ]
 }
+
+=== Container auto-wiring ===
+
+  [INFO] Handling request: listPosts
+  [INFO] Fetching all posts
+  [DB] Query: SELECT * FROM blog_posts
+  [INFO] Returning 3 posts
+{
+    "success": true,
+    "posts": [
+        {
+            "id": 1,
+            "title": "Hello PHP 8.5",
+            "status": "published",
+            "author": "alice@example.com"
+        },
+        {
+            "id": 2,
+            "title": "IoC in Practice",
+            "status": "published",
+            "author": "bob@example.com"
+        },
+        {
+            "id": 3,
+            "title": "DI vs DIP",
+            "status": "draft",
+            "author": "alice@example.com"
+        }
+    ]
+}
+
+=== Test wiring (anonymous stubs) ===
+
+Response reports success             — PASS
+Response contains the stubbed post   — PASS
+No database was touched              — PASS (InMemoryDatabase never constructed)
+Mailer received exactly one message  — PASS
+Message went to the post's author    — PASS
+
+
+--- Acceptance ---
+  PASS  All four interfaces are defined
+  PASS  Concrete classes implement their interfaces
+  PASS  BlogPostRepository takes its dependencies via the constructor
+  PASS  BlogPostRepository type-hints against interfaces, not concretions
+  PASS  No class creates its own collaborators with new inside the constructor
+ACCEPTANCE: all checks passed
 ```
