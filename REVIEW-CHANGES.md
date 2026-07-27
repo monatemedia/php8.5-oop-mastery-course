@@ -137,7 +137,7 @@ Added `lesson-2.0-lsp/examples/05-override-on-properties.php` plus a README sect
 | `composer.json` | PHP-DI, Slim, Slim PSR-7, PHPUnit. Maps `App\` to the capstone's `src/`. |
 | `verify.php` | **Run this first.** Checks your PHP version, actually executes a probe for each 8.4/8.5 feature the course depends on, syntax-checks all 200 PHP files, and confirms Composer deps. |
 | `phpunit.xml` | Per-lesson test suites. Always pass `--testsuite`; see below. |
-| `run-tests.php` | Runs every Module 5/6 test file in its own process. `php run-tests.php`, or `php run-tests.php 5.2`. |
+| `run-tests.php` | Runs every Module 5/6 test file in its own process. `php run-tests.php`, or `php run-tests.php 5.2` — the argument is a substring match on the path, so pass `module-5` rather than `5` to scope it to a module. |
 | `PROGRESS.md` | Single tracker — read / ran / challenge / quiz / score per lesson, plus per-module gates. |
 | `REVIEW-CHANGES.md` | This file. |
 | `index.php` | Course cover page. Herd serves this folder at a `.test` domain; without an index the site preview looks broken. Shows live PHP version, dependency status and your real progress parsed from `PROGRESS.md`. Self-contained — no autoload, no CDN — so it renders correctly *before* `composer install` has ever run. |
@@ -266,6 +266,102 @@ before trusting it as the source of truth.
 
 ---
 
+## Quiz answer keys
+
+Every quiz has code-reading questions that state exactly what a program prints. Those claims are
+checkable, so `audit-quizzes.php` runs each program and compares: **31 of the course's 374
+questions, all 31 now passing.** The multiple-choice keys, true/false answers and short-answer
+models — the other 343 — still need reading. But this is the 8% where a wrong key does the most
+damage, because a student who reasons correctly and is told they are wrong will distrust
+everything after it.
+
+Four keys were wrong, and all four failed the same way: the author wrote an answer, realised
+mid-paragraph it was wrong, corrected it in the prose — and left the fenced block above still
+showing the original. A student reads the block and stops.
+
+- **Lesson 2.4 Q18** — block said `different class`; the prose reasoned its way to `same class`
+  and was right. Both instances come from the same `new class(...)` expression, so the engine
+  gives them the same generated name. An anonymous class is anonymous to *you*, not to the engine.
+- **Lesson 2.3 Q19** — block showed four lines ending `Most frequent level value: 3`; the prose
+  corrected it to a `TypeError`. An enum case has both a `name` and a `value` and they are not
+  interchangeable — `from()` takes the value.
+- **Lesson 4.2 Q20** — block claimed `App\DbInterface, App\LoggerInterface`; the explanation three
+  lines below correctly said `DbInterface` and `LoggerInterface`. The snippet declares those
+  interfaces in the global namespace, so `ReflectionNamedType::getName()` has no prefix to return.
+- **Lesson 2.2 Q18** — the expected `Error:` line was a placeholder rather than the engine's
+  wording. Now `Error: Property Temperature::$fahrenheit is read-only`.
+
+Four snippets also said "assume `AutowiringContainer` from the lesson", which is unusable advice —
+lesson 4.3 defines four different classes by that name. They now name the file. That is a fix for
+the student first; the audit reads the same line and lifts the named class out of the named file
+so those questions became checkable rather than being written off.
+
+**Lesson 6.1 had no quiz at all.** `quiz/QUIZ.md` was a 443-line copy of the challenge solution — a
+file write that went to the wrong path and was never opened. Written now to the house format
+(8 multiple choice, 6 true/false, 3 short answer, 3 code reading), covering the three lifecycles,
+the three runtime models, why share-nothing is an accidental safety feature rather than an earned
+one, and why a `clear()` method is a weaker fix than a stateless design. Lesson 6.2's key refers to
+"the `clear()` approach critiqued in the Lesson 6.1 quiz" — that reference now resolves.
+
+### What the tool had to learn
+
+The first version of this audit reported **28 wrong answer keys**. All 28 were the tool. It pasted
+`require 'vendor/autoload.php';` above each snippet, which displaced `declare(strict_types=1)` from
+the first line, so every program died before executing a statement. The autoloader is now passed as
+`auto_prepend_file` — a separate file, so the declare keeps its position — and the runner exits with
+a HARNESS FAULT notice if it ever sees that engine message again. A number this tool produces should
+be trustworthy or absent.
+
+The second version reported three wrong keys that were all correct. It had been deciding whether a
+program dies by looking for words like `TypeError` **in the key**, and keys legitimately discuss
+errors that do not occur: *"if `add()` had returned `self` this would be a TypeError"*, *"a different
+default would be a fatal error"*. Teaching by counterfactual read as a prediction of failure. What
+the program does now selects the comparison; what the key says about it is the thing being judged.
+
+Three outcomes are reported, not two — correct, wrong, and *unverifiable*. Anything the harness
+cannot run is stated as such and excluded from the count. Calling those failures would produce a
+list that trains you to ignore the list, which is worse than not running the audit at all.
+
+---
+
+## Module gates
+
+The gates in `PROGRESS.md` were self-assessment checkboxes, each drawn entirely from the module just
+finished — "name the four test-double types", asked on the afternoon you learned them. That tests
+whether the material is still in working memory, which is the one thing you can be confident of at
+that moment. Module 4 had no gate at all.
+
+They now point at `GATES.md`, and each gate is in two halves. Part 1 covers the module just
+completed. Part 2 reaches back:
+
+| First taught | Revisited | And again |
+|---|---|---|
+| Module 1 — SOLID, composition, value objects | Gate 2 | Gates 4 and 5 |
+| Module 2 — LSP, hooks, enums, anonymous classes | Gate 3 | Gate 5 |
+| Module 3 — coupling, injection, composition root | Gate 4 | Gate 6 |
+| Module 4 — containers, reflection, auto-wiring | Gate 5 | Gate 6 |
+| Module 5 — doubles, TDD, behaviour testing | Gate 6 | — |
+
+Forty-six prompts, every one with a model answer. The carried-forward ones are written to make the
+connection rather than merely repeat the earlier lesson: Gate 5 asks which SOLID principle determines
+how much work a test double is (Interface Segregation — you must implement every method whether the
+test uses it or not), and Gate 6 asks why a value object is automatically safe as a singleton. The
+answer a student gives to the second question is worth more if they have not been told the two topics
+are related.
+
+Two things worth being explicit about. **None of this is machine-checked, and it cannot be** — no
+script can tell whether you reconstructed an answer or recognised one. Given that the rest of the
+course deliberately refuses to take your word for anything, the one place that must is worth naming
+rather than glossing over. And the instruction throughout is to answer with the lesson **shut**:
+opening it first turns retrieval into recognition, which feels like studying and is close to
+worthless.
+
+`php run-tests.php 5` also appeared in two places as the way to run Module 5's tests. The argument is
+a case-insensitive substring match against the full path, so `5` additionally matches
+`lesson-6.5-factory-definitions`. Corrected to `module-5`.
+
+---
+
 ## Running it
 
 ```bash
@@ -273,6 +369,8 @@ composer install
 php verify.php        # PHP version, live feature probes, syntax-check all 197 files
 php run-tests.php     # Modules 5 and 6, one process per file
 ```
+
+Maintenance only, not part of the course: `php audit-quizzes.php` re-checks the answer keys.
 
 Track your way through in [`PROGRESS.md`](PROGRESS.md). Start at Module 1, Lesson 1.0.
 
