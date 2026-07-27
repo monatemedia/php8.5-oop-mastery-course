@@ -205,6 +205,124 @@ $probes = [
             echo "create(): ", $b->build()->get(Svc2::class)->d->v(), "\n";
         ',
     ],
+
+    // ── Lesson 5.1 Q7 ───────────────────────────────────────────────────────
+    // The course's phpunit.xml does not set beStrictAboutTestsThatDoNotTestAnything,
+    // so whatever PHPUnit defaults to is what a student will actually see.
+    'a test with no assertions — risky, or a pass?' => [
+        'claim' => 'key says PHPUnit marks it Risky by default',
+        'code'  => '<?php
+            $root = "' . str_replace('\\', '/', __DIR__) . '";
+            $t = sys_get_temp_dir() . "/NoAssertionTest.php";
+            file_put_contents($t, <<<\'PHPCODE\'
+            <?php
+            use PHPUnit\Framework\TestCase;
+            final class NoAssertionTest extends TestCase {
+                public function testDoesNothingAtAll(): void { $x = 1 + 1; }
+            }
+            PHPCODE);
+            $out = shell_exec(escapeshellarg(PHP_BINARY) . " "
+                 . escapeshellarg($root . "/vendor/phpunit/phpunit/phpunit")
+                 . " --no-configuration --do-not-cache-result " . escapeshellarg($t) . " 2>&1");
+            @unlink($t);
+            foreach (explode("\n", (string) $out) as $l) {
+                if (preg_match("/risky|Risky|OK|assertions/i", $l)) { echo trim($l), "\n"; }
+            }
+        ',
+    ],
+
+    // ── Lesson 5.4 Q11 ──────────────────────────────────────────────────────
+    // The key says addErrorMiddleware(false,false,false) "tells Slim NOT to
+    // catch exceptions". Adding the middleware is what makes Slim catch them,
+    // and the three booleans are displayErrorDetails / logErrors /
+    // logErrorDetails. Ask Slim, because six files depend on the answer.
+    'Slim: route throws, WITHOUT error middleware' => [
+        'claim' => 'the exception should escape handle() and reach PHPUnit',
+        'code'  => '<?php
+            require "' . str_replace('\\', '/', __DIR__) . '/vendor/autoload.php";
+            $app = Slim\Factory\AppFactory::create();
+            $app->get("/boom", function () { throw new RuntimeException("kaboom"); });
+            $req = (new Slim\Psr7\Factory\ServerRequestFactory())
+                 ->createServerRequest("GET", "/boom");
+            try {
+                $r = $app->handle($req);
+                echo "handle() returned status ", $r->getStatusCode(), " — exception was SWALLOWED\n";
+            } catch (Throwable $e) {
+                echo "exception ESCAPED: ", get_class($e), ": ", $e->getMessage(), "\n";
+            }
+        ',
+    ],
+    'Slim: route throws, WITH addErrorMiddleware(false,false,false)' => [
+        'claim' => 'key says this is what lets the exception through',
+        'code'  => '<?php
+            require "' . str_replace('\\', '/', __DIR__) . '/vendor/autoload.php";
+            $app = Slim\Factory\AppFactory::create();
+            $app->get("/boom", function () { throw new RuntimeException("kaboom"); });
+            $app->addErrorMiddleware(false, false, false);
+            $req = (new Slim\Psr7\Factory\ServerRequestFactory())
+                 ->createServerRequest("GET", "/boom");
+            try {
+                $r = $app->handle($req);
+                echo "handle() returned status ", $r->getStatusCode(), " — exception was SWALLOWED\n";
+            } catch (Throwable $e) {
+                echo "exception ESCAPED: ", get_class($e), ": ", $e->getMessage(), "\n";
+            }
+        ',
+    ],
+
+    // ── Lesson 6.2 and 6.5: does factory() give a NEW instance per get()? ────
+    // 6.5 Q2 says yes (transient). 6.5 Q8 says no (called once, cached). Both
+    // are in the same answer key, and Lesson 6.2 is built entirely on the first
+    // claim. PHP-DI's own docs say scopes were removed in v6 and every entry is
+    // shared. This is the probe that decides whether a whole lesson is wrong.
+    'PHP-DI: two get() calls on a factory() binding' => [
+        'claim' => '6.2 and 6.5 Q2 say transient (different objects); 6.5 Q8 says singleton (same)',
+        'code'  => '<?php
+            require "' . str_replace('\\', '/', __DIR__) . '/vendor/autoload.php";
+            class Cart { public array $items = []; }
+            $b = new DI\ContainerBuilder();
+            $b->addDefinitions([ Cart::class => DI\factory(fn() => new Cart()) ]);
+            $c = $b->build();
+            $a1 = $c->get(Cart::class);
+            $a2 = $c->get(Cart::class);
+            echo "get() twice: ", ($a1 === $a2 ? "SAME object (singleton)" : "DIFFERENT objects (transient)"), "\n";
+            $a1->items[] = "widget";
+            echo "items visible through the second reference: ", count($a2->items), "\n";
+        ',
+    ],
+    'PHP-DI: make() instead of get() on the same binding' => [
+        'claim' => 'PHP-DI docs say make() is how you get a fresh instance',
+        'code'  => '<?php
+            require "' . str_replace('\\', '/', __DIR__) . '/vendor/autoload.php";
+            class Cart2 { public array $items = []; }
+            $b = new DI\ContainerBuilder();
+            $b->addDefinitions([ Cart2::class => DI\factory(fn() => new Cart2()) ]);
+            $c = $b->build();
+            echo "make() twice: ",
+                 ($c->make(Cart2::class) === $c->make(Cart2::class)
+                    ? "SAME object" : "DIFFERENT objects"), "\n";
+            echo "get() vs make(): ",
+                 ($c->get(Cart2::class) === $c->make(Cart2::class)
+                    ? "SAME object" : "DIFFERENT objects"), "\n";
+        ',
+    ],
+    'PHP-DI: how many times is a factory() callable actually invoked?' => [
+        'claim' => '6.5 Q8 says once for five resolutions',
+        'code'  => '<?php
+            require "' . str_replace('\\', '/', __DIR__) . '/vendor/autoload.php";
+            class Logger3 {}
+            $calls = 0;
+            $b = new DI\ContainerBuilder();
+            $b->addDefinitions([
+                Logger3::class => DI\factory(function () use (&$calls) { $calls++; return new Logger3(); }),
+            ]);
+            $c = $b->build();
+            for ($i = 0; $i < 5; $i++) { $c->get(Logger3::class); }
+            echo "five get() calls invoked the factory {$calls} time(s)\n";
+            for ($i = 0; $i < 5; $i++) { $c->make(Logger3::class); }
+            echo "five more make() calls brought the total to {$calls}\n";
+        ',
+    ],
 ];
 
 $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php85course_probes';
