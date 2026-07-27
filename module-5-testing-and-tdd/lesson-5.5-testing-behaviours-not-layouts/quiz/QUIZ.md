@@ -51,7 +51,9 @@
 
 ---
 
-**Q6.** A test uses `$mock->expects($this->exactly(3))->method('log')->withConsecutive(...)` to assert that three specific log messages are written in order. After a refactor that adds a debug log call between steps 1 and 2, the test fails. What is the root problem?
+**Q6.** A test written against PHPUnit 9 uses `$mock->expects($this->exactly(3))->method('log')->withConsecutive(...)` to assert that three specific log messages are written in order. After a refactor that adds a debug log call between steps 1 and 2, the test fails. What is the root problem?
+
+*(`withConsecutive()` was removed in PHPUnit 10 and does not exist in the version this course uses — partly because it encouraged exactly the habit this question is about. Read it as legacy code you have inherited.)*
 
 - A) The mock was created with `createMock` instead of `getMockBuilder`.
 - B) The test asserts on internal logging mechanics — the exact count and wording of log calls — which are implementation details, not observable contract behaviour.
@@ -217,7 +219,7 @@ public function testCacheGetCallsFetchOnCacheMiss(): void
 | 9  | **F** | `assertCount(1, $spyMailer->sent)` asserts the OBSERVABLE contract — exactly one email is sent. This is legitimate. Brittle tests use reflection or exact internal call sequences. |
 | 10 | **T** | Using `ReflectionProperty` to read a private field is a textbook layout test. Private field names are internal details. |
 | 11 | **T** | Log messages are internal prose. Unless the message is a documented contract (e.g. a compliance audit format), exact wording should not be tested. |
-| 12 | **T** | This is the definition of a layout test: it fails when the internal structure changes even though observable behaviour does not. A behaviour test should survive any internal refactor that preserves the public API. |
+| 12 | **F** | A failing test after a refactor means one of two things, and you have to work out which: the test was asserting on layout, **or the refactor broke something**. Preserving the public API does not guarantee preserving behaviour — you can rename nothing, change no signature, and still invert a condition.<br><br>Compare Q8, which rejects "the refactor introduced no bugs" as an inference from tests passing. The same caution applies in reverse: tests failing does not by itself convict the test. Assuming it does is how a suite gets quietly dismantled — each failure "explained" as brittleness until the assertions that remain are the ones incapable of failing.<br><br>The honest procedure is to read the failure. If it names a private property or a log string, it is layout. If it names a wrong total or a missing email, your refactor was not a refactor. |
 | 13 | **T** | `assertIsString` + `assertNotEmpty` tests the contract (a non-empty string ID) without coupling to any particular format. Changing from hex to UUID will not break it. |
 | 14 | **F** | Brittle tests give LESS confidence, not more. They break on valid refactors, generating noise. Developers learn to ignore failing tests ("it'll fix itself") or spend time updating layout tests instead of writing real coverage. This is a false sense of security. |
 
