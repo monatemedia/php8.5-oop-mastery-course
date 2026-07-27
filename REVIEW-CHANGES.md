@@ -222,6 +222,50 @@ The expected-output blocks were then regenerated from verified solution output, 
 
 ---
 
+## Six challenges that were already solved
+
+Found late, by asking why `check.php` reported 21% complete on an untouched checkout. Six of the
+28 challenges passed without the student doing anything — and they had **four different causes**,
+which is why the single symptom was misleading.
+
+- **1.2, 2.4, 3.4 are refactors.** Extract an abstract base; replace named stubs with anonymous
+  classes; invert dependencies. A refactor prints exactly the same thing before and after, so
+  comparing output can never detect it. Each now carries an **acceptance block** that inspects
+  structure through Reflection — is the base class abstract, do the constructor parameters
+  type-hint interfaces rather than concretions — and the expected output demands its
+  `ACCEPTANCE: all checks passed` line.
+- **3.1 is an audit, not a coding exercise.** You annotate violations in deliberately-bad code
+  that runs perfectly well. Now judged by counting the annotations.
+- **4.5 and 5.5 cannot be machine-judged at all**, and pretending otherwise was the real mistake.
+  The capstone's `challenge/` folder holds the *reference* implementation, so running its tests
+  only ever proved my code worked. And 5.5's brittle tests pass **by design** — they go red when
+  you apply the refactor, so red is success. Both now use an attestation box, and `check.php`
+  learned a general rule: any challenge may opt out of automated judging by carrying one.
+
+### And a fifth broken reference solution
+
+**Lesson 3.4's `solution.php` was a byte-identical copy of `starter.php`** — same 18 TODO markers,
+zero differences. The reference solution had never been written. It was invisible because the
+expected output had been regenerated from that file, so the starter matched itself perfectly.
+
+The solution now exists and is verified: four interfaces, constructor injection throughout, a flat
+composition root, a reflection-based `MiniContainer`, and a test wiring using a fake repository, a
+spy mailer and a null-object logger. Three wirings, identical output, no class changed between
+them.
+
+Lesson 2.4's solution was also broken in a subtler way: it printed a `FAIL` line and then
+announced `All 5 tests passed.` The summary was an unconditional `echo`, and the failing assertion
+looked for a log message containing `'charged'` — which is the *audit event* vocabulary
+(`payment.charged`), while the logger writes "Charging…" and "Charge result:". The author
+conflated the two.
+
+**A note on method.** Regenerating expected output from verified solution runs is the right
+approach, but it inherits whatever the solution does wrong — that is exactly how 2.4's
+contradiction got baked into its documentation. Run the solution *and read what it printed*
+before trusting it as the source of truth.
+
+---
+
 ## Running it
 
 ```bash

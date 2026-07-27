@@ -62,6 +62,7 @@ $php = escapeshellarg(PHP_BINARY);
 
 const MARK_DONE    = '[ done ]';
 const MARK_HERE    = '[ HERE ]';
+const MARK_TODO    = '[ todo ]';   // unsolved, but not where you are right now
 const MARK_LOCKED  = '[      ]';
 const MARK_OK      = '[  ok  ]';
 const MARK_FAIL    = '[ FAIL ]';
@@ -649,7 +650,9 @@ foreach ($lessons as $lesson) {
         continue;
     }
 
-    line(MARK_HERE, $label);
+    // Only the FIRST unsolved lesson is "here". Under --all the rest are
+    // simply not done yet, and saying "HERE" thirty times means nothing.
+    line($reached ? MARK_TODO : MARK_HERE, $label);
     if (!$reached) {
         $stopped = ['lesson' => $lesson, 'result' => $result];
         $reached = true;
