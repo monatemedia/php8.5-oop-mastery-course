@@ -187,3 +187,48 @@ try {
 } catch (\InvalidArgumentException $e) {
     echo "Caught: " . $e->getMessage() . "\n";
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+// ACCEPTANCE CHECKS
+// ───────────────────────────────────────────────────────────────────────
+// This challenge is a REFACTOR: the program prints the same thing before
+// and after you do the work, so comparing output cannot tell whether you
+// have done it. These checks inspect the STRUCTURE instead.
+//
+// They fail on the untouched starter and pass once the refactor is
+// complete. `check.php` marks the lesson done on the ACCEPTANCE line.
+// ═══════════════════════════════════════════════════════════════════════
+
+echo "\n--- Acceptance ---\n";
+
+$acceptance = [
+    'PaymentProcessor exists and is abstract'
+        => class_exists('PaymentProcessor')
+           && (new ReflectionClass('PaymentProcessor'))->isAbstract(),
+
+    'StripeProcessor extends PaymentProcessor'
+        => class_exists('StripeProcessor')
+           && is_subclass_of('StripeProcessor', 'PaymentProcessor'),
+
+    'PayFastProcessor extends PaymentProcessor'
+        => class_exists('PayFastProcessor')
+           && is_subclass_of('PayFastProcessor', 'PaymentProcessor'),
+
+    'PaymentProcessor declares at least one abstract method'
+        => class_exists('PaymentProcessor')
+           && count((new ReflectionClass('PaymentProcessor'))->getMethods(ReflectionMethod::IS_ABSTRACT)) > 0,
+
+    'generateReceipt() is concrete and shared (template method)'
+        => class_exists('PaymentProcessor')
+           && (new ReflectionClass('PaymentProcessor'))->hasMethod('generateReceipt')
+           && !(new ReflectionMethod('PaymentProcessor', 'generateReceipt'))->isAbstract(),
+];
+
+$allPassed = true;
+foreach ($acceptance as $label => $passed) {
+    echo '  ' . ($passed ? 'PASS' : 'FAIL') . '  ' . $label . "\n";
+    $allPassed = $allPassed && $passed;
+}
+echo $allPassed
+    ? "ACCEPTANCE: all checks passed\n"
+    : "ACCEPTANCE: not yet complete\n";

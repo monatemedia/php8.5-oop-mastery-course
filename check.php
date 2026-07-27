@@ -388,6 +388,30 @@ function judge(array $lesson, string $root, string $php): array
 {
     $dir = $lesson['challenge'];
 
+    // A challenge may opt out of machine judging by carrying an attestation
+    // box in its CHALLENGE.md. Two need this: the Module 4 capstone (you build
+    // it in your own folder, so there is nothing here to run) and Lesson 5.5
+    // (its starter tests pass by design — the work is adding new ones).
+    if ($dir !== null && is_file($dir . '/CHALLENGE.md')) {
+        $md = (string) file_get_contents($dir . '/CHALLENGE.md');
+        if (preg_match(
+            '/^\s*-\s*\[([ xX])\]\s*\*\*Lesson\s+' . preg_quote($lesson['id'], '/') . '\s+complete\.\*\*/mi',
+            $md,
+            $box
+        )) {
+            if (strtolower(trim($box[1])) === 'x') {
+                return ['state' => 'done', 'detail' => 'Marked complete in CHALLENGE.md.', 'hint' => ''];
+            }
+            return [
+                'state'  => 'todo',
+                'detail' => 'Not yet marked complete.',
+                'hint'   => 'This challenge cannot be judged automatically. Do the work described '
+                          . 'in ' . relPath($dir . '/CHALLENGE.md', $root) . ', then tick the '
+                          . '"Lesson ' . $lesson['id'] . ' complete." box at the bottom of that file.',
+            ];
+        }
+    }
+
     // Lessons 1.0 and 5.0 are reading-only — there is no code to judge. They
     // carry a single attestation checkbox at the bottom of their README, which
     // is the one thing a script can check about them.

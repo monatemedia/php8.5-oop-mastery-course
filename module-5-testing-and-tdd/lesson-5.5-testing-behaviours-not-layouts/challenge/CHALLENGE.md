@@ -64,3 +64,16 @@ After the refactor:
 - [ ] All rewritten tests pass before the refactor
 - [ ] All rewritten tests still pass after the refactor is applied
 - [ ] No rewritten test uses `ReflectionClass`, `ReflectionProperty`, `withConsecutive`, or `createMock` for log assertions
+
+---
+
+## 🔒 Mark this lesson complete
+
+This challenge cannot be judged by whether the tests pass, because **the starter's tests already
+pass — that is the whole point of it.** The five brittle tests are green today and will go red
+the moment you apply the refactor. Going red is success, not failure, so no automated check can
+read it for you.
+
+Tick the box below only when the statement is genuinely true. `check.php` reads this exact line.
+
+- [ ] **Lesson 5.5 complete.** I named the anti-pattern in each of the five brittle tests, wrote a behaviour-based replacement for each, applied the refactor, and confirmed that my replacements still pass while the brittle originals now fail.

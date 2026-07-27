@@ -140,6 +140,15 @@ function assertThat(bool $condition, string $description): void {
     }
 }
 
+/** Counts failures so the summary at the bottom can tell the truth. */
+function testFailureCount(?bool $record = null): int {
+    static $failures = 0;
+    if ($record === true) {
+        $failures++;
+    }
+    return $failures;
+}
+
 function runTest(string $name, callable $test): void {
     $padded = str_pad($name, 25, '.');
     try {
@@ -147,8 +156,10 @@ function runTest(string $name, callable $test): void {
         echo "{$padded} PASS\n";
     } catch (\AssertionError $e) {
         echo "{$padded} {$e->getMessage()}\n";
+        testFailureCount(true);
     } catch (\Throwable $e) {
         echo "{$padded} ERROR: " . $e->getMessage() . "\n";
+        testFailureCount(true);
     }
 }
 
@@ -220,9 +231,11 @@ function testLoggerCaptures(): void {
     $processor->charge(100.00, 'ZAR', 'tok_def456');
 
     $messages  = array_column($logger->entries, 'message');
-    $hasCharge = count(array_filter($messages, fn(string $m) => str_contains($m, 'charged'))) > 0;
+    // NOTE: 'charged' is the AUDIT event name (payment.charged). The logger
+    // writes "Charging ..." and "Charge result: ...", so match the stem.
+    $hasCharge = count(array_filter($messages, fn(string $m) => stripos($m, 'charg') !== false)) > 0;
 
-    assertThat($hasCharge, "Logger should have captured a message containing 'charged'");
+    assertThat($hasCharge, "Logger should have captured a message about the charge");
 }
 
 function testInvalidToken(): void {
@@ -257,4 +270,40 @@ runTest('testRefund', 'testRefund');
 runTest('testLoggerCaptures', 'testLoggerCaptures');
 runTest('testInvalidToken', 'testInvalidToken');
 
-echo "All 5 tests passed.\n";
+$failed = testFailureCount();
+echo $failed === 0
+    ? "All 5 tests passed.\n"
+    : "{$failed} of 5 tests FAILED.\n";
+
+// ═══════════════════════════════════════════════════════════════════════
+// ACCEPTANCE CHECKS
+// ───────────────────────────────────────────────────────────────────────
+// This challenge is a REFACTOR: the tests print the same thing before and
+// after you do the work, so the test output cannot tell whether you have
+// done it. These checks inspect the STRUCTURE instead.
+// ═══════════════════════════════════════════════════════════════════════
+
+echo "\n--- Acceptance ---\n";
+
+$src        = (string) file_get_contents(__FILE__);
+$acceptance = [
+    'Named stub classes (FakeGateway, FakeLogger, FakeAuditStore) are gone'
+        => !class_exists('FakeGateway')
+           && !class_exists('FakeLogger')
+           && !class_exists('FakeAuditStore'),
+
+    'Stubs are declared inline as anonymous classes'
+        => preg_match_all('/new\\s+class\\b/', $src) >= 10,
+
+    'Every test still passes'
+        => testFailureCount() === 0,
+];
+
+$allPassed = true;
+foreach ($acceptance as $label => $passed) {
+    echo '  ' . ($passed ? 'PASS' : 'FAIL') . '  ' . $label . "\n";
+    $allPassed = $allPassed && $passed;
+}
+echo $allPassed
+    ? "ACCEPTANCE: all checks passed\n"
+    : "ACCEPTANCE: not yet complete\n";

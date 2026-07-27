@@ -197,3 +197,15 @@ php module-4-container-automation/lesson-4.5-slim-phpdi-capstone/challenge/tests
 ```
 
 All tests print `✓` or `✗`. No PHPUnit needed — pure request simulation.
+
+---
+
+## 🔒 Mark this lesson complete
+
+This capstone cannot be judged automatically. You build it in **your own folder**, outside the
+course — the `challenge/` directory here holds the reference implementation, so running its
+tests only ever proves that *my* code works, never that yours does.
+
+Tick the box below only when the statement is genuinely true. `check.php` reads this exact line.
+
+- [ ] **Lesson 4.5 complete.** I built the API from scratch in my own folder, all four routes respond correctly, all seven request-simulation tests pass, and `src/` contains no `getenv()` calls, no `$container->get()` calls and no `new` on infrastructure classes.

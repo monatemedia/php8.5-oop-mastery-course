@@ -232,3 +232,65 @@ echo $controller->handleRequest('listPosts') . "\n";
 // $nullMailer = new class implements MailerInterface { ... };
 // ...
 // assert response contains "success":true
+
+// ═══════════════════════════════════════════════════════════════════════
+// ACCEPTANCE CHECKS
+// ───────────────────────────────────────────────────────────────────────
+// This challenge is a REFACTOR: the program prints the same thing before
+// and after you do the work, so comparing output cannot tell whether you
+// have done it. These checks inspect the STRUCTURE instead.
+//
+// They fail on the untouched starter and pass once the refactor is
+// complete. `check.php` marks the lesson done on the ACCEPTANCE line.
+// ═══════════════════════════════════════════════════════════════════════
+
+echo "\n--- Acceptance ---\n";
+
+$acceptance = [
+    'All four interfaces are defined'
+        => interface_exists('DatabaseInterface')
+           && interface_exists('LoggerInterface')
+           && interface_exists('MailerInterface')
+           && interface_exists('BlogRepositoryInterface'),
+
+    'Concrete classes implement their interfaces'
+        => is_a('InMemoryDatabase', 'DatabaseInterface', true)
+           && is_a('ConsoleLogger', 'LoggerInterface', true)
+           && is_a('ConsoleMailer', 'MailerInterface', true)
+           && is_a('BlogPostRepository', 'BlogRepositoryInterface', true),
+
+    'BlogPostRepository takes its dependencies via the constructor'
+        => class_exists('BlogPostRepository')
+           && (new ReflectionClass('BlogPostRepository'))->getConstructor() !== null
+           && count((new ReflectionClass('BlogPostRepository'))->getConstructor()->getParameters()) >= 2,
+
+    'BlogPostRepository type-hints against interfaces, not concretions'
+        => class_exists('BlogPostRepository')
+           && (function (): bool {
+                  $ctor = (new ReflectionClass('BlogPostRepository'))->getConstructor();
+                  if ($ctor === null) { return false; }
+                  foreach ($ctor->getParameters() as $p) {
+                      $t = $p->getType();
+                      if ($t instanceof ReflectionNamedType && !$t->isBuiltin()
+                          && !interface_exists($t->getName())) {
+                          return false;
+                      }
+                  }
+                  return true;
+              })(),
+
+    'No class creates its own collaborators with new inside the constructor'
+        => !preg_match(
+               '/__construct\\([^)]*\\)\\s*\\{[^}]*\\bnew\\s+(?:InMemoryDatabase|ConsoleLogger|ConsoleMailer|BlogPostRepository)\\b/s',
+               (string) file_get_contents(__FILE__)
+           ),
+];
+
+$allPassed = true;
+foreach ($acceptance as $label => $passed) {
+    echo '  ' . ($passed ? 'PASS' : 'FAIL') . '  ' . $label . "\n";
+    $allPassed = $allPassed && $passed;
+}
+echo $allPassed
+    ? "ACCEPTANCE: all checks passed\n"
+    : "ACCEPTANCE: not yet complete\n";

@@ -301,3 +301,33 @@ echo "[ ] Did you correctly identify concrete-property violations (not just `new
 echo "[ ] Did you spot the singleton-access in both ProductCatalog and InventoryChecker?\n";
 echo "[ ] Did you spot the hardcoded DSN in ProductCatalog and hardcoded API key in CheckoutService?\n";
 echo "[ ] Did you answer NO to all testability questions?\n";
+
+// ═══════════════════════════════════════════════════════════════════════
+// ACCEPTANCE CHECKS
+// ───────────────────────────────────────────────────────────────────────
+// This challenge is an AUDIT, not a coding exercise. There is no code to
+// write and therefore no program output to compare — the untouched
+// starter runs perfectly, because the code is deliberately bad but
+// working. So the check counts the annotations you were asked to add.
+// ═══════════════════════════════════════════════════════════════════════
+
+echo "\n--- Acceptance ---\n";
+
+$src        = (string) file_get_contents(__FILE__);
+$violations = preg_match_all('/❌/u', $src);
+
+echo "  Violations annotated: {$violations}\n";
+
+$acceptance = [
+    'At least 14 coupling violations marked with ❌'
+        => $violations >= 14,
+];
+
+$allPassed = true;
+foreach ($acceptance as $label => $passed) {
+    echo '  ' . ($passed ? 'PASS' : 'FAIL') . '  ' . $label . "\n";
+    $allPassed = $allPassed && $passed;
+}
+echo $allPassed
+    ? "ACCEPTANCE: all checks passed\n"
+    : "ACCEPTANCE: not yet complete\n";
