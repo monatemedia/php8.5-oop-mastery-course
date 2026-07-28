@@ -1,6 +1,13 @@
 # Lesson 5.0 — Why Testing Requires DI
 > **Module 5: Automated Testing & TDD** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~8 min reading · ~21 min running the examples. No challenge or quiz — this is a reading lesson; tick the box at the foot of this file when you are done. |
+| **Comes after** | Lesson 4.5 — Capstone: Slim PHP + PHP-DI ⭐ |
+| **Covers** | The Payoff · The Four Test Double Types · Anonymous Classes Are the Ideal PHP Test Double · The Test Environment as a Composition Root · Why This Module Connects to Modules 1–4 |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure
@@ -12,7 +19,7 @@ lesson-5.0-why-testing-requires-di/
 └── examples/
     ├── 01-why-tight-coupling-breaks-tests.php   ← Class that creates its own deps: untestable
     ├── 02-di-makes-testing-possible.php         ← Same class, injected: fully testable
-    └── 03-the-four-double-types.php             ← Fake, Stub, Spy, Mock side by side
+    └── 03-the-four-double-types.php             ← Fake, Stub, Spy, Null Object side by side
 ```
 
 > **No challenge or quiz in this lesson** — it is a conceptual bridge. The challenge and quiz work begins in Lesson 5.1.
@@ -87,8 +94,23 @@ assert($spyMailer->sent[0]['to'] === 'alice@example.com');
 
 **When to use:** You need to verify that the class under test *called* the dependency correctly (side effects, not return values).
 
-### Mock
-A spy with built-in expectations that assert automatically. PHPUnit's `$this->createMock()` builds these. Manual mocks with anonymous classes are usually cleaner.
+### Null Object
+Satisfies the interface and does nothing. It is the "off" state — used when the collaborator is irrelevant to the behaviour under test and you want it out of the way.
+
+```php
+$nullLogger = new class implements LoggerInterface {
+    public function log(string $level, string $message): void { /* deliberately nothing */ }
+};
+```
+
+**When to use:** The dependency plays no part in what you are testing. A stub returning a value would also work, but it invites the reader to ask why *that* value — and there is no answer, because it does not matter.
+
+One caveat from Lesson 2.0: a null object may skip the side effect, but it must not lie. If the interface exposes a query that callers read back, a version that silently drops everything breaks the contract.
+
+---
+
+### And a fifth: the Mock
+A spy with built-in expectations that assert automatically. PHPUnit's `$this->createMock()` builds these.
 
 ```php
 // PHPUnit mock that expects exactly one send() call:
@@ -98,7 +120,7 @@ $mockMailer->expects($this->once())
            ->with($this->equalTo('alice@example.com'));
 ```
 
-**When to use:** Sparingly. When the call itself IS the behaviour under test (e.g. verifying that an email was sent), a spy is usually clearer. Mocks tend to produce brittle tests (Rule 2).
+**When to use:** Sparingly, which is why it is not one of the four. The difference from a spy is *when* the assertion happens: a spy records and you assert afterwards, a mock is told its expectations in advance and fails at the point of the wrong call. Spies read better and give clearer failure output, so this course uses them throughout. Lesson 5.2 Section 7 goes into the distinction properly. Mocks also tend to produce brittle tests (Rule 2).
 
 ---
 
