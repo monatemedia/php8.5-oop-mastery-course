@@ -713,8 +713,13 @@ if ($result['hint'] !== '') {
 
 echo "\n  Where to look:\n";
 echo "    Lesson       {$rel}/README.md\n";
-echo "    Challenge    {$rel}/challenge/CHALLENGE.md\n";
-if (is_dir($lesson['dir'] . '/quiz')) {
+
+// Reading lessons (1.0, 5.0) have neither. Printing a path to a file that is
+// not there sends the student hunting for something that was never written.
+if (is_file($lesson['dir'] . '/challenge/CHALLENGE.md')) {
+    echo "    Challenge    {$rel}/challenge/CHALLENGE.md\n";
+}
+if (is_file($lesson['dir'] . '/quiz/QUIZ.md')) {
     echo "    Quiz         {$rel}/quiz/QUIZ.md\n";
 }
 
