@@ -20,9 +20,9 @@ Everything in this course runs from the **command line**. There is no web server
 
 **Why Herd rather than XAMPP?** XAMPP bundles PHP as a monolithic install and lags behind new releases — at the time of writing it does not ship PHP 8.5 at all. Herd and Lerd give you one-click version switching: `herd use 8.5` and you are done. No DLL hunting, no `httpd.conf` editing.
 
-> **If this folder lives under `C:\xampp\htdocs\`, that is fine.** The location is irrelevant — nothing here is served over HTTP. What matters is that the `php` on your PATH is 8.5. Verify with `php -v` before you start. If it reports 8.4 or lower, run `herd use 8.5` first.
+> **Where this folder lives does not matter.** Nothing here is served over HTTP — every lesson is a CLI script. What matters is that the `php` on your PATH is 8.5. Check with `php -v` before you start; if it reports 8.4 or lower, run `herd use 8.5` first.
 
-> ⚠️  Every example requires **PHP 8.5**. Property hooks need 8.4; `clone(...)` with-syntax, `#[\NoDiscard]`, `#[\Override]` on properties, `#[\Deprecated]` on traits/constants and static asymmetric visibility all need 8.5. On PHP 8.4 or below these are parse errors, not warnings.
+> ⚠️  **Run the course on PHP 8.5.** Most of it does not need it — every lesson README states its own minimum in the box at the top, and the majority are 8.1 — but five lessons use features that are parse errors on anything older: `clone($obj, [...])`, `#[\NoDiscard]`, `#[\Override]` on properties, `#[\Deprecated]` on traits and constants, and static asymmetric visibility. A parse error takes the whole file with it, so there is no partial credit. [`PHP_VERSION_REFERENCE.md`](PHP_VERSION_REFERENCE.md) has the full table, including what to write instead on an older runtime.
 
 ---
 

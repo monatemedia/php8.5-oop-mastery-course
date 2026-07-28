@@ -103,7 +103,9 @@ below.
 | `#[\Deprecated]` on **traits and constants** | 8.5 | — | Lesson 1.3 — the attribute is 8.4, these targets are 8.5 |
 | Asymmetric visibility on **static** properties | 8.5 | — | Lesson 1.1 |
 
-Five features, appearing in six lessons. Everything else in the course predates 8.5.
+Five features, appearing in five lessons — 1.1, 1.2, 1.3, 2.0 and 6.4. Everything else in the course predates 8.5, and 22 of the 30 lessons run on 8.1.
+
+Each lesson README states its own minimum in the box at the top; those figures are produced by scanning the lesson's code, not asserted by hand.
 
 ---
 

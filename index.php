@@ -364,6 +364,11 @@ $rules = [
       graphs a container can wire itself — with the tests to prove they behave. Thirty
       lessons, 28 code challenges, 28 quizzes, and one capstone API you build from scratch.
     </p>
+    <p class="lede" style="opacity:.72;font-size:.95rem">
+      Roughly <strong>70–90 hours</strong> of real work — about 34 of those reading and running
+      the examples, the rest spent on challenges you write yourself. It is not a weekend.
+      One lesson per sitting is the intended pace.
+    </p>
 
     <div class="status">
       <span class="pill <?= $phpState ?>"><span class="dot"></span><?= htmlspecialchars($phpLabel, ENT_QUOTES) ?></span>
