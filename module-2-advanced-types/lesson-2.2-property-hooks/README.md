@@ -1,5 +1,12 @@
 # Lesson 2.2 — PHP 8.5 Property Hooks
 > **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
+
+| | |
+|---|---|
+| **Time** | ~25 min reading · ~51 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 2.1 — Type Hinting & Return Types |
+| **Covers** | What Problem Do Property Hooks Solve? · Syntax Overview · The `get` Hook · The `set` Hook · Backed vs Virtual Properties · Hooks in Interfaces |
+| **Needs PHP** | 8.4+ to run every file in this lesson |
 > ⚠️  **PHP 8.5.** Property hooks do not exist in earlier versions.
 
 ---

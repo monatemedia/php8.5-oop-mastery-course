@@ -98,7 +98,7 @@ below.
 | Feature | Since | Uses | Notes |
 |---|---|---:|---|
 | `clone($obj, [...])` | 8.5 | 12 | Lessons 1.2, 2.2, 6.4. **Not** `clone $obj with [...]` — no such syntax exists |
-| `#[\NoDiscard]` | 8.5 | 11 | Lesson 2.1 |
+| `#[\NoDiscard]` | 8.5 | 12 | Lesson 1.2 — `examples/06-clone-with.php` |
 | `#[\Override]` on **properties** | 8.5 | — | Lesson 2.0 |
 | `#[\Deprecated]` on **traits and constants** | 8.5 | — | Lesson 1.3 — the attribute is 8.4, these targets are 8.5 |
 | Asymmetric visibility on **static** properties | 8.5 | — | Lesson 1.1 |

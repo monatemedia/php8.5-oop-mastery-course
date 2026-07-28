@@ -1,6 +1,13 @@
 # Lesson 6.4 — Designing Stateless Services
 > **Module 6: Object Lifecycle & State Management** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~30 min reading · ~66 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 6.3 — The Danger of Stateful Services |
+| **Covers** | The Stateless Service Rule · Refactoring Anti-Pattern 1: The Accumulating Service · Refactoring Anti-Pattern 2: Auth State on a Singleton · Refactoring Anti-Pattern 3: Request-Scoped Data on a Singleton · Refactoring Anti-Pattern 4: Counter / Statistics on a Singleton · Refactoring Anti-Pattern 5: Deferred Initialisation |
+| **Needs PHP** | 8.5+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

@@ -1,6 +1,13 @@
 # Lesson 4.4 — PHP-DI Library
 > **Module 4: Container Automation with PHP-DI** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~13 min reading · ~44 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 4.3 — Auto-wiring |
+| **Covers** | Before You Begin: Install PHP-DI · What PHP-DI Is · ContainerBuilder · Zero-Config Auto-wiring · Definitions File · PHP-DI Definition Functions |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

@@ -1,6 +1,13 @@
 # Lesson 5.2 — Unit Testing with Fakes and Stubs
 > **Module 5: Automated Testing & TDD** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~21 min reading · ~72 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 5.1 — PHPUnit Fundamentals |
+| **Covers** | The Unit Test Contract · The Four Test Double Types · Anonymous Classes Are the Ideal PHP Test Double · Placing Doubles in setUp() · Testing Failure Paths · What NOT to Double |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

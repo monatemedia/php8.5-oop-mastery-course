@@ -1,6 +1,13 @@
 # Lesson 4.5 — Capstone: Slim PHP + PHP-DI ⭐
 > **Module 4: Container Automation with PHP-DI** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~14 min reading · ~43 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 4.4 — PHP-DI Library |
+| **Covers** | Prerequisites · What Slim PHP Is · The Bootstrap Pattern · Route Definitions · Controller Structure · The PSR-7 Request/Response Pattern |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

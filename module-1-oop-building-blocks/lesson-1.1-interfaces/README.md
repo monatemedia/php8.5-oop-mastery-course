@@ -1,6 +1,13 @@
 # Lesson 1.1 — Interfaces
 > **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~19 min reading · ~47 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 1.0 — SOLID Principles Overview |
+| **Covers** | What Is an Interface and Why Does It Exist? · Defining and Implementing a Single Interface · Implementing Multiple Interfaces · Using Interfaces as Type Hints (Polymorphism) · Interface Constants · Interface Inheritance |
+| **Needs PHP** | 8.5+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

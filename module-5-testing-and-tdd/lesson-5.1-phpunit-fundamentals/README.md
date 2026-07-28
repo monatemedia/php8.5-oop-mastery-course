@@ -1,6 +1,13 @@
 # Lesson 5.1 — PHPUnit Fundamentals
 > **Module 5: Automated Testing & TDD** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~34 min reading · ~49 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 5.0 — Why Testing Requires DI |
+| **Covers** | Installing PHPUnit · The Anatomy of a PHPUnit Test · Naming Test Methods · Core Assertions · Exception Testing · setUp() and tearDown() Lifecycle |
+| **Needs PHP** | 8.2+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

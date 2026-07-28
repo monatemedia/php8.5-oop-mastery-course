@@ -1,6 +1,13 @@
 # Lesson 3.3 — Setter & Interface Injection
 > **Module 3: Dependency Injection & IoC** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~20 min reading · ~49 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 3.2 — Constructor Injection |
+| **Covers** | Three Forms of Dependency Injection · Setter Injection · The Null Object Default · Fluent Setter Interface (Method Chaining) · Interface Injection · PSR-3: A Real-World Interface Injection Standard |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

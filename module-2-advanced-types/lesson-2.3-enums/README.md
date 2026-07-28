@@ -1,5 +1,12 @@
 # Lesson 2.3 — Enums (PHP 8.1+)
 > **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
+
+| | |
+|---|---|
+| **Time** | ~24 min reading · ~59 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 2.2 — PHP 8.5 Property Hooks |
+| **Covers** | What Problem Do Enums Solve? · Pure (Unit) Enums · Backed Enums · `from()` and `tryFrom()` · Enum Methods and Constants · Implementing Interfaces on Enums |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
 > ✅ Available from PHP 8.1 — works in 8.1, 8.2, 8.3, and 8.4.
 
 ---

@@ -1,6 +1,13 @@
 # Lesson 3.4 — Inversion of Control (IoC)
 > **Module 3: Dependency Injection & IoC** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~12 min reading · ~48 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 3.3 — Setter & Interface Injection |
+| **Covers** | What Is Inversion of Control? · The Hollywood Principle · The Dependency Inversion Principle (DIP) · DIP vs DI: The Principle vs the Technique · Manual IoC: Building a Wiring Function · The Pain of Manual IoC — Motivation for Containers |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

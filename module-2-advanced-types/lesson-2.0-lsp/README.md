@@ -1,6 +1,13 @@
 # Lesson 2.0 — Liskov Substitution Principle (LSP)
 > **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~17 min reading · ~46 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 1.4 — Composition over Inheritance |
+| **Covers** | Why LSP Exists (and Why It Lives in Module 2) · The Classic Violation: Rectangle and Square · The Three Behavioural Rules of LSP · PHP's Type System and LSP: Covariance and Contravariance · How to Spot and Fix LSP Violations · Quick Reference |
+| **Needs PHP** | 8.5+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

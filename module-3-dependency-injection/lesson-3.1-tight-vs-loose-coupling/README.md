@@ -1,6 +1,13 @@
 # Lesson 3.1 — Tight vs Loose Coupling
 > **Module 3: Dependency Injection & IoC** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~15 min reading · ~41 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 2.4 — Anonymous Classes |
+| **Covers** | What Is Coupling? · Measuring Coupling · Why `new ClassName()` Inside a Constructor Is a Design Smell · The Three Costs of Tight Coupling · Types of Coupling (from worst to acceptable) · Identifying Coupling in Code — the Five Smells |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

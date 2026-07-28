@@ -262,6 +262,33 @@ If you use Herd, this folder is served at a `.test` domain and `index.php` rende
 
 ---
 
+## ⏱ How long this takes
+
+Every lesson README opens with its own estimate. Totalled up:
+
+| Module | Lessons | Reading | Examples | Plus challenges and quizzes |
+|---|---:|---:|---:|---|
+| 1 — OOP Building Blocks | 5 | 1h 54m | 4h 14m | 5 challenges, 5 quizzes |
+| 2 — Advanced Types & Enums | 5 | 1h 47m | 4h 08m | 5 challenges, 5 quizzes |
+| 3 — Dependency Injection & IoC | 4 | 1h 03m | 3h 02m | 4 challenges, 4 quizzes |
+| 4 — Container Automation | 5 | 0h 59m | 3h 50m | 5 challenges, 5 quizzes |
+| 5 — Automated Testing & TDD | 6 | 2h 02m | 4h 28m | 6 challenges, 6 quizzes |
+| 6 — Object Lifecycle & State | 5 | 1h 45m | 4h 48m | 5 challenges, 5 quizzes |
+| **Total** | **30** | **9h 30m** | **24h 30m** | |
+
+Reading is timed at 230 words per minute for prose and considerably slower for code, because code
+is not prose and skimming it defeats the purpose. The examples column assumes you *run* each script
+and read its output, which is the only way they work.
+
+**The challenges and quizzes are not in these numbers, and they are where most of the time goes.**
+Budget 45–90 minutes per challenge if you write it yourself rather than reading the solution —
+which is the entire point. Realistically the course is **70–90 hours** of genuine work.
+
+That is not a reason to hurry. It is a reason to do one lesson at a sitting and stop, rather than
+reading four and retaining none. `php check.php` will tell you where you left off.
+
+---
+
 ## 📖 Reference
 
 - [`GATES.md`](GATES.md) — the six module gates, with answer keys

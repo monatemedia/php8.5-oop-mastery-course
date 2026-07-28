@@ -1,6 +1,13 @@
 # Lesson 6.1 — PHP's Share-Nothing Architecture
 > **Module 6: Object Lifecycle & State Management** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~13 min reading · ~47 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 5.5 — Testing Behaviours, Not Layouts |
+| **Covers** | What "Share-Nothing" Means · The Three Lifecycles You Must Understand · The Three Runtime Models Where Share-Nothing Breaks · How PHP-DI Singletons Break Share-Nothing Even Under FPM · How to Tell Which Runtime You Are In · What This Means for Your Code Right Now |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

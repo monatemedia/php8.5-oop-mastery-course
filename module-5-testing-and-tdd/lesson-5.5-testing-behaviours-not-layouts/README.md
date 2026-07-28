@@ -1,6 +1,13 @@
 # Lesson 5.5 — Testing Behaviours, Not Layouts
 > **Module 5: Automated Testing & TDD** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~19 min reading · ~51 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 5.4 — Integration Testing with a Real Container |
+| **Covers** | The Problem: Tests That Break on Every Refactor · The Brittleness Spectrum · Anti-Pattern 1: Asserting on Constructor Parameters · Anti-Pattern 2: Asserting on Private Properties · Anti-Pattern 3: Over-Specified Mock Expectations · The Observable Boundary Rule |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

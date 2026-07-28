@@ -1,6 +1,13 @@
 # Lesson 1.4 — Composition over Inheritance
 > **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~14 min reading · ~55 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 1.3 — Traits |
+| **Covers** | The Core Idea · Why Inheritance Gets Overused · The Deep Inheritance Trap · The Practical Test: "Can I Replace `extends` With a Field?" · Composition in PHP: Four Patterns · When `extends` IS Correct |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

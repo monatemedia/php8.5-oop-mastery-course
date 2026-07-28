@@ -1,6 +1,13 @@
 # Lesson 6.2 — Transient vs Singleton Scopes in PHP-DI
 > **Module 6: Object Lifecycle & State Management** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~22 min reading · ~51 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 6.1 — PHP's Share-Nothing Architecture |
+| **Covers** | Why Scope Exists · Singleton Scope (the PHP-DI Default) · Transient Scope · The Scope Decision Rule · Safe Singletons: What They Look Like · Dangerous Singletons: What They Look Like |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

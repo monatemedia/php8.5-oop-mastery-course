@@ -1,6 +1,13 @@
 # Lesson 1.2 — Abstract Classes
 > **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~31 min reading · ~58 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 1.1 — Interfaces |
+| **Covers** | What Is an Abstract Class? · Abstract Class vs Interface — The Decision Table · Defining Abstract Methods · Concrete Methods in Abstract Classes · Constructor Logic in Abstract Classes · Combining Abstract Classes with Interfaces |
+| **Needs PHP** | 8.5+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

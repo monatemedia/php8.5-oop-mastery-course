@@ -1,6 +1,13 @@
 # Lesson 6.3 — The Danger of Stateful Services
 > **Module 6: Object Lifecycle & State Management** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~21 min reading · ~52 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 6.2 — Transient vs Singleton Scopes in PHP-DI |
+| **Covers** | Why Anti-Patterns, Not Just Rules · Anti-Pattern 1: The Accumulating Service · Anti-Pattern 2: Authentication State on a Singleton · Anti-Pattern 3: Request-Scoped Data on a Singleton · Anti-Pattern 4: Counter / Statistics on a Singleton · Anti-Pattern 5: Deferred Initialisation That Never Resets |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

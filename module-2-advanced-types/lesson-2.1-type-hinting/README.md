@@ -1,6 +1,13 @@
 # Lesson 2.1 — Type Hinting & Return Types
 > **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~19 min reading · ~53 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 2.0 — Liskov Substitution Principle (LSP) |
+| **Covers** | Scalar Types and `strict_types=1` · Nullable Types · Union Types (PHP 8.0+) · `void`, `never`, and `mixed` · `self`, `static`, and `parent` Return Types · Intersection Types (PHP 8.1+) |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

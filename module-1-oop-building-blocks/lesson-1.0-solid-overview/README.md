@@ -1,6 +1,13 @@
 # Lesson 1.0 — SOLID Principles Overview
 > **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~21 min reading · ~34 min running the examples. No challenge or quiz — this is a reading lesson; tick the box at the foot of this file when you are done. |
+| **Comes after** | — this is the first lesson |
+| **Covers** | Why This Lesson Exists · The Five Principles at a Glance · S — Single Responsibility Principle · O — Open/Closed Principle · L — Liskov Substitution Principle · I — Interface Segregation Principle |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## Why This Lesson Exists

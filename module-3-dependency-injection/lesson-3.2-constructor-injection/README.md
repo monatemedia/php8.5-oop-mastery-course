@@ -1,6 +1,13 @@
 # Lesson 3.2 — Constructor Injection
 > **Module 3: Dependency Injection & IoC** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~16 min reading · ~44 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 3.1 — Tight vs Loose Coupling |
+| **Covers** | The Dependency Injection Principle · Constructor Injection — The Preferred Pattern · Type-Hinting Against Interfaces, Not Concrete Classes · Multiple Dependencies · The Composition Root · Before and After: The Checkout System from Lesson 3.1 |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

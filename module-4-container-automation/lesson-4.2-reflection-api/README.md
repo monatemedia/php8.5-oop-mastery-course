@@ -1,6 +1,13 @@
 # Lesson 4.2 — PHP Reflection API
 > **Module 4: Container Automation with PHP-DI** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~11 min reading · ~45 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 4.1 — Service Containers |
+| **Covers** | Why This Lesson Exists · What Is the Reflection API? · The Core Reflection Loop for Auto-Wiring · Key Classes in the Reflection API · `isBuiltin()` — The Auto-Wiring Boundary · Performance: Why Real Containers Cache Reflection |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

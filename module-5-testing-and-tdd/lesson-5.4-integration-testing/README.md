@@ -1,6 +1,13 @@
 # Lesson 5.4 — Integration Testing with a Real Container
 > **Module 5: Automated Testing & TDD** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~19 min reading · ~45 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 5.3 — Test-Driven Development (TDD) |
+| **Covers** | Unit Tests vs Integration Tests · The Test Pyramid · When to Write Integration Tests · SQLite In-Memory: The Integration Test Database · Booting a Container in setUp() · Testing HTTP Routes with Slim |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

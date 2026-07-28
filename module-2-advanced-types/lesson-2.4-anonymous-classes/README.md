@@ -1,5 +1,12 @@
 # Lesson 2.4 — Anonymous Classes
 > **Module 2: Advanced Types & Enums** · PHP 8.5 OOP Mastery Course
+
+| | |
+|---|---|
+| **Time** | ~22 min reading · ~39 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 2.3 — Enums (PHP 8.1+) |
+| **Covers** | What Is an Anonymous Class? · Syntax · Implementing Interfaces Inline · Test Doubles and Stubs · Extending Classes Anonymously · Outer Scope Access |
+| **Needs PHP** | 8.0+ to run every file in this lesson |
 > ✅ Available from PHP 7.0 — works in all modern PHP versions.
 
 ---

@@ -1,6 +1,13 @@
 # Lesson 1.3 — Traits
 > **Module 1: OOP Building Blocks** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~29 min reading · ~60 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 1.2 — Abstract Classes |
+| **Covers** | What Is a Trait? · What Traits Are NOT · Defining and Using a Trait · Using Multiple Traits and Handling Conflicts · Trait Properties and Abstract Trait Methods · Traits and Interfaces — the Most Important Pattern |
+| **Needs PHP** | 8.5+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

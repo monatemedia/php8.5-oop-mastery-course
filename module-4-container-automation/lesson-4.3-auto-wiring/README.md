@@ -1,6 +1,13 @@
 # Lesson 4.3 — Auto-wiring
 > **Module 4: Container Automation with PHP-DI** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~8 min reading · ~53 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 4.2 — PHP Reflection API |
+| **Covers** | What Auto-wiring Is · The Auto-wiring Algorithm · Explicit Bindings + Auto-wiring · Circular Dependency Detection · When Auto-wiring Fails · How This Leads to PHP-DI |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

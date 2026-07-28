@@ -1,6 +1,13 @@
 # Lesson 5.3 — Test-Driven Development (TDD)
 > **Module 5: Automated Testing & TDD** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~21 min reading · ~51 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 5.2 — Unit Testing with Fakes and Stubs |
+| **Covers** | What TDD Is · The Three Phases · The Three Rules of TDD (Robert Martin) · Why TDD Produces Better Design · Outside-In TDD · TDD Step Sizes |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

@@ -1,6 +1,13 @@
 # Lesson 6.5 — Factory Definitions for Complex Lifecycles
 > **Module 6: Object Lifecycle & State Management** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~19 min reading · ~72 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 6.4 — Designing Stateless Services |
+| **Covers** | When Auto-Wiring Is Not Enough · Factory Basics: Non-Type-Hinted Constructor Arguments · Factories and Freshness · The Decorator Pattern in a Container · Environment-Based Bindings · The `factory()` Callable Signature Options |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure

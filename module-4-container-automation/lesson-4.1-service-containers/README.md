@@ -1,6 +1,13 @@
 # Lesson 4.1 — Service Containers
 > **Module 4: Container Automation with PHP-DI** · PHP 8.5 OOP Mastery Course
 
+| | |
+|---|---|
+| **Time** | ~13 min reading · ~45 min running the examples. Challenge and quiz on top. |
+| **Comes after** | Lesson 3.4 — Inversion of Control (IoC) |
+| **Covers** | What Problem Does a Container Solve? · What Is a Service Container? · Three Resolution Modes · Service Identifiers · Container vs Service Locator · PSR-11: The Standard Container Interface |
+| **Needs PHP** | 8.1+ to run every file in this lesson |
+
 ---
 
 ## 📁 Lesson Folder Structure
