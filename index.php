@@ -44,9 +44,14 @@ $quizCount      = count(glob(__DIR__ . '/module-*/lesson-*/quiz', GLOB_ONLYDIR) 
 $exampleCount   = count(glob(__DIR__ . '/module-*/lesson-*/examples/*.php') ?: []);
 
 /**
- * The sequel, if it is sitting beside this folder. Linked only when it is
- * actually there — a dead link on a cover page is worse than no link.
+ * The sequel. The link always points at GitHub, because most people reading
+ * this page cloned one repository and a relative path to a sibling folder is a
+ * dead link for every one of them.
+ *
+ * The local probe is kept, but it now only decides the WORDING — "you already
+ * have it, here is the command" versus "here is where to get it".
  */
+$sequelUrl   = 'https://github.com/monatemedia/php8.5-domain-architecture';
 $sequelDir   = dirname(__DIR__) . '/php8.5-domain-architecture';
 $sequelReady = is_dir($sequelDir);
 
@@ -573,14 +578,15 @@ $rules = [
         <li><strong>Capstone</strong> — Slim 4 and PHP-DI again, plus a test that scans every import in the domain layer</li>
       </ul>
 
+      <a class="btn primary" href="<?= $sequelUrl ?>">View it on GitHub</a>
       <?php if ($sequelReady): ?>
-        <a class="btn primary" href="../php8.5-domain-architecture/index.php">Open the sequel</a>
+        <a class="btn" href="../php8.5-domain-architecture/index.php">Open your local copy</a>
       <?php endif; ?>
 
       <div class="where">
         <?= $sequelReady
-            ? 'Installed at ~/Herd/php8.5-domain-architecture — start with <strong>php verify.php</strong>, then Module 0.'
-            : 'Not installed yet. It expects to live beside this folder, at ~/Herd/php8.5-domain-architecture.' ?>
+            ? 'Already cloned to ~/Herd/php8.5-domain-architecture — run <strong>php verify.php</strong>, then start at Module 0.'
+            : 'git clone ' . $sequelUrl . '.git — MIT licensed, like this one.' ?>
       </div>
     </div>
 
@@ -602,9 +608,10 @@ $rules = [
     <a href="https://phpunit.de/">PHPUnit</a>
     <br>
     This page is informational only. The course runs entirely from the command line.
-    <?php if ($sequelReady): ?>
-      <br>Sequel: <a href="../php8.5-domain-architecture/index.php">Advanced Domain Architecture &amp; Tactical DDD</a>.
-    <?php endif; ?>
+    <br>
+    <a href="https://github.com/monatemedia/php8.5-oop-mastery-course">This course on GitHub</a> ·
+    Sequel: <a href="<?= $sequelUrl ?>">Advanced Domain Architecture &amp; Tactical DDD</a> ·
+    MIT licensed
   </div>
 </footer>
 

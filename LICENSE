@@ -1,0 +1,69 @@
+MIT License
+
+Copyright (c) 2026 Edward Baitsewe for Monate Media
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## What this covers, in plain English
+
+**PHP 8.5 OOP Mastery**
+
+"The Software" above means **everything in this repository** — not just the
+`.php` files. The lesson READMEs, the challenge briefs, the quizzes and their
+answer keys, `COURSE_PHILOSOPHY.md`, the verification harness, the examples,
+the reference solutions and the capstone API are all covered by the same terms.
+
+MIT is written in the vocabulary of software. It is being applied here to a
+course, deliberately, so that there is exactly one set of rules and nobody has
+to work out which file falls under which licence.
+
+| You want to | Allowed? |
+|-------------|----------|
+| Work through it, alone or with a team | Yes |
+| Use the code in a commercial, closed-source product | Yes |
+| Teach from it, for money | Yes |
+| Translate it, adapt it, rewrite half of it | Yes |
+| Build your own paid course on top of it | **Yes** |
+| Remove the attribution entirely | No — keep the copyright notice |
+
+The only obligation is the one in the second paragraph above: keep the
+copyright notice with substantial portions of the work. That is it.
+
+## Why this permissive
+
+The point of a course is that people take what they learn and use it. A licence
+that made a reader think twice before copying a container, a value object or a
+test double into their employer's codebase would be working against the thing
+it was written for.
+
+The same logic applies to the writing. If somebody can teach this better, or to
+an audience I will never reach, or in a language I do not speak — including for
+money — that is more people learning it. More power to them.
+
+## Third-party dependencies
+
+Slim, PHP-DI, PHPUnit and their transitive dependencies are installed by
+Composer into `vendor/`, which is not part of this repository. Each carries its
+own licence.
+
+The companion course, **Advanced Domain Architecture & Tactical DDD**, is
+licensed identically:
+https://github.com/monatemedia/php8.5-domain-architecture

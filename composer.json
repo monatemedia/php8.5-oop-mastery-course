@@ -2,7 +2,7 @@
     "name": "php85-oop-mastery/course",
     "description": "PHP 8.5 OOP Mastery Course — dependencies for Modules 4, 5 and 6",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": ">=8.5",
         "php-di/php-di": "^7.0",
