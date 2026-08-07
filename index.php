@@ -28,6 +28,27 @@ $phpVersion   = PHP_VERSION;
 $phpOk        = PHP_VERSION_ID >= 80500;
 $vendorOk     = is_file(__DIR__ . '/vendor/autoload.php');
 $lockOk       = is_file(__DIR__ . '/composer.lock');
+$sqliteOk     = extension_loaded('pdo_sqlite');
+
+/**
+ * The syllabus figures, counted from disk rather than written down.
+ *
+ * They were hard-coded in the sentence below until the sequel course was built
+ * with a cover page that reads its own filesystem — at which point it was
+ * obvious that three numbers in a marketing sentence are three numbers that can
+ * quietly stop being true.
+ */
+$lessonCount    = count(glob(__DIR__ . '/module-*/lesson-*', GLOB_ONLYDIR) ?: []);
+$challengeCount = count(glob(__DIR__ . '/module-*/lesson-*/challenge', GLOB_ONLYDIR) ?: []);
+$quizCount      = count(glob(__DIR__ . '/module-*/lesson-*/quiz', GLOB_ONLYDIR) ?: []);
+$exampleCount   = count(glob(__DIR__ . '/module-*/lesson-*/examples/*.php') ?: []);
+
+/**
+ * The sequel, if it is sitting beside this folder. Linked only when it is
+ * actually there — a dead link on a cover page is worse than no link.
+ */
+$sequelDir   = dirname(__DIR__) . '/php8.5-domain-architecture';
+$sequelReady = is_dir($sequelDir);
 
 /** Parse PROGRESS.md checkboxes so the page reflects real work done. */
 $done = $total = 0;
@@ -351,6 +372,23 @@ $rules = [
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
   }
+  /* ── What comes next ──────────────────────────────────────────────────── */
+
+  .next {
+    background: linear-gradient(135deg, rgba(167,139,250,0.10), rgba(167,139,250,0.03));
+    border: 1px solid rgba(167,139,250,0.30);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.8rem;
+  }
+  .next h3 { margin: 0 0 0.5rem; font-size: 1.25rem; }
+  .next .sub { margin-bottom: 1.1rem; }
+  .next ul { margin: 0 0 1.2rem; padding-left: 1.1rem; color: var(--muted); font-size: 0.92rem; }
+  .next ul li { margin-bottom: 0.3rem; }
+  .next .where {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8rem; color: var(--muted);
+    border-top: 1px solid var(--line); padding-top: 0.9rem; margin-top: 0.3rem;
+  }
 </style>
 </head>
 <body>
@@ -361,8 +399,9 @@ $rules = [
     <h1>Advanced PHP,<br><span class="grad">properly understood</span></h1>
     <p class="lede">
       Six modules that take you from “I know what an interface is” to designing service
-      graphs a container can wire itself — with the tests to prove they behave. Thirty
-      lessons, 28 code challenges, 28 quizzes, and one capstone API you build from scratch.
+      graphs a container can wire itself — with the tests to prove they behave.
+      <?= $lessonCount ?> lessons, <?= $challengeCount ?> code challenges, <?= $quizCount ?> quizzes,
+      <?= $exampleCount ?> runnable examples, and one capstone API you build from scratch.
     </p>
     <p class="lede" style="opacity:.72;font-size:.95rem">
       Roughly <strong>70–90 hours</strong> of real work — about 34 of those reading and running
@@ -376,6 +415,7 @@ $rules = [
       <?php if ($lockOk): ?>
         <span class="pill ok"><span class="dot"></span>Versions locked</span>
       <?php endif; ?>
+      <span class="pill <?= $sqliteOk ? 'ok' : 'bad' ?>"><span class="dot"></span>pdo_sqlite<?= $sqliteOk ? '' : ' missing — Module 5 needs it' ?></span>
     </div>
 
     <?php if ($total > 0): ?>
@@ -507,6 +547,52 @@ $rules = [
   </div>
 </section>
 
+<section id="next">
+  <div class="wrap">
+    <h2>What comes next</h2>
+    <p class="sub">
+      This course is about <em>how to wire components</em>. There is a sequel about
+      <em>what the components should be</em>.
+    </p>
+
+    <div class="next">
+      <h3>Advanced Domain Architecture &amp; Tactical DDD</h3>
+      <p class="sub">
+        The same PHP 8.5, the same CLI-first shape, one running domain — a vehicle workshop —
+        that accumulates from the first lesson to a capstone API. It moves from technical objects
+        (loggers, mailers, repositories) to business objects: a job card that knows the rules for
+        cancelling itself, a price that cannot be negative, a bill that refuses to be issued twice.
+      </p>
+
+      <ul>
+        <li><strong>Module 0</strong> — when <em>not</em> to do any of it. It comes first, deliberately.</li>
+        <li><strong>Modules 1–2</strong> — value objects, entities, aggregates, invariants, domain events</li>
+        <li><strong>Module 3</strong> — repositories the domain declares, and the mapping problem met head on</li>
+        <li><strong>Module 4</strong> — typed failure trees, ending at an RFC 9457 boundary</li>
+        <li><strong>Module 5</strong> — living with an ORM that owns your model, and strangling a legacy one</li>
+        <li><strong>Capstone</strong> — Slim 4 and PHP-DI again, plus a test that scans every import in the domain layer</li>
+      </ul>
+
+      <?php if ($sequelReady): ?>
+        <a class="btn primary" href="../php8.5-domain-architecture/index.php">Open the sequel</a>
+      <?php endif; ?>
+
+      <div class="where">
+        <?= $sequelReady
+            ? 'Installed at ~/Herd/php8.5-domain-architecture — start with <strong>php verify.php</strong>, then Module 0.'
+            : 'Not installed yet. It expects to live beside this folder, at ~/Herd/php8.5-domain-architecture.' ?>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Finish this one first, properly.</strong> The sequel assumes you can compose objects,
+      inject dependencies, wire a container and write a test with a fake — every one of those is used
+      there without explanation, and its Module 2 is unteachable to someone who has not internalised
+      Module 3 of this course.
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     PHP <?= htmlspecialchars($phpVersion, ENT_QUOTES) ?> ·
@@ -516,6 +602,9 @@ $rules = [
     <a href="https://phpunit.de/">PHPUnit</a>
     <br>
     This page is informational only. The course runs entirely from the command line.
+    <?php if ($sequelReady): ?>
+      <br>Sequel: <a href="../php8.5-domain-architecture/index.php">Advanced Domain Architecture &amp; Tactical DDD</a>.
+    <?php endif; ?>
   </div>
 </footer>
 
