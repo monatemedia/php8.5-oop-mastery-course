@@ -596,6 +596,14 @@ $rules = [
       there without explanation, and its Module 2 is unteachable to someone who has not internalised
       Module 3 of this course.
     </div>
+
+    <div class="note">
+      <strong>And then a product.</strong> Part three of the series is
+      <a href="https://slimkiller.monatemedia.com/">Slim Killer</a>, an open-source replacement for
+      WordPress built by the rules of both courses. The first six rules of its build philosophy are
+      this course's six rules. Read <a href="https://github.com/monatemedia/slim-killer">its code</a>
+      to see a container wired at one entry point, and tests that check behaviour, in a real product.
+    </div>
   </div>
 </section>
 
@@ -611,6 +619,7 @@ $rules = [
     <br>
     <a href="https://github.com/monatemedia/php8.5-oop-mastery-course">This course on GitHub</a> ·
     Sequel: <a href="<?= $sequelUrl ?>">Advanced Domain Architecture &amp; Tactical DDD</a> ·
+    Part three: <a href="https://slimkiller.monatemedia.com/">Slim Killer</a> ·
     MIT licensed
   </div>
 </footer>
