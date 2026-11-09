@@ -134,7 +134,7 @@ $rules = [
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PHP 8.5 OOP Mastery Course</title>
+<title>OOP Mastery &amp; Dependency Injection — PHP 8.5</title>
 <meta name="description" content="A local, CLI-first course in advanced PHP object orientation: SOLID, dependency injection, containers, TDD and object lifecycle.">
 <style>
   :root {
