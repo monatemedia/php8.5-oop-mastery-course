@@ -367,6 +367,7 @@ $rules = [
     color: var(--muted); font-size: 0.85rem;
   }
   footer a { color: var(--muted); }
+  .footer-logo img { height: 66px; width: auto; display: block; margin-bottom: 1rem; opacity: 0.7; }
 
   @media (max-width: 480px) {
     .card { padding: 1.1rem; }
@@ -609,6 +610,7 @@ $rules = [
 
 <footer>
   <div class="wrap">
+    <a class="footer-logo" href="https://www.monatemedia.com/"><img src="logo-wide.png" alt="Monate Media"></a>
     PHP <?= htmlspecialchars($phpVersion, ENT_QUOTES) ?> ·
     <a href="https://www.php.net/releases/8.5/en.php">PHP 8.5 release notes</a> ·
     <a href="https://php-di.org/">PHP-DI</a> ·
